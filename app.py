@@ -24,7 +24,7 @@ if 'pkg_cost' not in st.session_state: st.session_state.pkg_cost = 20.0
 # --- 2. THE PROFESSIONAL AUTH ENGINE ---
 if not st.session_state.auth:
     st.markdown("<h1 style='text-align: center; color: #1E88E5;'>🚀 PrePeak Pro</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center;'>The 10% Profit-Share Intelligence Engine</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center;'>Get to know before they know</p>", unsafe_allow_html=True)
     
     _, main_col, _ = st.columns([1, 2, 1])
     
