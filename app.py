@@ -53,7 +53,7 @@ if not st.session_state.auth:
             c2.button("🔵 Facebook", use_container_width=True)
             
             st.write("---")
-            if st.button("New Partner? Create an Account"):
+            if st.button("Create an Account"):
                 st.session_state.auth_mode = 'signup'
                 st.rerun()
 
