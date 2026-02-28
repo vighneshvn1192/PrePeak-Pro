@@ -64,7 +64,7 @@ if not st.session_state.auth:
             u_name = st.text_input("Name", placeholder="Your Name ...")
             u_email = st.text_input("Email", placeholder="you@gmail.com")
             u_pass = st.text_input("Create Password", type="password")
-            u_store = st.text_input("Store URL", placeholder="brand.myshopify.com")
+            u_store = st.text_input("Store URL")
             
             if st.button("Activate My 30-Day Trial", use_container_width=True, type="primary"):
                 if u_email and u_pass and u_store:
