@@ -2,144 +2,144 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PrePeak Pro | Enterprise Market Intelligence</title>
+    <title>PrePeak Pro | Universal Market Intel</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        .view-section { display: none; } .view-section.active { display: flex; }
-        .glass { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(51, 65, 85, 0.4); }
-        input[type="range"] { -webkit-appearance: none; background: #1e293b; border-radius: 999px; height: 6px; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; background: #3b82f6; border: 4px solid #fff; border-radius: 50%; cursor: pointer; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; color: #f1f5f9; overflow: hidden; }
+        .view-layer { display: none; } .view-layer.active { display: flex; }
         .tab-content { display: none; } .tab-content.active { display: block; }
+        .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(51, 65, 85, 0.4); }
+        input[type="range"] { -webkit-appearance: none; background: #1e293b; height: 4px; border-radius: 999px; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: #3b82f6; border: 3px solid #fff; border-radius: 50%; cursor: pointer; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="bg-[#020617] text-slate-200 min-h-screen font-sans selection:bg-blue-500/30 overflow-hidden">
+<body class="min-h-screen">
 
-    <div id="view-login" class="view-section active h-screen w-full items-center justify-center p-6">
-        <div class="glass p-12 rounded-[2.5rem] w-full max-w-md shadow-2xl border-blue-500/20 text-center">
-            <h1 class="text-5xl font-black text-blue-500 mb-2 italic tracking-tighter">PrePeak</h1>
-            <p class="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-10">Gatekeeper Access</p>
+    <div id="view-login" class="view-layer active h-screen w-full items-center justify-center p-6">
+        <div class="glass p-12 rounded-[2.5rem] w-full max-w-md shadow-2xl text-center border-blue-500/20">
+            <h1 class="text-6xl font-black text-blue-500 mb-2 italic tracking-tighter">PrePeak</h1>
+            <p class="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-12">Universal Gateway</p>
             <div class="space-y-4">
-                <input id="user" type="text" placeholder="Username (test)" class="w-full p-4 bg-slate-900/50 rounded-2xl border border-slate-800 outline-none focus:border-blue-500 font-bold transition-all">
-                <input id="pass" type="password" placeholder="Password (test)" class="w-full p-4 bg-slate-900/50 rounded-2xl border border-slate-800 outline-none focus:border-blue-500 font-bold transition-all">
-                <button onclick="navToKeys()" class="w-full bg-blue-600 p-4 rounded-2xl font-black text-lg hover:bg-blue-500 transition-all shadow-xl shadow-blue-600/20 uppercase tracking-widest">Sign In</button>
+                <input id="u" type="text" placeholder="Username" class="w-full p-4 bg-slate-900 rounded-2xl border border-slate-800 outline-none focus:border-blue-500 font-bold transition-all">
+                <input id="p" type="password" placeholder="Password" class="w-full p-4 bg-slate-900 rounded-2xl border border-slate-800 outline-none focus:border-blue-500 font-bold transition-all">
+                <button onclick="navToKeyGate()" class="w-full bg-blue-600 p-4 rounded-2xl font-black text-lg hover:bg-blue-500 transition-all shadow-xl shadow-blue-600/20">LOG IN</button>
             </div>
         </div>
     </div>
 
-    <div id="view-keys" class="view-section h-screen w-full items-center justify-center p-6 bg-[#020617]">
-        <div class="glass p-12 rounded-[3rem] w-full max-w-lg shadow-2xl border-blue-500/20">
-            <h2 class="text-3xl font-black text-white mb-2 italic tracking-tighter text-center">Mission Fuel</h2>
-            <p class="text-slate-500 text-center text-xs font-bold uppercase tracking-widest mb-10 italic">Provide at least one API Key to continue</p>
+    <div id="view-keys" class="view-layer h-screen w-full items-center justify-center p-6 bg-[#020617]">
+        <div class="glass p-12 rounded-[3rem] w-full max-w-xl shadow-2xl">
+            <h2 class="text-3xl font-black text-white mb-2 italic tracking-tighter text-center">API CONFIGURATION</h2>
+            <p class="text-slate-500 text-center text-[10px] font-black uppercase tracking-widest mb-10 italic">Select Provider & Provide Key to Unlock</p>
             
             <div class="space-y-6">
                 <div>
-                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Gemini API Key</label>
-                    <input id="key-gemini" type="password" placeholder="Paste Gemini Key here..." class="w-full p-4 bg-slate-900 rounded-xl border border-slate-800 focus:border-blue-500 outline-none transition-all text-xs font-mono">
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Provider Selection</label>
+                    <select id="api-provider" class="w-full p-4 bg-slate-900 rounded-xl border border-slate-800 text-blue-400 font-bold outline-none">
+                        <option value="gemini">Google Gemini 1.5 Pro</option>
+                        <option value="openai">OpenAI GPT-4o / Grok-1</option>
+                        <option value="claude">Anthropic Claude 3.5</option>
+                    </select>
                 </div>
                 <div>
-                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">OpenAI API Key</label>
-                    <input id="key-openai" type="password" placeholder="sk-..." class="w-full p-4 bg-slate-900 rounded-xl border border-slate-800 focus:border-blue-500 outline-none transition-all text-xs font-mono">
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Private API Key</label>
+                    <input id="master-key" type="password" placeholder="Enter Key..." class="w-full p-4 bg-slate-900 rounded-xl border border-slate-800 focus:border-blue-500 outline-none text-xs font-mono">
                 </div>
-                <div>
-                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Claude API Key</label>
-                    <input id="key-claude" type="password" placeholder="ant-..." class="w-full p-4 bg-slate-900 rounded-xl border border-slate-800 focus:border-blue-500 outline-none transition-all text-xs font-mono">
-                </div>
-                
-                <button onclick="verifyAndStart()" class="w-full bg-green-600 p-5 rounded-2xl font-black text-lg hover:bg-green-500 transition-all shadow-xl shadow-green-600/10 uppercase tracking-tighter">Initialize Dashboard</button>
+                <button onclick="unlockDashboard()" class="w-full bg-green-600 p-5 rounded-2xl font-black text-lg hover:bg-green-500 transition-all shadow-xl shadow-green-600/10 uppercase tracking-widest">Authorize & Launch</button>
             </div>
         </div>
     </div>
 
-    <div id="view-dashboard" class="view-section h-screen w-full overflow-hidden">
+    <div id="view-dash" class="view-layer h-screen w-full overflow-hidden">
         <aside class="w-72 bg-[#020617] border-r border-slate-800/50 p-8 flex flex-col">
-            <h2 class="text-3xl font-black text-blue-500 mb-12 italic tracking-tighter">PrePeak Pro</h2>
+            <h2 class="text-3xl font-black text-blue-500 mb-12 italic tracking-tighter">PrePeak</h2>
             <nav class="space-y-2 flex-1">
-                <button onclick="switchTab('seo')" class="nav-btn w-full text-left p-4 rounded-xl text-blue-400 font-black bg-slate-900 border border-blue-500/20">📈 SEO HUB</button>
-                <button onclick="switchTab('sem')" class="nav-btn w-full text-left p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-900">🕵️ SEM SPY</button>
-                <button onclick="switchTab('ads')" class="nav-btn w-full text-left p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-900">🎨 AD FACTORY</button>
-                <button onclick="switchTab('forecaster')" class="nav-btn w-full text-left p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-900">💰 FORECASTER</button>
+                <button onclick="tab('seo')" class="n-btn w-full text-left p-4 rounded-xl text-blue-400 font-black bg-slate-900 border border-blue-500/20">📈 SEO HUB</button>
+                <button onclick="tab('keys')" class="n-btn w-full text-left p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-900">🔍 KEYWORD LAB</button>
+                <button onclick="tab('spy')" class="n-btn w-full text-left p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-900">🕵️ COMPETITOR SPY</button>
+                <button onclick="tab('ads')" class="n-btn w-full text-left p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-900">🎨 AD FACTORY</button>
+                <button onclick="tab('cost')" class="n-btn w-full text-left p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-900">💰 FORECASTER</button>
             </nav>
-            <div class="mt-auto pt-6 border-t border-slate-800 flex justify-between items-center">
-                <span id="active-model" class="text-[9px] font-black text-green-500 uppercase tracking-widest bg-green-500/10 px-2 py-1 rounded">Engine: Gemini</span>
-                <button onclick="location.reload()" class="text-[9px] text-slate-600 font-black hover:text-red-500 uppercase">Exit</button>
+            <div class="mt-auto pt-6 border-t border-slate-800 text-[9px] font-black text-slate-600 uppercase tracking-widest flex justify-between">
+                <span>Enterprise v3.0</span>
+                <button onclick="location.reload()" class="hover:text-red-500">Exit</button>
             </div>
         </aside>
 
-        <main class="flex-1 p-10 overflow-y-auto bg-gradient-to-br from-[#020617] to-slate-950">
+        <main class="flex-1 p-10 overflow-y-auto bg-gradient-to-br from-[#020617] to-[#0f172a] no-scrollbar">
             <div class="max-w-4xl mx-auto mb-16">
-                <div class="flex gap-4 p-3 glass rounded-3xl">
-                    <input id="user-niche" type="text" placeholder="Enter Niche or Competitor URL (e.g. 'Coffee SaaS')..." class="flex-1 p-4 bg-transparent outline-none font-bold text-xl text-white">
-                    <button onclick="runGlobalAI()" class="bg-blue-600 px-10 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-blue-500 shadow-xl shadow-blue-600/20">Analyze</button>
+                <div class="flex gap-4 p-2 glass rounded-[2rem]">
+                    <input id="main-q" type="text" placeholder="Analyze Niche or Competitor URL..." class="flex-1 p-4 bg-transparent outline-none font-black text-xl text-white">
+                    <button onclick="executeEngine()" class="bg-blue-600 px-10 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-blue-500 shadow-xl shadow-blue-600/20">Analyze</button>
                 </div>
+                <p id="loading-msg" class="hidden mt-4 text-center text-blue-400 font-black text-[10px] animate-pulse uppercase tracking-[0.5em]">Engine Processing Intelligence...</p>
             </div>
 
-            <div id="results-ui" class="max-w-6xl mx-auto space-y-12 pb-20">
+            <div id="ui-grid" class="max-w-6xl mx-auto space-y-12 pb-32">
                 
                 <div id="seo" class="tab-content active">
                     <h3 class="text-3xl font-black italic mb-10 tracking-tighter">Market Saturation</h3>
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <div class="lg:col-span-2 glass p-10 rounded-[2.5rem]">
-                            <label class="block text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-10">Projection Timeline: <span id="range-text" class="text-blue-400">90 Days</span></label>
-                            <input id="seo-slider" type="range" min="1" max="5" value="3" oninput="updateSlider(this.value)" class="w-full cursor-pointer">
-                            <div class="flex justify-between text-[10px] mt-8 text-slate-600 font-black uppercase tracking-tighter">
-                                <span>7 Days</span><span>30 Days</span><span>3 Months</span><span>6 Months</span><span>1 Year</span>
+                            <div class="flex justify-between items-center mb-10">
+                                <label class="text-xs font-black text-slate-500 uppercase tracking-[0.3em]">Timeline: <span id="r-text" class="text-blue-400">90 Days</span></label>
+                            </div>
+                            <input id="s-slider" type="range" min="1" max="5" value="3" oninput="upS(this.value)" class="w-full cursor-pointer">
+                            <div class="flex justify-between text-[10px] mt-6 text-slate-600 font-black uppercase">
+                                <span>7D</span><span>30D</span><span>90D</span><span>180D</span><span>1Y</span>
                             </div>
                         </div>
-                        <div class="glass p-10 rounded-[2.5rem] flex flex-col justify-center text-center">
-                            <p class="text-slate-500 text-[10px] font-black uppercase mb-4 tracking-widest">Saturation</p>
-                            <h4 id="sat-val" class="text-7xl font-black text-green-400">--%</h4>
-                            <div class="w-full bg-slate-800 h-3 rounded-full mt-8 overflow-hidden">
-                                <div id="sat-bar" class="bg-green-500 h-full transition-all duration-1000" style="width: 0%"></div>
-                            </div>
+                        <div class="glass p-10 rounded-[2.5rem] text-center flex flex-col justify-center">
+                            <p class="text-[10px] text-slate-500 font-black mb-4 uppercase tracking-widest">Saturation</p>
+                            <h4 id="sat-val" class="text-7xl font-black text-green-400 tracking-tighter italic">--%</h4>
                         </div>
                     </div>
                 </div>
 
-                <div id="sem" class="tab-content">
-                    <h3 class="text-3xl font-black italic mb-10 tracking-tighter">Competitor SEM Data</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div class="glass p-10 rounded-3xl text-center">
-                            <p class="text-[10px] text-slate-500 font-black uppercase mb-3">Volume Index</p>
-                            <p id="key-vol" class="text-5xl font-black text-blue-400">--</p>
-                        </div>
-                        <div class="glass p-10 rounded-3xl text-center">
-                            <p class="text-[10px] text-slate-500 font-black uppercase mb-3">Avg CPC</p>
-                            <p id="cpc-val" class="text-5xl font-black text-blue-400">--</p>
-                        </div>
-                        <div class="glass p-10 rounded-3xl text-center">
-                            <p class="text-[10px] text-slate-500 font-black uppercase mb-3">Intensity</p>
-                            <p id="comp-val" class="text-5xl font-black text-yellow-500">--</p>
-                        </div>
+                <div id="keys" class="tab-content">
+                    <h3 class="text-3xl font-black italic mb-10 tracking-tighter">Keyword Intelligence</h3>
+                    <div class="glass rounded-3xl overflow-hidden">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-900/50 text-[10px] uppercase font-black tracking-widest text-slate-500">
+                                <tr><th class="p-6">Keyword</th><th class="p-6">Search Vol</th><th class="p-6">KD%</th><th class="p-6">User Intent</th></tr>
+                            </thead>
+                            <tbody id="k-table" class="text-sm font-bold divide-y divide-slate-800">
+                                <tr><td colspan="4" class="p-12 text-center text-slate-600 italic">Initialize Engine to Map Market Keywords</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="spy" class="tab-content">
+                    <h3 class="text-3xl font-black italic mb-10 tracking-tighter">Competitor Strategy Spy</h3>
+                    <div id="spy-results" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="glass p-12 rounded-[3rem] border-dashed border-2 border-slate-800 text-slate-600 text-center italic font-bold col-span-2">Awaiting Intelligence Extraction...</div>
                     </div>
                 </div>
 
                 <div id="ads" class="tab-content">
-                    <h3 class="text-3xl font-black italic mb-10 tracking-tighter">AI Ad Factory</h3>
-                    <div id="hooks-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="glass p-10 rounded-[2.5rem] border-dashed border-2 border-slate-800 text-slate-600 font-bold italic text-center col-span-2">Enter niche to trigger AI creative generation.</div>
+                    <h3 class="text-3xl font-black italic mb-10 tracking-tighter">Ad Creative Factory</h3>
+                    <div id="ad-results" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="glass p-12 rounded-[3rem] border-dashed border-2 border-slate-800 text-slate-600 text-center italic font-bold col-span-2">Waiting for Niche Input...</div>
                     </div>
                 </div>
 
-                <div id="forecaster" class="tab-content">
+                <div id="cost" class="tab-content">
                     <div class="flex justify-between items-center mb-10">
-                        <h3 class="text-3xl font-black italic tracking-tighter">Ad Cost Forecaster</h3>
-                        <select id="currency-select" onchange="convertCurrency()" class="bg-slate-900 text-blue-400 font-black text-xs p-3 rounded-xl border border-slate-700 outline-none shadow-lg">
-                            <option value="USD" data-symbol="$">USD (US Dollar)</option>
-                            <option value="INR" data-symbol="₹">INR (Indian Rupee)</option>
-                            <option value="EUR" data-symbol="€">EUR (Euro)</option>
-                            <option value="AED" data-symbol="د.إ">AED (UAE Dirham)</option>
-                            <option value="SGD" data-symbol="S$">SGD (Singapore)</option>
-                            <option value="AUD" data-symbol="A$">AUD (Australia)</option>
-                            <option value="NGN" data-symbol="₦">NGN (Nigeria)</option>
-                            <option value="ZAR" data-symbol="R">ZAR (South Africa)</option>
-                            <option value="BRL" data-symbol="R$">BRL (Brazil)</option>
-                            <option value="MXN" data-symbol="$">MXN (Mexico)</option>
+                        <h3 class="text-3xl font-black italic tracking-tighter">Global Ad Forecaster</h3>
+                        <select id="curr" onchange="convert()" class="bg-slate-900 text-blue-400 font-black text-xs p-4 rounded-2xl border border-slate-800 outline-none shadow-2xl">
+                            <option value="USD" data-s="$">USD ($)</option><option value="INR" data-s="₹">INR (₹)</option>
+                            <option value="EUR" data-s="€">EUR (€)</option><option value="AED" data-s="د.إ">AED (Dirham)</option>
+                            <option value="SGD" data-s="S$">SGD (Singapore)</option><option value="AUD" data-s="A$">AUD (Australia)</option>
+                            <option value="NGN" data-s="₦">NGN (Nigeria)</option><option value="ZAR" data-s="R">ZAR (S. Africa)</option>
+                            <option value="BRL" data-s="R$">BRL (Brazil)</option><option value="MXN" data-s="$">MXN (Mexico)</option>
                         </select>
                     </div>
-                    <div class="glass p-16 rounded-[4rem] text-center border-red-500/10 shadow-[0_0_50px_rgba(239,68,68,0.05)]">
-                        <p class="text-slate-500 text-[10px] font-black mb-6 uppercase tracking-[0.4em]">Recommended Monthly Ad Spend</p>
-                        <h4 id="cost-display" class="text-[10rem] leading-none font-black text-red-500 tracking-tighter shadow-red-500/20">$0</h4>
-                        <p class="text-[10px] text-slate-600 mt-10 italic uppercase font-black">Powered by PrePeak Prediction Engine</p>
+                    <div class="glass p-20 rounded-[4rem] text-center">
+                        <p class="text-slate-500 text-[10px] font-black mb-8 uppercase tracking-[0.4em]">Recommended Monthly Budget</p>
+                        <h4 id="cost-display" class="text-[10rem] leading-none font-black text-red-500 tracking-tighter">$0</h4>
                     </div>
                 </div>
 
@@ -148,79 +148,84 @@
     </div>
 
     <script>
-        let rawUSD = 0;
-        let masterKey = "";
+        let rawUSD = 0; let activeKey = ""; let activeProv = "";
 
-        function navToKeys() {
-            if(document.getElementById('user').value === 'test' && document.getElementById('pass').value === 'test') {
+        function navToKeyGate() {
+            if(document.getElementById('u').value === 'test' && document.getElementById('p').value === 'test') {
                 document.getElementById('view-login').classList.remove('active');
                 document.getElementById('view-keys').classList.add('active');
             }
         }
 
-        function verifyAndStart() {
-            const gemini = document.getElementById('key-gemini').value;
-            const openai = document.getElementById('key-openai').value;
-            const claude = document.getElementById('key-claude').value;
-
-            if(!gemini && !openai && !claude) {
-                alert("COMPULSORY: Please provide at least one API key.");
-                return;
-            }
-
-            masterKey = gemini || openai || claude;
+        function unlockDashboard() {
+            activeKey = document.getElementById('master-key').value;
+            activeProv = document.getElementById('api-provider').value;
+            if(!activeKey) return alert("Compulsory API key missing.");
             document.getElementById('view-keys').classList.remove('active');
-            document.getElementById('view-dashboard').classList.add('active');
+            document.getElementById('view-dash').classList.add('active');
         }
 
-        function switchTab(id) {
+        function tab(id) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('bg-slate-900', 'text-blue-400', 'border', 'border-blue-500/20'));
-            event.currentTarget.classList.add('bg-slate-900', 'text-blue-400', 'border', 'border-blue-500/20');
+            document.querySelectorAll('.n-btn').forEach(b => b.classList.remove('bg-slate-900','text-blue-400','border','border-blue-500/20'));
+            event.currentTarget.classList.add('bg-slate-900','text-blue-400','border','border-blue-500/20');
         }
 
-        function updateSlider(v) {
-            const l = ["7 Days", "30 Days", "90 Days", "180 Days", "1 Year"];
-            document.getElementById('range-text').innerText = l[v-1];
+        function upS(v) {
+            const l = ["7D","30D","90D","180D","1Y"];
+            document.getElementById('r-text').innerText = l[v-1];
         }
 
-        async function runGlobalAI() {
-            const niche = document.getElementById('user-niche').value;
-            if(!niche) return alert("Error: Niche cannot be empty.");
-
-            const prompt = `Analyze market data for "${niche}". Respond ONLY in JSON: {"sat": 0-100, "vol": int, "cpc": float, "level": "LOW/MED/HIGH", "cost": int, "hooks": ["hook1", "hook2", "hook3", "hook4"]}`;
+        async function executeEngine() {
+            const q = document.getElementById('main-q').value; if(!q) return;
+            document.getElementById('loading-msg').classList.remove('hidden');
+            
+            const prompt = `Analyze "${q}". Respond ONLY in raw JSON: {
+                "sat": int(0-100), "vol": int, "cpc": float, "cost": int,
+                "keywords": [{"k": "str", "v": int, "d": int, "i": "str"}],
+                "comp": {"strategy": "str", "ads": "str"},
+                "ads": [{"h": "str", "b": "str", "cta": "str"}]
+            }`;
 
             try {
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${masterKey}`, {
-                    method: 'POST',
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                });
-                const data = await res.json();
-                const text = data.candidates[0].content.parts[0].text;
-                const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
+                let res;
+                if(activeProv === 'gemini') {
+                    res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${activeKey}`, {
+                        method: 'POST', body: JSON.stringify({contents: [{parts: [{text: prompt}]}]})
+                    });
+                } else {
+                    // Universal Bridge for OpenAI/Claude (Requires Key authorization header)
+                    const endpoint = activeProv === 'openai' ? 'https://api.openai.com/v1/chat/completions' : 'https://api.anthropic.com/v1/messages';
+                    res = await fetch(endpoint, {
+                        method: 'POST', headers: {'Authorization': `Bearer ${activeKey}`, 'Content-Type': 'application/json'},
+                        body: JSON.stringify({model: "gpt-4o", messages: [{role: "user", content: prompt}]})
+                    });
+                }
 
-                rawUSD = json.cost;
-                document.getElementById('sat-val').innerText = json.sat + "%";
-                document.getElementById('sat-bar').style.width = json.sat + "%";
-                document.getElementById('key-vol').innerText = json.vol.toLocaleString();
-                document.getElementById('cpc-val').innerText = "$" + json.cpc.toFixed(2);
-                document.getElementById('comp-val').innerText = json.level;
-                document.getElementById('hooks-container').innerHTML = json.hooks.map(h => `<div class="glass p-8 rounded-3xl border-l-8 border-blue-600 font-bold text-slate-300 break-words leading-relaxed shadow-lg">${h}</div>`).join('');
+                const data = await res.json();
+                let text;
+                if(activeProv === 'gemini') text = data.candidates[0].content.parts[0].text;
+                else text = data.choices[0].message.content;
+
+                const j = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
+
+                // RENDER
+                rawUSD = j.cost;
+                document.getElementById('sat-val').innerText = j.sat + "%";
+                document.getElementById('k-table').innerHTML = j.keywords.map(k => `<tr><td class="p-6 text-blue-400 font-black">${k.k}</td><td class="p-6">${k.v.toLocaleString()}</td><td class="p-6 text-yellow-500">${k.d}%</td><td class="p-6 uppercase text-[9px] tracking-widest">${k.i}</td></tr>`).join('');
+                document.getElementById('spy-results').innerHTML = `<div class="glass p-12 rounded-[3rem] border-l-8 border-blue-500 shadow-xl"><p class="text-[10px] font-black text-slate-500 uppercase mb-4">GTM Strategy</p><p class="text-slate-300 font-bold leading-relaxed">${j.comp.strategy}</p></div><div class="glass p-12 rounded-[3rem] border-l-8 border-red-500 shadow-xl"><p class="text-[10px] font-black text-slate-500 uppercase mb-4">Ad Copy Insights</p><p class="text-slate-300 font-bold leading-relaxed">${j.comp.ads}</p></div>`;
+                document.getElementById('ad-results').innerHTML = j.ads.map(a => `<div class="glass p-10 rounded-[2.5rem] border-l-8 border-green-500"><h5 class="font-black text-xl mb-3">${a.h}</h5><p class="text-sm text-slate-400 mb-6 font-medium">${a.b}</p><span class="bg-blue-600 px-4 py-2 rounded-lg font-black text-[10px] uppercase">${a.cta}</span></div>`).join('');
+                convert();
                 
-                convertCurrency();
-            } catch (err) {
-                alert("AI Engine Error. Check your API key.");
-            }
+            } catch (e) { alert("API Handshake Failed. Verify Key/Endpoint."); console.error(e); }
+            finally { document.getElementById('loading-msg').classList.add('hidden'); }
         }
 
-        function convertCurrency() {
-            const select = document.getElementById('currency-select');
-            const currency = select.value;
-            const symbol = select.options[select.selectedIndex].getAttribute('data-symbol');
-            const rates = { USD: 1, INR: 83, EUR: 0.92, AED: 3.67, SGD: 1.34, AUD: 1.52, NGN: 1500, ZAR: 18.9, BRL: 5.06, MXN: 16.7 };
-            const converted = (rawUSD * rates[currency]).toLocaleString(undefined, { maximumFractionDigits: 0 });
-            document.getElementById('cost-display').innerText = symbol + converted;
+        function convert() {
+            const s = document.getElementById('curr'); const c = s.value; const sym = s.options[s.selectedIndex].getAttribute('data-s');
+            const rates = {USD:1, INR:83.2, EUR:0.92, AED:3.67, SGD:1.35, AUD:1.52, NGN:1515, ZAR:19.1, BRL:5.08, MXN:16.8};
+            document.getElementById('cost-display').innerText = sym + (rawUSD * rates[c]).toLocaleString(undefined, {maximumFractionDigits: 0});
         }
     </script>
 </body>
