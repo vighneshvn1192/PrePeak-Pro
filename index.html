@@ -1,155 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PrePeak Pro | AI Market Intelligence</title>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrePeak Pro | AI Intel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .page-content { display: none; }
-        .page-content.active { display: block; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; background: #3b82f6; cursor: pointer; border-radius: 50%; border: 4px solid white; box-shadow: 0 0 15px rgba(59, 130, 246, 0.6); }
+        .page-content { display: none; } .page-content.active { display: block; }
+        .loader { border-top-color: #3b82f6; animation: spinner 0.6s linear infinite; }
+        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="bg-slate-950 text-white min-h-screen font-sans selection:bg-blue-500/30">
 
-    <div id="auth-section" class="flex items-center justify-center min-h-screen p-6">
-        <div class="bg-slate-900 p-12 rounded-[2.5rem] shadow-2xl w-full max-w-md border border-slate-800/50 backdrop-blur-xl">
-            <h1 class="text-6xl font-black text-blue-500 text-center mb-2 tracking-tighter italic">PrePeak</h1>
-            <p class="text-slate-500 text-center mb-10 text-[10px] font-black uppercase tracking-[0.3em]">Market Validation Engine</p>
-            
-            <div class="space-y-4">
-                <input id="email" type="text" placeholder="Username (use 'test')" class="w-full p-5 bg-slate-800/50 rounded-2xl border border-slate-700 focus:outline-none focus:border-blue-500 transition-all text-sm font-bold">
-                <input id="password" type="password" placeholder="Password (use 'test')" class="w-full p-5 bg-slate-800/50 rounded-2xl border border-slate-700 focus:outline-none focus:border-blue-500 transition-all text-sm font-bold">
-                
-                <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-500 p-5 rounded-2xl font-black text-xl transition-all transform active:scale-95 shadow-xl shadow-blue-600/20">ACCESS DASHBOARD</button>
-            </div>
-            <p id="auth-msg" class="mt-8 text-center text-[10px] font-black text-slate-600 uppercase tracking-widest">v1.0.4 Early Access</p>
+    <div id="auth-section" class="flex items-center justify-center min-h-screen">
+        <div class="bg-slate-900 p-10 rounded-3xl border border-slate-800 w-full max-w-md shadow-2xl">
+            <h1 class="text-4xl font-black text-blue-500 text-center mb-8 tracking-tighter">PrePeak Pro</h1>
+            <input id="email" type="text" placeholder="User: test" class="w-full p-4 bg-slate-800 rounded-xl mb-4 border border-slate-700 outline-none focus:border-blue-500">
+            <input id="password" type="password" placeholder="Pass: test" class="w-full p-4 bg-slate-800 rounded-xl mb-6 border border-slate-700 outline-none focus:border-blue-500">
+            <button onclick="login()" class="w-full bg-blue-600 p-4 rounded-xl font-black text-lg hover:bg-blue-500 transition-all">ENTER DASHBOARD</button>
+            <p id="auth-msg" class="mt-4 text-center text-xs font-bold text-slate-500"></p>
         </div>
     </div>
 
     <div id="dashboard" class="hidden flex h-screen overflow-hidden">
-        <aside class="w-80 bg-slate-900 border-r border-slate-800/50 p-10 flex flex-col">
-            <h2 class="text-4xl font-black text-blue-500 mb-16 tracking-tighter italic">PrePeak</h2>
-            <nav class="space-y-4 flex-1">
-                <button onclick="showPage('seo')" class="nav-btn w-full text-left p-4 rounded-2xl hover:bg-slate-800 text-blue-400 font-black flex items-center gap-4 transition-all bg-slate-800/50 border border-blue-500/20">📈 SEO HUB</button>
-                <button onclick="showPage('sem')" class="nav-btn w-full text-left p-4 rounded-2xl hover:bg-slate-800 flex items-center gap-4 transition-all text-slate-500 font-bold">🕵️ SEM SPY</button>
-                <button onclick="showPage('ad')" class="nav-btn w-full text-left p-4 rounded-2xl hover:bg-slate-800 flex items-center gap-4 transition-all text-slate-500 font-bold">🎨 AD FACTORY</button>
-                <button onclick="showPage('success')" class="nav-btn w-full text-left p-4 rounded-2xl hover:bg-slate-800 flex items-center gap-4 transition-all text-slate-500 font-bold">🔮 SUCCESS AI</button>
+        <aside class="w-64 bg-slate-900 border-r border-slate-800 p-6 flex flex-col">
+            <h2 class="text-2xl font-black text-blue-500 mb-10 italic">PrePeak</h2>
+            <nav class="space-y-2 flex-1">
+                <button onclick="showPage('seo')" class="w-full text-left p-3 rounded-lg bg-slate-800 text-blue-400 font-bold">📈 SEO HUB</button>
+                <button onclick="showPage('sem')" class="w-full text-left p-3 rounded-lg hover:bg-slate-800 font-bold text-slate-500">🕵️ SEM SPY</button>
+                <button onclick="showPage('ad')" class="w-full text-left p-3 rounded-lg hover:bg-slate-800 font-bold text-slate-500">🎨 AD FACTORY</button>
             </nav>
-            <div class="mt-auto pt-8 border-t border-slate-800">
-                <button onclick="location.reload()" class="w-full text-[10px] text-slate-600 hover:text-red-500 font-black tracking-widest uppercase transition-colors">Terminate Session</button>
-            </div>
+            <button onclick="location.reload()" class="text-xs text-slate-600 font-bold hover:text-red-500">LOGOUT</button>
         </aside>
 
-        <main class="flex-1 p-16 overflow-y-auto bg-slate-950">
-            
-            <div id="seo" class="page-content active animate-in fade-in slide-in-from-bottom-4 duration-700">
-                <div class="flex justify-between items-end mb-16">
-                    <div>
-                        <h2 class="text-5xl font-black mb-3">Market Saturation</h2>
-                        <p class="text-slate-500 text-lg font-medium">Real-time organic search difficulty metrics.</p>
-                    </div>
-                    <div class="bg-green-500/10 text-green-400 px-6 py-2 rounded-full text-[10px] font-black border border-green-500/20 uppercase tracking-widest shadow-[0_0_20px_rgba(34,197,94,0.1)]">AI Engine Live</div>
-                </div>
-                
-                <div class="bg-slate-900/50 p-12 rounded-[3rem] border border-slate-800/50 mb-12 shadow-2xl backdrop-blur-sm">
-                    <div class="flex justify-between items-center mb-10">
-                        <label class="text-xs font-black text-slate-500 uppercase tracking-[0.3em]">Intelligence Window</label>
-                        <span id="range-val" class="text-blue-400 font-black text-lg bg-blue-500/10 px-5 py-1.5 rounded-xl border border-blue-500/20">90 DAYS</span>
-                    </div>
-                    <input type="range" min="1" max="5" value="3" oninput="updateRange(this.value)" class="w-full h-2.5 bg-slate-800 rounded-full appearance-none cursor-pointer">
-                    <div class="flex justify-between text-[11px] mt-8 text-slate-600 font-black uppercase tracking-widest">
-                        <span>7 Days</span><span>30 Days</span><span>3 Months</span><span>6 Months</span><span>1 Year</span>
-                    </div>
-                </div>
+        <main class="flex-1 p-10 overflow-y-auto">
+            <div class="max-w-4xl mx-auto mb-12 flex gap-3">
+                <input id="search-input" type="text" placeholder="Enter Niche or Domain (e.g. 'Fitness App')" class="flex-1 p-4 bg-slate-900 rounded-2xl border border-slate-800 outline-none focus:border-blue-500 font-bold">
+                <button onclick="runAnalysis()" class="bg-blue-600 px-8 rounded-2xl font-black hover:bg-blue-500 transition-all">ANALYZE</button>
+            </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                    <div class="bg-slate-900/50 p-12 rounded-[3rem] border border-slate-800/50 hover:border-blue-500/30 transition-all">
-                        <p class="text-slate-500 text-xs font-black uppercase mb-4 tracking-widest">Saturation Index</p>
-                        <h3 id="sat-score" class="text-8xl font-black text-green-400 mb-8">34%</h3>
-                        <div class="w-full bg-slate-800 h-5 rounded-full overflow-hidden shadow-inner">
-                            <div id="sat-bar" class="bg-green-500 h-full rounded-full transition-all duration-1000 shadow-[0_0_25px_rgba(34,197,94,0.4)]" style="width: 34%"></div>
+            <div id="loading" class="hidden text-center py-20">
+                <div class="loader ease-linear rounded-full border-4 border-t-4 border-slate-800 h-12 w-12 mx-auto mb-4"></div>
+                <p class="text-blue-400 font-black animate-pulse">AI ANALYZING MARKET DATA...</p>
+            </div>
+
+            <div id="main-content" class="max-w-6xl mx-auto space-y-10">
+                
+                <div id="seo" class="page-content active">
+                    <h3 class="text-2xl font-black mb-6 uppercase tracking-widest">Market Saturation</h3>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="bg-slate-900 p-8 rounded-3xl border border-slate-800">
+                            <p class="text-slate-500 text-xs font-bold mb-2 uppercase">Saturation Index</p>
+                            <h4 id="sat-val" class="text-6xl font-black text-green-400">--%</h4>
+                            <div class="w-full bg-slate-800 h-3 rounded-full mt-6 overflow-hidden">
+                                <div id="sat-bar" class="bg-green-500 h-full transition-all duration-1000" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-900 p-8 rounded-3xl border border-slate-800">
+                            <p class="text-slate-500 text-xs font-bold mb-2 uppercase">Keyword Difficulty</p>
+                            <h4 id="diff-val" class="text-6xl font-black text-yellow-400">--</h4>
+                            <p id="diff-msg" class="text-xs text-slate-500 mt-6 font-bold uppercase tracking-widest">Enter Niche Above</p>
                         </div>
                     </div>
-                    <div class="bg-slate-900/50 p-12 rounded-[3rem] border border-slate-800/50 hover:border-blue-500/30 transition-all">
-                        <p class="text-slate-500 text-xs font-black uppercase mb-4 tracking-widest">SEO Difficulty</p>
-                        <h3 class="text-8xl font-black text-yellow-400 mb-6">48<span class="text-3xl text-slate-700">/100</span></h3>
-                        <p class="text-sm text-slate-500 font-bold uppercase tracking-widest leading-relaxed">Status: <span class="text-blue-400">Moderate Opportunity</span> • High Content Gap</p>
+                </div>
+
+                <div id="sem" class="page-content">
+                    <h3 class="text-2xl font-black mb-6 uppercase tracking-widest">Competitor Spend</h3>
+                    <div id="sem-results" class="grid grid-cols-3 gap-6 opacity-50">
+                        <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 text-center">
+                            <p class="text-xs text-slate-500 font-bold mb-2 uppercase">Monthly Ad Spend</p>
+                            <p id="sem-spend" class="text-3xl font-black text-blue-400">$0.00</p>
+                        </div>
+                        <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 text-center">
+                            <p class="text-xs text-slate-500 font-bold mb-2 uppercase">Active Keywords</p>
+                            <p id="sem-keys" class="text-3xl font-black text-blue-400">0</p>
+                        </div>
+                        <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 text-center">
+                            <p class="text-xs text-slate-500 font-bold mb-2 uppercase">Avg. CPC</p>
+                            <p id="sem-cpc" class="text-3xl font-black text-blue-400">$0.00</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div id="sem" class="page-content">
-                <h2 class="text-5xl font-black mb-12 italic">SEM Spy</h2>
-                <input type="text" placeholder="Competitor URL..." class="w-full p-6 bg-slate-900 rounded-3xl border border-slate-800 mb-6 outline-none focus:border-blue-500 font-bold text-xl">
-                <button onclick="alert('Analyzing Competitor Ad Spend...')" class="bg-blue-600 px-12 py-5 rounded-3xl font-black text-lg hover:bg-blue-500 transition-all shadow-xl shadow-blue-600/20">SPY ON ADS</button>
-            </div>
-
-            <div id="ad" class="page-content">
-                <h2 class="text-5xl font-black mb-12 italic">Ad Factory</h2>
-                <div class="grid grid-cols-3 gap-8 mb-12">
-                    <div class="p-12 bg-slate-900 rounded-[3rem] border border-slate-800 text-center hover:border-blue-500 transition-all cursor-pointer">
-                        <div class="text-6xl mb-6">📸</div><p class="font-black text-xs tracking-widest uppercase">Instagram</p>
-                    </div>
-                    <div class="p-12 bg-slate-900 rounded-[3rem] border border-slate-800 text-center hover:border-blue-500 transition-all cursor-pointer">
-                        <div class="text-6xl mb-6">🎥</div><p class="font-black text-xs tracking-widest uppercase">YouTube</p>
-                    </div>
-                    <div class="p-12 bg-slate-900 rounded-[3rem] border border-slate-800 text-center hover:border-blue-500 transition-all cursor-pointer">
-                        <div class="text-6xl mb-6">📘</div><p class="font-black text-xs tracking-widest uppercase">Facebook</p>
+                <div id="ad" class="page-content">
+                    <h3 class="text-2xl font-black mb-6 uppercase tracking-widest">AI Creative Hooks</h3>
+                    <div id="ad-results" class="space-y-4">
+                        <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 border-dashed text-slate-600 font-bold text-center">
+                            Click 'Analyze' to generate AI Ad Variations
+                        </div>
                     </div>
                 </div>
-                <button class="w-full bg-blue-600 p-8 rounded-[2.5rem] font-black text-2xl hover:bg-blue-500 transition-all shadow-2xl shadow-blue-600/30 tracking-tighter">⚡ GENERATE AD CREATIVES</button>
-            </div>
-            
-            <div id="success" class="page-content">
-                <h2 class="text-5xl font-black mb-12 italic">Success Predictor</h2>
-                <div class="bg-slate-900 border-4 border-dashed border-slate-800 p-32 rounded-[4rem] text-center group hover:border-blue-500/30 transition-all">
-                    <div class="text-9xl mb-10 group-hover:scale-110 transition-transform">🎯</div>
-                    <p class="text-slate-500 text-2xl font-black mb-10 uppercase tracking-widest">Drop Mockup for AI Scoring</p>
-                    <button class="bg-slate-800 px-16 py-6 rounded-3xl font-black hover:bg-slate-700 border border-slate-700">SELECT IMAGE</button>
-                </div>
-            </div>
 
+            </div>
         </main>
     </div>
 
     <script>
-        function handleLogin() {
-            const e = document.getElementById('email').value.trim();
+        function login() {
+            const e = document.getElementById('email').value;
             const p = document.getElementById('password').value;
-            const msg = document.getElementById('auth-msg');
-            
             if(e === 'test' && p === 'test') {
                 document.getElementById('auth-section').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
             } else {
-                msg.innerText = "AUTH FAILED. USE 'test' / 'test'";
-                msg.className = "mt-8 text-center text-[10px] font-black text-red-500 uppercase tracking-[0.3em] animate-pulse";
+                document.getElementById('auth-msg').innerText = "Try 'test' / 'test'";
             }
         }
 
         function showPage(id) {
             document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.nav-btn').forEach(b => {
-                b.classList.remove('text-blue-400', 'font-black', 'bg-slate-800', 'border-blue-500/20');
-                b.classList.add('text-slate-500', 'font-bold');
-            });
-            event.currentTarget.classList.add('text-blue-400', 'font-black', 'bg-slate-800/50', 'border', 'border-blue-500/20');
-            event.currentTarget.classList.remove('text-slate-500', 'font-bold');
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('bg-slate-800', 'text-blue-400'));
+            event.target.classList.add('bg-slate-800', 'text-blue-400');
         }
 
-        function updateRange(val) {
-            const labels = ["7 DAYS", "30 DAYS", "90 DAYS", "180 DAYS", "1 YEAR"];
-            const scores = [12, 24, 34, 45, 62];
-            const colors = ["text-blue-400", "text-blue-400", "text-green-400", "text-yellow-400", "text-red-400"];
-            
-            document.getElementById('range-val').innerText = labels[val-1];
-            document.getElementById('sat-score').innerText = scores[val-1] + "%";
-            document.getElementById('sat-score').className = `text-8xl font-black mb-8 ${colors[val-1]}`;
-            document.getElementById('sat-bar').style.width = scores[val-1] + "%";
-            document.getElementById('sat-bar').className = `h-full rounded-full transition-all duration-1000 ${colors[val-1].replace('text', 'bg')}`;
+        function runAnalysis() {
+            const niche = document.getElementById('search-input').value;
+            if(!niche) return;
+
+            // Show Loader
+            document.getElementById('main-content').classList.add('opacity-20');
+            document.getElementById('loading').classList.remove('hidden');
+
+            setTimeout(() => {
+                // Hide Loader
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('main-content').classList.remove('opacity-20');
+                
+                // SEO Hub Update
+                const sat = Math.floor(Math.random() * 40) + 20;
+                document.getElementById('sat-val').innerText = sat + "%";
+                document.getElementById('sat-bar').style.width = sat + "%";
+                document.getElementById('diff-val').innerText = Math.floor(Math.random() * 30) + 40;
+                document.getElementById('diff-msg').innerText = "Healthy Growth Opportunity Found";
+
+                // SEM Spy Update
+                document.getElementById('sem-results').classList.remove('opacity-50');
+                document.getElementById('sem-spend').innerText = "$" + (Math.random() * 5 + 1).toFixed(1) + "K";
+                document.getElementById('sem-keys').innerText = Math.floor(Math.random() * 800) + 200;
+                document.getElementById('sem-cpc').innerText = "$" + (Math.random() * 2 + 1).toFixed(2);
+
+                // Ad Factory Generator
+                const ads = [
+                    `Stop failing at ${niche}. Our AI tool gives you the edge.`,
+                    `The secret to a 6-figure ${niche} business is market intel.`,
+                    `Is your ${niche} idea actually profitable? Find out in 60s.`
+                ];
+                document.getElementById('ad-results').innerHTML = ads.map(a => 
+                    `<div class="bg-blue-600/10 p-4 rounded-xl border border-blue-500/20 text-blue-400 font-bold">📣 ${a}</div>`
+                ).join('');
+
+            }, 1500);
         }
     </script>
 </body>
