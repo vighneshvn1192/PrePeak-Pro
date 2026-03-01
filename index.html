@@ -6,75 +6,71 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .page-content { display: none; } .page-content.active { display: block; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; background: #3b82f6; cursor: pointer; border-radius: 50%; border: 4px solid white; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); }
-        .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(51, 65, 85, 0.5); }
-        .loader { border-top-color: #3b82f6; animation: spinner 0.6s linear infinite; }
-        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        input[type="range"] { -webkit-appearance: none; background: #1e293b; border-radius: 999px; height: 8px; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; background: #3b82f6; border: 4px solid #fff; border-radius: 50%; cursor: pointer; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
+        .stat-card { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(51, 65, 85, 0.5); backdrop-filter: blur(10px); }
+        .loading-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
     </style>
 </head>
-<body class="bg-[#020617] text-slate-200 min-h-screen font-sans selection:bg-blue-500/30">
+<body class="bg-[#020617] text-slate-200 min-h-screen font-sans">
 
-    <div id="auth-section" class="flex items-center justify-center min-h-screen p-6">
-        <div class="glass p-12 rounded-[2.5rem] shadow-2xl w-full max-w-md">
-            <h1 class="text-6xl font-black text-blue-500 text-center mb-2 tracking-tighter italic">PrePeak</h1>
-            <p class="text-slate-500 text-center mb-10 text-[10px] font-black uppercase tracking-[0.3em]">Market Validation Engine</p>
+    <div id="auth-section" class="flex items-center justify-center min-h-screen">
+        <div class="stat-card p-12 rounded-[2.5rem] w-full max-w-md shadow-2xl">
+            <h1 class="text-5xl font-black text-blue-500 text-center mb-10 tracking-tighter italic">PrePeak</h1>
             <div class="space-y-4">
-                <input id="email" type="text" placeholder="Username (use 'test')" class="w-full p-5 bg-slate-900/50 rounded-2xl border border-slate-800 focus:outline-none focus:border-blue-500 transition-all font-bold">
-                <input id="password" type="password" placeholder="Password (use 'test')" class="w-full p-5 bg-slate-900/50 rounded-2xl border border-slate-800 focus:outline-none focus:border-blue-500 transition-all font-bold">
-                <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-500 p-5 rounded-2xl font-black text-xl transition-all shadow-xl shadow-blue-600/20">ENTER SYSTEM</button>
+                <input id="login-user" type="text" placeholder="Username (test)" class="w-full p-4 bg-slate-900 rounded-xl border border-slate-800 outline-none focus:border-blue-500 font-bold">
+                <input id="login-pass" type="password" placeholder="Password (test)" class="w-full p-4 bg-slate-900 rounded-xl border border-slate-800 outline-none focus:border-blue-500 font-bold">
+                <button onclick="doLogin()" class="w-full bg-blue-600 p-4 rounded-xl font-black text-lg hover:bg-blue-500 transition-all">SIGN IN</button>
             </div>
         </div>
     </div>
 
     <div id="dashboard" class="hidden flex h-screen overflow-hidden">
         <aside class="w-80 bg-[#020617] border-r border-slate-800/50 p-8 flex flex-col">
-            <h2 class="text-4xl font-black text-blue-500 mb-12 italic tracking-tighter">PrePeak</h2>
-            <nav class="space-y-2 flex-1 overflow-y-auto">
-                <button onclick="showPage('seo')" class="nav-btn w-full text-left p-4 rounded-xl text-blue-400 font-black bg-slate-900/50 border border-blue-500/20">📈 SEO HUB</button>
-                <button onclick="showPage('sem')" class="nav-btn w-full text-left p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-900/50">🕵️ SEM SPY</button>
-                <button onclick="showPage('ads')" class="nav-btn w-full text-left p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-900/50">🎨 AD FACTORY</button>
-                <button onclick="showPage('forecaster')" class="nav-btn w-full text-left p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-900/50">💰 COST FORECASTER</button>
-                <button onclick="showPage('success')" class="nav-btn w-full text-left p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-900/50">🔮 SUCCESS AI</button>
+            <h2 class="text-3xl font-black text-blue-500 mb-10 italic">PrePeak Pro</h2>
+            <nav class="space-y-2 flex-1">
+                <button onclick="showPage('seo')" class="nav-btn w-full text-left p-4 rounded-xl text-blue-400 font-black bg-slate-900">📈 SEO HUB</button>
+                <button onclick="showPage('sem')" class="nav-btn w-full text-left p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-900">🕵️ SEM SPY</button>
+                <button onclick="showPage('ads')" class="nav-btn w-full text-left p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-900">🎨 AD FACTORY</button>
+                <button onclick="showPage('forecaster')" class="nav-btn w-full text-left p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-900">💰 COST FORECASTER</button>
+                <button onclick="showPage('success')" class="nav-btn w-full text-left p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-900">🔮 SUCCESS AI</button>
             </nav>
-            
-            <div class="mt-8 pt-6 border-t border-slate-800/50">
-                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4 italic">API Configuration (BYOK)</p>
-                <input id="api-key" type="password" placeholder="Gemini/OpenAI Key" class="w-full p-3 text-xs bg-slate-900 rounded-lg border border-slate-800 mb-3 focus:border-blue-500 outline-none">
-                <button onclick="location.reload()" class="w-full text-[10px] text-slate-600 hover:text-red-500 font-black tracking-widest uppercase">Logout</button>
+            <div class="mt-6 pt-6 border-t border-slate-800">
+                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">API KEY (BYOK REQUIRED)</p>
+                <input id="gemini-key" type="password" placeholder="Paste Gemini API Key" class="w-full p-3 text-xs bg-slate-900 rounded-lg border border-slate-800 focus:border-blue-500 outline-none mb-4">
+                <button onclick="location.reload()" class="w-full text-[10px] text-slate-600 font-black hover:text-red-500 tracking-widest uppercase">Logout</button>
             </div>
         </aside>
 
-        <main class="flex-1 bg-[#020617] p-12 overflow-y-auto">
-            
+        <main class="flex-1 p-10 overflow-y-auto">
             <div class="max-w-4xl mx-auto mb-16">
-                <div class="flex gap-4 p-2 bg-slate-900/50 rounded-3xl border border-slate-800 shadow-2xl">
-                    <input id="niche-input" type="text" placeholder="Analyze Niche (e.g. 'Yoga App' or 'SaaS Analytics')" class="flex-1 p-5 bg-transparent outline-none font-black text-xl">
-                    <button onclick="runPrePeakAnalysis()" class="bg-blue-600 px-10 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-blue-500 transition-all">Analyze</button>
-                </div>
-                <div id="loading" class="hidden mt-6 text-center animate-pulse">
-                    <p class="text-blue-400 font-black text-xs uppercase tracking-[0.4em]">Simulating Market Intelligence...</p>
+                <div class="flex gap-4 p-2 bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl">
+                    <input id="user-niche" type="text" placeholder="Enter Niche (e.g. 'Fitness Tracker' or 'Competitor.com')" class="flex-1 p-4 bg-transparent outline-none font-bold text-xl">
+                    <button onclick="fetchRealAI()" class="bg-blue-600 px-10 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-blue-500">Run Engine</button>
                 </div>
             </div>
 
-            <div id="main-ui" class="max-w-6xl mx-auto space-y-12 opacity-40 transition-opacity duration-500">
+            <div id="loading-ui" class="hidden text-center py-20 loading-pulse">
+                <p class="text-blue-500 font-black text-2xl tracking-tighter italic">PREPEAK ENGINE GENERATING INTELLIGENCE...</p>
+            </div>
+
+            <div id="results-ui" class="max-w-6xl mx-auto space-y-12">
                 
                 <div id="seo" class="page-content active">
-                    <h3 class="text-3xl font-black mb-8 italic">Market Saturation Index</h3>
+                    <h3 class="text-3xl font-black mb-8 italic uppercase tracking-widest">SEO Saturation Hub</h3>
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div class="lg:col-span-2 glass p-10 rounded-[2.5rem]">
-                            <div class="flex justify-between items-center mb-10">
-                                <label class="text-xs font-black text-slate-500 uppercase tracking-widest">Projection Timeline</label>
-                                <span id="range-val" class="text-blue-400 font-black text-sm bg-blue-500/10 px-4 py-1 rounded-lg">90 DAYS</span>
-                            </div>
-                            <input type="range" min="1" max="5" value="3" oninput="updateRange(this.value)" class="w-full h-2.5 bg-slate-800 rounded-full appearance-none cursor-pointer">
-                            <div class="flex justify-between text-[11px] mt-8 text-slate-600 font-black uppercase tracking-widest">
-                                <span>7d</span><span>30d</span><span>3m</span><span>6m</span><span>1y</span>
+                        <div class="lg:col-span-2 stat-card p-10 rounded-[2.5rem]">
+                            <label class="block text-xs font-black text-slate-500 uppercase tracking-widest mb-10">Historical Timeline: <span id="range-text" class="text-blue-400">90 Days</span></label>
+                            <input id="seo-slider" type="range" min="1" max="5" value="3" oninput="updateSlider(this.value)" class="w-full cursor-pointer">
+                            <div class="flex justify-between text-[11px] mt-8 text-slate-600 font-black">
+                                <span>7D</span><span>30D</span><span>90D</span><span>180D</span><span>1Y</span>
                             </div>
                         </div>
-                        <div class="glass p-10 rounded-[2.5rem] flex flex-col justify-center">
-                            <p class="text-slate-500 text-xs font-black uppercase mb-2">Saturation</p>
-                            <h4 id="sat-score" class="text-7xl font-black text-green-400">--%</h4>
-                            <div class="w-full bg-slate-800 h-4 rounded-full mt-6 overflow-hidden">
+                        <div class="stat-card p-10 rounded-[2.5rem] text-center flex flex-col justify-center">
+                            <p class="text-slate-500 text-[10px] font-black uppercase mb-4 tracking-widest">Saturation Index</p>
+                            <h4 id="sat-val" class="text-7xl font-black text-green-400 tracking-tighter">--%</h4>
+                            <div class="w-full bg-slate-800 h-4 rounded-full mt-8 overflow-hidden">
                                 <div id="sat-bar" class="bg-green-500 h-full transition-all duration-1000" style="width: 0%"></div>
                             </div>
                         </div>
@@ -82,46 +78,45 @@
                 </div>
 
                 <div id="sem" class="page-content">
-                    <h3 class="text-3xl font-black mb-8 italic">Competitor Ad Intelligence</h3>
+                    <h3 class="text-3xl font-black mb-8 italic uppercase tracking-widest">SEM Competitor Data</h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div class="glass p-8 rounded-3xl text-center">
-                            <p class="text-slate-500 text-xs font-black mb-2 uppercase">Competitor Keywords</p>
-                            <p id="sem-keywords" class="text-4xl font-black text-blue-400">0</p>
+                        <div class="stat-card p-8 rounded-3xl text-center">
+                            <p class="text-xs text-slate-500 font-black uppercase mb-2">Keyword Volume</p>
+                            <p id="key-vol" class="text-4xl font-black text-blue-400">0</p>
                         </div>
-                        <div class="glass p-8 rounded-3xl text-center">
-                            <p class="text-slate-500 text-xs font-black mb-2 uppercase">Avg. CPC Rank</p>
-                            <p id="sem-cpc" class="text-4xl font-black text-blue-400">$0.00</p>
+                        <div class="stat-card p-8 rounded-3xl text-center">
+                            <p class="text-xs text-slate-500 font-black uppercase mb-2">Avg. CPC Rank</p>
+                            <p id="cpc-val" class="text-4xl font-black text-blue-400">$0.00</p>
                         </div>
-                        <div class="glass p-8 rounded-3xl text-center">
-                            <p class="text-slate-500 text-xs font-black mb-2 uppercase">Competition</p>
-                            <p id="sem-level" class="text-4xl font-black text-yellow-500">--</p>
+                        <div class="stat-card p-8 rounded-3xl text-center">
+                            <p class="text-xs text-slate-500 font-black uppercase mb-2">Competition</p>
+                            <p id="comp-val" class="text-4xl font-black text-yellow-500">LOW</p>
                         </div>
                     </div>
                 </div>
 
                 <div id="ads" class="page-content">
-                    <h3 class="text-3xl font-black mb-8 italic">AI Ad Factory</h3>
-                    <div id="ad-hooks" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="glass p-8 rounded-3xl border-dashed border-2 border-slate-700 text-slate-600 font-bold text-center italic">Analyze a niche to generate AI conversion hooks.</div>
+                    <h3 class="text-3xl font-black mb-8 italic uppercase tracking-widest">AI Conversion Hooks</h3>
+                    <div id="hooks-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="stat-card p-8 rounded-3xl border-dashed border-2 border-slate-700 text-slate-600 font-bold italic text-center">Analyze a niche to generate conversion assets.</div>
                     </div>
                 </div>
 
                 <div id="forecaster" class="page-content">
-                    <h3 class="text-3xl font-black mb-8 italic">Ad Cost Forecaster</h3>
-                    <div class="glass p-10 rounded-[2.5rem]">
-                        <p class="text-slate-500 text-xs font-black mb-6 uppercase">Estimated Budget for Top 3 Ranking</p>
-                        <h4 id="forecast-val" class="text-7xl font-black text-blue-500 mb-4">$0.00</h4>
-                        <p class="text-sm text-slate-500 font-medium italic">Calculated based on average CPC and market competition index.</p>
+                    <h3 class="text-3xl font-black mb-8 italic uppercase tracking-widest">Ad Cost Forecaster</h3>
+                    <div class="stat-card p-12 rounded-[3rem] text-center">
+                        <p class="text-slate-500 text-xs font-black mb-4 uppercase">Est. Monthly Ad Budget</p>
+                        <h4 id="cost-val" class="text-8xl font-black text-red-400 tracking-tighter">$0</h4>
                     </div>
                 </div>
 
                 <div id="success" class="page-content">
-                    <h3 class="text-3xl font-black mb-8 italic">Product Success Predictor</h3>
-                    <div class="glass p-16 rounded-[3rem] text-center">
-                        <div class="text-7xl mb-8">🔮</div>
-                        <p id="success-msg" class="text-slate-400 text-xl font-bold italic mb-8">Niche analysis required for AI scoring.</p>
-                        <div id="success-bar-container" class="hidden w-full bg-slate-800 h-6 rounded-full max-w-xl mx-auto overflow-hidden">
-                            <div id="success-bar" class="bg-blue-500 h-full transition-all duration-1000" style="width: 0%"></div>
+                    <h3 class="text-3xl font-black mb-8 italic uppercase tracking-widest">Product Success Predictor</h3>
+                    <div class="stat-card p-16 rounded-[4rem] text-center">
+                        <div class="text-8xl mb-8">🔮</div>
+                        <p id="success-msg" class="text-slate-500 text-xl font-bold uppercase tracking-widest mb-10">Awaiting AI Scoring...</p>
+                        <div id="success-bar-container" class="hidden w-full bg-slate-800 h-8 rounded-full max-w-2xl mx-auto overflow-hidden">
+                            <div id="success-bar" class="bg-blue-600 h-full transition-all duration-1000 shadow-[0_0_20px_rgba(59,130,246,0.5)]" style="width: 0%"></div>
                         </div>
                     </div>
                 </div>
@@ -131,10 +126,8 @@
     </div>
 
     <script>
-        function handleLogin() {
-            const e = document.getElementById('email').value.trim();
-            const p = document.getElementById('password').value;
-            if(e === 'test' && p === 'test') {
+        function doLogin() {
+            if(document.getElementById('login-user').value === 'test' && document.getElementById('login-pass').value === 'test') {
                 document.getElementById('auth-section').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
             }
@@ -143,64 +136,58 @@
         function showPage(id) {
             document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.nav-btn').forEach(b => {
-                b.classList.remove('text-blue-400', 'bg-slate-900/50', 'border', 'border-blue-500/20', 'font-black');
-                b.classList.add('text-slate-500', 'font-bold');
-            });
-            event.target.classList.add('text-blue-400', 'bg-slate-900/50', 'border', 'border-blue-500/20', 'font-black');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('bg-slate-900', 'text-blue-400'));
+            event.currentTarget.classList.add('bg-slate-900', 'text-blue-400');
         }
 
-        function updateRange(val) {
-            const labels = ["7 DAYS", "30 DAYS", "90 DAYS", "180 DAYS", "1 YEAR"];
-            const scores = [14, 28, 42, 58, 74];
-            document.getElementById('range-val').innerText = labels[val-1];
-            if(document.getElementById('niche-input').value) {
-                document.getElementById('sat-score').innerText = scores[val-1] + "%";
-                document.getElementById('sat-bar').style.width = scores[val-1] + "%";
-            }
+        function updateSlider(v) {
+            const l = ["7 Days", "30 Days", "90 Days", "180 Days", "1 Year"];
+            document.getElementById('range-text').innerText = l[v-1];
         }
 
-        function runPrePeakAnalysis() {
-            const niche = document.getElementById('niche-input').value;
-            if(!niche) return;
+        async function fetchRealAI() {
+            const key = document.getElementById('gemini-key').value;
+            const niche = document.getElementById('user-niche').value;
+            if(!key) return alert("BYOK ERROR: Paste your Gemini API Key in the sidebar.");
+            if(!niche) return alert("INPUT ERROR: Enter a niche or competitor URL.");
 
-            document.getElementById('loading').classList.remove('hidden');
-            document.getElementById('main-ui').style.opacity = "0.2";
+            document.getElementById('results-ui').classList.add('hidden');
+            document.getElementById('loading-ui').classList.remove('hidden');
 
-            setTimeout(() => {
-                document.getElementById('loading').classList.add('hidden');
-                document.getElementById('main-ui').style.opacity = "1";
+            const prompt = `Perform a high-fidelity market analysis for: "${niche}". 
+            Respond ONLY with a raw JSON object containing these keys: 
+            "saturation_score" (0-100), "key_volume" (integer), "avg_cpc" (float), 
+            "competition_level" (LOW/MED/HIGH), "monthly_cost" (integer), 
+            "ad_hooks" (array of 4 conversion hooks), "success_score" (0-100).`;
 
-                // 1. SEO Logic
-                const satVal = 34 + Math.floor(Math.random() * 15);
-                document.getElementById('sat-score').innerText = satVal + "%";
-                document.getElementById('sat-bar').style.width = satVal + "%";
+            try {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${key}`, {
+                    method: 'POST',
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+                const data = await res.json();
+                const text = data.candidates[0].content.parts[0].text;
+                const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
 
-                // 2. SEM Logic
-                document.getElementById('sem-keywords').innerText = (Math.floor(Math.random() * 500) + 120);
-                document.getElementById('sem-cpc').innerText = "$" + (Math.random() * 2 + 0.8).toFixed(2);
-                document.getElementById('sem-level').innerText = "MEDIUM";
-
-                // 3. Ad Factory Logic
-                const hooks = [
-                    `Stop guessing if ${niche} will work. Build with data.`,
-                    `The #1 secret to ${niche} success is market intelligence.`,
-                    `Analyze. Validate. Launch. The 3 steps to ${niche} mastery.`,
-                    `Why 90% of ${niche} products fail—and how to be the 10%.`
-                ];
-                document.getElementById('ad-hooks').innerHTML = hooks.map(h => 
-                    `<div class="glass p-6 rounded-2xl border-l-4 border-blue-500 text-sm font-bold leading-relaxed text-slate-300">📣 ${h}</div>`
-                ).join('');
-
-                // 4. Cost Forecaster
-                document.getElementById('forecast-val').innerText = "$" + (Math.random() * 1200 + 400).toFixed(2);
-
-                // 5. Success Predictor
-                document.getElementById('success-msg').innerText = "AI PREDICTED SUCCESS SCORE: 78/100";
+                // Populate UI
+                document.getElementById('sat-val').innerText = json.saturation_score + "%";
+                document.getElementById('sat-bar').style.width = json.saturation_score + "%";
+                document.getElementById('key-vol').innerText = json.key_volume;
+                document.getElementById('cpc-val').innerText = "$" + json.avg_cpc.toFixed(2);
+                document.getElementById('comp-val').innerText = json.competition_level;
+                document.getElementById('cost-val').innerText = "$" + json.monthly_cost.toLocaleString();
+                document.getElementById('hooks-container').innerHTML = json.ad_hooks.map(h => `<div class="stat-card p-6 rounded-2xl border-l-4 border-blue-500 font-bold text-slate-300 leading-relaxed shadow-lg">📣 ${h}</div>`).join('');
+                document.getElementById('success-msg').innerText = "AI PREDICTED SUCCESS SCORE: " + json.success_score + "/100";
                 document.getElementById('success-bar-container').classList.remove('hidden');
-                document.getElementById('success-bar').style.width = "78%";
+                document.getElementById('success-bar').style.width = json.success_score + "%";
 
-            }, 2000);
+            } catch (err) {
+                alert("AI ENGINE ERROR: Check API Key or Niche Input.");
+                console.error(err);
+            } finally {
+                document.getElementById('loading-ui').classList.add('hidden');
+                document.getElementById('results-ui').classList.remove('hidden');
+            }
         }
     </script>
 </body>
