@@ -2,91 +2,91 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PrePeak Pro | Universal Intelligence</title>
+    <title>PrePeak Pro | Enterprise Intelligence</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #010413; color: #f1f5f9; overflow-x: hidden; }
         .view-layer { display: none; } .view-layer.active { display: flex; }
         .tab-content { display: none; } .tab-content.active { display: block; }
-        .glass { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(32px); border: 1px solid rgba(51, 65, 85, 0.4); }
+        .glass { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(32px); border: 1px solid rgba(51, 65, 85, 0.3); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        /* Professional UI Grid */
-        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; width: 100%; }
-        .nav-btn.active { background: #1e293b; color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3); }
+        /* Professional Grid System */
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; width: 100%; }
         input[type="range"] { -webkit-appearance: none; background: #1e293b; height: 4px; border-radius: 999px; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; background: #3b82f6; border: 4px solid #fff; border-radius: 50%; cursor: pointer; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; background: #3b82f6; border: 4px solid #fff; border-radius: 50%; cursor: pointer; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
+        .n-btn.active { background: #1e293b; color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3); }
     </style>
 </head>
 <body class="min-h-screen">
 
     <div id="view-login" class="view-layer active h-screen w-full items-center justify-center p-6 text-center">
-        <div class="glass p-12 rounded-[3.5rem] w-full max-w-md shadow-2xl border-blue-500/10">
+        <div class="glass p-12 rounded-[3.5rem] w-full max-w-md shadow-2xl">
             <h1 class="text-6xl font-black text-blue-500 mb-2 italic tracking-tighter uppercase">PrePeak</h1>
             <p class="text-[10px] font-black text-slate-500 uppercase tracking-[0.5em] mb-12 italic">Identity Protocol Active</p>
-            <div class="space-y-4">
+            <div class="space-y-4 text-left">
                 <input id="u" type="text" placeholder="Username" class="w-full p-5 bg-slate-950 rounded-2xl border border-slate-800 outline-none focus:border-blue-500 font-bold transition-all">
                 <input id="p" type="password" placeholder="Password" class="w-full p-5 bg-slate-950 rounded-2xl border border-slate-800 outline-none focus:border-blue-500 font-bold transition-all">
-                <button onclick="auth()" class="w-full bg-blue-600 p-5 rounded-2xl font-black text-xl hover:bg-blue-400 transition-all shadow-xl shadow-blue-600/20 uppercase tracking-widest">Identify</button>
+                <button onclick="auth()" class="w-full bg-blue-600 p-5 rounded-2xl font-black text-xl hover:bg-blue-400 transition-all uppercase tracking-widest shadow-xl shadow-blue-600/20">Authorize</button>
             </div>
         </div>
     </div>
 
     <div id="view-keys" class="view-layer h-screen w-full items-center justify-center p-6 bg-[#010413]">
         <div class="glass p-12 rounded-[3.5rem] w-full max-w-2xl shadow-2xl border-blue-500/10">
-            <h2 class="text-3xl font-black text-white mb-2 italic tracking-tighter text-center uppercase">System fuel</h2>
-            <p class="text-slate-500 text-center text-[10px] font-black uppercase tracking-widest mb-10 italic">Compulsory API Authorization</p>
-            
+            <h2 class="text-3xl font-black text-white mb-2 italic tracking-tighter text-center uppercase">Intelligence fuel</h2>
+            <p class="text-slate-500 text-center text-[10px] font-black uppercase tracking-widest mb-10 italic">Compulsory API Activation</p>
             <div class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Provider Engine</label>
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Provider</label>
                         <select id="prov" class="w-full p-5 bg-slate-950 rounded-2xl border border-slate-800 text-blue-400 font-black outline-none cursor-pointer">
-                            <option value="gemini">Google Gemini (Direct)</option>
-                            <option value="openai">OpenAI / Grok-1 (Proxy Required)</option>
-                            <option value="claude">Anthropic Claude (Proxy Required)</option>
+                            <option value="gemini">Google Gemini 1.5 Pro</option>
+                            <option value="openai">OpenAI / Grok-1</option>
+                            <option value="claude">Anthropic Claude 3.5</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Private API Key</label>
-                        <input id="m-key" type="password" placeholder="sk-... or AI-..." class="w-full p-5 bg-slate-950 rounded-2xl border border-slate-800 focus:border-blue-500 outline-none text-xs font-mono">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Private Key</label>
+                        <input id="m-key" type="password" placeholder="Paste Key Here" class="w-full p-5 bg-slate-950 rounded-2xl border border-slate-800 focus:border-blue-500 outline-none text-xs font-mono">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1 italic italic">Global CORS Proxy (Required for non-Gemini APIs)</label>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1 italic">CORS Proxy (Required for OpenAI/Claude)</label>
                     <input id="proxy" type="text" value="https://api.allorigins.win/get?url=" class="w-full p-4 bg-slate-950 rounded-2xl border border-slate-800 text-[11px] text-slate-500 outline-none">
                 </div>
-                <div class="p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl text-[10px] text-blue-400 font-bold leading-relaxed">
-                    💡 NOTE: Browsers block direct calls to OpenAI/Claude. Use a "Google Gemini" key for a 100% direct Netlify handshake.
+                <div class="p-4 bg-blue-600/10 border border-blue-500/20 rounded-2xl text-[10px] text-blue-400 font-bold leading-relaxed">
+                    💡 LAUNCH ADVICE: Google Gemini allows direct browser calls. OpenAI and Claude require a Proxy due to browser security (CORS). Use Gemini for the smoothest experience.
                 </div>
-                <button onclick="unlock()" class="w-full bg-green-600 p-5 rounded-2xl font-black text-lg hover:bg-green-500 transition-all uppercase tracking-widest">Initialize Terminal</button>
+                <button onclick="unlock()" class="w-full bg-green-600 p-5 rounded-2xl font-black text-lg hover:bg-green-500 transition-all uppercase tracking-widest shadow-xl shadow-green-600/10">Launch Dashboard</button>
             </div>
         </div>
     </div>
 
     <div id="view-dash" class="view-layer h-screen w-full overflow-hidden">
-        <aside class="w-80 bg-[#00020a] border-r border-slate-800/50 p-8 flex flex-col">
-            <h2 class="text-4xl font-black text-blue-500 mb-16 italic tracking-tighter uppercase">PrePeak</h2>
+        <aside class="w-80 bg-[#00020a] border-r border-slate-800/50 p-8 flex flex-col shrink-0">
+            <h2 class="text-3xl font-black text-blue-500 mb-12 italic tracking-tighter uppercase">PrePeak Pro</h2>
             <nav class="space-y-3 flex-1 overflow-y-auto no-scrollbar">
-                <button onclick="tab('seo')" class="n-btn w-full text-left p-4 rounded-xl text-blue-400 font-black bg-slate-900 border border-blue-500/20 active">📈 SEO HUB</button>
+                <button onclick="tab('seo')" class="n-btn active w-full text-left p-4 rounded-xl text-blue-400 font-black bg-slate-900 border border-blue-500/20">📈 SEO HUB</button>
+                <button onclick="tab('keys')" class="n-btn w-full text-left p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-900 transition-all">🔍 KEYWORD LAB</button>
                 <button onclick="tab('spy')" class="n-btn w-full text-left p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-900 transition-all">🕵️ COMPETITOR SPY</button>
-                <button onclick="tab('ads')" class="n-btn w-full text-left p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-900 transition-all">🎨 AD FACTORY Pro</button>
-                <button onclick="tab('cost')" class="n-btn w-full text-left p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-900 transition-all">💰 GLOBAL FORECASTER</button>
+                <button onclick="tab('ads')" class="n-btn w-full text-left p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-900 transition-all">🎨 AD FACTORY</button>
+                <button onclick="tab('cost')" class="n-btn w-full text-left p-4 rounded-xl text-slate-500 font-bold hover:bg-slate-900 transition-all">💰 FORECASTER</button>
             </nav>
             <button onclick="location.reload()" class="mt-auto text-[10px] text-slate-700 font-black hover:text-red-500 uppercase tracking-widest">Logout</button>
         </aside>
 
-        <main class="flex-1 p-10 overflow-y-auto bg-[#020617] no-scrollbar">
+        <main class="flex-1 p-10 overflow-y-auto bg-[#010413] no-scrollbar">
             <div class="max-w-4xl mx-auto mb-16">
-                <div class="glass p-3 rounded-[2.5rem] flex flex-wrap md:flex-nowrap gap-4">
-                    <select id="q-type" class="bg-slate-800 p-4 rounded-2xl text-[10px] font-black text-blue-400 border border-slate-700 outline-none uppercase cursor-pointer">
-                        <option value="keyword">Niche Research</option>
-                        <option value="url">Competitor URL Spy</option>
+                <div class="glass p-3 rounded-[2.5rem] flex flex-wrap md:flex-nowrap gap-4 items-center">
+                    <select id="q-type" class="bg-slate-800 p-4 rounded-2xl text-[10px] font-black text-blue-400 border border-slate-700 outline-none uppercase">
+                        <option value="niche">Niche/Keyword</option>
+                        <option value="url">URL Spy</option>
                     </select>
-                    <input id="main-q" type="text" placeholder="Enter keyword or URL..." class="flex-1 min-w-[250px] p-4 bg-transparent outline-none font-black text-2xl text-white">
-                    <button onclick="execute()" class="bg-blue-600 px-12 py-4 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-blue-500 shadow-xl shadow-blue-600/20 flex-shrink-0">Execute</button>
+                    <input id="main-q" type="text" placeholder="Analyze..." class="flex-1 min-w-[200px] p-4 bg-transparent outline-none font-black text-2xl text-white">
+                    <button onclick="execute()" class="bg-blue-600 px-10 py-4 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-blue-500 shadow-xl shadow-blue-600/20 shrink-0">Execute</button>
                 </div>
-                <p id="loader" class="hidden mt-6 text-center text-blue-500 font-black text-[10px] animate-pulse uppercase tracking-[0.5em] italic italic">Engine Syncing Data Layers...</p>
+                <p id="loader" class="hidden mt-6 text-center text-blue-500 font-black text-[10px] animate-pulse uppercase tracking-[0.5em] italic">Engine Computing Global Intel...</p>
             </div>
 
             <div id="results" class="max-w-6xl mx-auto space-y-12 pb-32">
@@ -95,23 +95,36 @@
                     <h3 class="text-4xl font-black italic mb-10 tracking-tighter uppercase">Market Saturation</h3>
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <div class="lg:col-span-2 glass p-10 rounded-[3.5rem] flex flex-col justify-center">
-                            <label class="block text-[11px] font-black text-slate-500 uppercase mb-12 tracking-widest italic italic">Timeline Filter: <span id="r-text" class="text-blue-400">90 Days</span></label>
+                            <label class="block text-[11px] font-black text-slate-500 uppercase mb-12 tracking-widest italic">Timeline: <span id="r-text" class="text-blue-400">90 Days</span></label>
                             <input id="slider" type="range" min="1" max="5" value="3" oninput="upS(this.value)" class="w-full">
                             <div class="flex justify-between text-[11px] mt-8 text-slate-700 font-black uppercase italic tracking-tighter">
                                 <span>7D</span><span>30D</span><span>90D</span><span>180D</span><span>1Y</span>
                             </div>
                         </div>
                         <div class="glass p-10 rounded-[3.5rem] text-center flex flex-col justify-center border-green-500/10 shadow-2xl">
-                            <p class="text-[10px] text-slate-500 font-black mb-6 uppercase tracking-[0.3em]">Saturation</p>
                             <h4 id="sat-val" class="text-[8rem] leading-none font-black text-green-400 tracking-tighter italic italic">--%</h4>
                         </div>
+                    </div>
+                </div>
+
+                <div id="keys" class="tab-content">
+                    <h3 class="text-4xl font-black italic mb-10 tracking-tighter uppercase">Keyword Research</h3>
+                    <div class="glass rounded-[3rem] overflow-hidden shadow-2xl">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-900 text-[10px] uppercase font-black tracking-[0.4em] text-slate-500">
+                                <tr><th class="p-8">Keyword</th><th class="p-8">Vol/Mo</th><th class="p-8">KD%</th><th class="p-8">Intent</th></tr>
+                            </thead>
+                            <tbody id="k-table" class="text-base font-bold divide-y divide-slate-800">
+                                <tr><td colspan="4" class="p-20 text-center text-slate-600 italic">Execute Analysis to Fetch Keywords</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
                 <div id="spy" class="tab-content">
                     <h3 class="text-4xl font-black italic mb-10 tracking-tighter uppercase">Competitor Strategy</h3>
                     <div id="spy-results" class="card-grid">
-                        <div class="glass p-16 rounded-[4rem] border-dashed border-2 border-slate-800 text-slate-600 text-center italic font-bold">Provide Competitor URL to Extract Intel</div>
+                        <div class="glass p-16 rounded-[4rem] border-dashed border-2 border-slate-800 text-slate-600 text-center italic font-bold">Provide Competitor URL and Execute</div>
                     </div>
                 </div>
 
@@ -121,18 +134,22 @@
                         <select id="ad-format" class="bg-slate-900 p-4 rounded-xl text-[10px] font-black text-blue-400 border border-slate-700 uppercase outline-none">
                             <option value="image">Single Image Ad</option>
                             <option value="carousel">Carousel (10 Slides)</option>
-                            <option value="reel">Video/Reel Script</option>
+                            <option value="reel">Video Script</option>
                         </select>
                     </div>
+                    <div class="mb-10">
+                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4 ml-1 italic italic">Ad Training Reference (Paste Library URLs)</label>
+                        <input id="ref-links" type="text" placeholder="Paste FB/Google ad URLs here..." class="w-full p-6 bg-slate-900 border border-slate-800 rounded-3xl outline-none focus:border-blue-600 text-sm italic">
+                    </div>
                     <div id="ad-results" class="card-grid">
-                        <div class="glass p-16 rounded-[4rem] border-dashed border-2 border-slate-800 text-slate-600 text-center italic font-bold">Analyze Niche to Build AI Creative Suite</div>
+                        <div class="glass p-16 rounded-[4rem] border-dashed border-2 border-slate-800 text-slate-600 text-center italic font-bold">Awaiting Niche Intelligence...</div>
                     </div>
                 </div>
 
                 <div id="cost" class="tab-content">
                     <div class="flex justify-between items-center mb-10">
-                        <h3 class="text-4xl font-black italic uppercase tracking-tighter">Global Forecaster</h3>
-                        <select id="curr" onchange="conv()" class="bg-slate-900 text-blue-400 font-black text-xs p-5 rounded-2xl border border-slate-800">
+                        <h3 class="text-4xl font-black italic uppercase tracking-tighter">Forecaster</h3>
+                        <select id="curr" onchange="conv()" class="bg-slate-900 text-blue-400 font-black text-xs p-5 rounded-2xl border border-slate-800 shadow-2xl">
                             <option value="USD" data-s="$">USD</option><option value="INR" data-s="₹">INR</option>
                             <option value="EUR" data-s="€">EUR</option><option value="AED" data-s="د.إ">AED</option>
                             <option value="SGD" data-s="S$">SGD</option><option value="AUD" data-s="A$">AUD</option>
@@ -141,8 +158,8 @@
                         </select>
                     </div>
                     <div class="glass p-24 rounded-[5rem] text-center border-red-500/10 shadow-2xl">
-                        <p class="text-slate-500 text-[10px] font-black mb-10 uppercase tracking-[0.5em]">Recommended Monthly Budget</p>
-                        <h4 id="cost-display" class="text-[14rem] leading-none font-black text-red-500 tracking-tighter shadow-2xl shadow-red-500/10">$0</h4>
+                        <p class="text-slate-500 text-[10px] font-black mb-10 uppercase tracking-[0.5em]">Estimated Monthly Ad Budget</p>
+                        <h4 id="cost-display" class="text-[12rem] leading-none font-black text-red-500 tracking-tighter italic italic shadow-2xl shadow-red-500/10">$0</h4>
                     </div>
                 </div>
 
@@ -157,14 +174,14 @@
             if(document.getElementById('u').value === 'test' && document.getElementById('p').value === 'test') {
                 document.getElementById('view-login').classList.remove('active');
                 document.getElementById('view-keys').classList.add('active');
-            } else { alert("ACCESS DENIED."); }
+            } else { alert("Identify Failed. Credentials Invalid."); }
         }
 
         function unlock() {
             mK = document.getElementById('m-key').value;
             prov = document.getElementById('prov').value;
             px = document.getElementById('proxy').value;
-            if(!mK) return alert("COMPULSORY: Key Required.");
+            if(!mK) return alert("COMPULSORY API KEY REQUIRED.");
             document.getElementById('view-keys').classList.remove('active');
             document.getElementById('view-dash').classList.add('active');
         }
@@ -185,56 +202,52 @@
             const q = document.getElementById('main-q').value; if(!q) return;
             const type = document.getElementById('q-type').value;
             const fmt = document.getElementById('ad-format').value;
+            const ref = document.getElementById('ref-links').value;
 
             document.getElementById('loader').classList.remove('hidden');
 
-            const prompt = `Act as an expert Marketing AI. Target ${type}: "${q}". Format: "${fmt}". Respond ONLY in raw JSON: {"sat": int, "cost": int, "spy": "str", "ads": [{"h": "str", "b": "str", "cta": "str"}]}`;
+            // Unified Prompt: One Request for All Features
+            const prompt = `Perform extensive market intel for ${type}: "${q}". Format: "${fmt}". Training Refs: "${ref}". 
+            Respond ONLY in a raw JSON object: {
+                "sat": int(0-100), "cost": int, "spy": "long str strategy",
+                "keywords": [{"k": "str", "v": int, "d": int, "i": "str"}],
+                "ads": [{"h": "str", "b": "str", "cta": "str"}]
+            }`;
 
             try {
-                let res, text;
-                const headers = { 'Content-Type': 'application/json' };
-                
+                let res;
                 if(prov === 'gemini') {
-                    // Gemini Direct Call (No Proxy needed for most browsers)
                     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${mK}`;
                     res = await fetch(url, { method: 'POST', body: JSON.stringify({contents: [{parts: [{text: prompt}]}]}) });
-                    const data = await res.json();
-                    text = data.candidates[0].content.parts[0].text;
                 } else {
-                    // Universal Proxy Bridge for OpenAI/Claude
-                    if(!px) throw new Error("CORS Proxy URL is required for OpenAI/Claude calls from the browser.");
-                    
-                    const apiEndpoint = prov === 'openai' ? 'https://api.openai.com/v1/chat/completions' : 'https://api.anthropic.com/v1/messages';
-                    const proxyUrl = px + encodeURIComponent(apiEndpoint);
-                    
-                    // AllOrigins wrapper logic
-                    res = await fetch(proxyUrl);
-                    const wrapper = await res.json();
-                    
-                    // Now make the actual POST through the proxy
-                    // Note: This implementation depends on your specific proxy server's capabilities.
-                    // For AllOrigins "Get" wrapper, we are limited. 
-                    // PRO TIP: Using a dedicated Cloudflare Worker is the only 100% reliable method.
-                    throw new Error("Proxy limit reached. Switch to a Google Gemini Key for a guaranteed direct handshake on Netlify.");
+                    if(!px) throw new Error("CORS Proxy URL is required for non-Gemini APIs.");
+                    const target = prov === 'openai' ? 'https://api.openai.com/v1/chat/completions' : 'https://api.anthropic.com/v1/messages';
+                    res = await fetch(px + encodeURIComponent(target), { method: 'POST', headers: {'Authorization': `Bearer ${mK}`, 'Content-Type': 'application/json'}, body: JSON.stringify({model: "gpt-4o", messages: [{role: "user", content: prompt}]}) });
                 }
+
+                const data = await res.json();
+                let text;
+                if(prov === 'gemini') text = data.candidates[0].content.parts[0].text;
+                else text = data.choices[0].message.content;
 
                 const j = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
 
+                // RENDER
                 rawU = j.cost;
                 document.getElementById('sat-val').innerText = j.sat + "%";
-                document.getElementById('spy-results').innerHTML = `<div class="glass p-16 rounded-[4.5rem] border-l-[24px] border-blue-600 shadow-2xl col-span-2"><p class="text-[10px] font-black text-slate-500 uppercase mb-8 italic tracking-widest italic">Strategic GTM Extract</p><p class="text-slate-200 font-bold text-4xl leading-snug break-words italic underline decoration-blue-500/30">${j.spy}</p></div>`;
-                document.getElementById('ad-results').innerHTML = j.ads.map(a => `<div class="glass p-12 rounded-[4rem] border-t-8 border-green-500 flex flex-col h-full shadow-2xl"><p class="text-[10px] font-black text-slate-500 uppercase mb-8 italic tracking-widest italic">AI ${fmt} Suite</p><h5 class="text-3xl font-black mb-6 leading-tight break-words underline italic italic">${a.h}</h5><p class="text-base text-slate-400 mb-12 font-medium break-words leading-relaxed">${a.b}</p><span class="mt-auto bg-blue-600 px-10 py-5 rounded-3xl font-black text-sm uppercase text-center shadow-xl shadow-blue-900/40">${a.cta}</span></div>`).join('');
+                document.getElementById('k-table').innerHTML = j.keywords.map(k => `<tr><td class="p-8 text-blue-400 font-black italic underline">${k.k}</td><td class="p-8">${k.v.toLocaleString()}</td><td class="p-8 text-yellow-500 font-black">${k.d}%</td><td class="p-8 uppercase text-[10px] font-black tracking-widest">${k.i}</td></tr>`).join('');
+                document.getElementById('spy-results').innerHTML = `<div class="glass p-16 rounded-[4.5rem] border-l-[16px] border-blue-600 shadow-2xl col-span-2"><p class="text-[10px] font-black text-slate-500 uppercase mb-8 italic tracking-widest italic">Strategic GTM Extract</p><p class="text-slate-200 font-bold text-3xl leading-snug break-words italic italic decoration-blue-500/30">${j.spy}</p></div>`;
+                document.getElementById('ad-results').innerHTML = j.ads.map(a => `<div class="glass p-12 rounded-[4rem] border-t-8 border-green-500 flex flex-col h-full shadow-2xl"><p class="text-[10px] font-black text-slate-500 uppercase mb-8 italic tracking-widest italic">AI ${fmt} Suite</p><h5 class="text-3xl font-black mb-6 leading-tight break-words underline italic">${a.h}</h5><p class="text-base text-slate-400 mb-12 font-medium break-words leading-relaxed">${a.b}</p><span class="mt-auto bg-blue-600 px-10 py-5 rounded-3xl font-black text-sm uppercase text-center shadow-xl shadow-blue-900/40">${a.cta}</span></div>`).join('');
                 conv();
 
             } catch (e) {
-                alert("CRITICAL ERROR: " + e.message + " | Ensure your key is valid and you are using Gemini for direct calls.");
-                console.error(e);
+                alert("CRITICAL ERROR: " + e.message + " | Ensure your key is valid and use Gemini for direct calls.");
             } finally { document.getElementById('loader').classList.add('hidden'); }
         }
 
         function conv() {
             const s = document.getElementById('curr'); const c = s.value; const sym = s.options[s.selectedIndex].getAttribute('data-s');
-            const rates = {USD:1, INR:83.2, EUR:0.92, AED:3.67, SGD:1.35, AUD:1.52, NGN:1515, ZAR:19, BRL:5.1, MXN:16.8};
+            const rates = {USD:1, INR:83, EUR:0.92, AED:3.67, SGD:1.34, AUD:1.52, NGN:1515, ZAR:19, BRL:5.1, MXN:16.8};
             document.getElementById('cost-display').innerText = sym + (rawU * rates[c]).toLocaleString(undefined, {maximumFractionDigits: 0});
         }
     </script>
