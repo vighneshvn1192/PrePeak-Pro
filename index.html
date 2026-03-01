@@ -3,87 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PrePeak Pro | AI Market Intelligence</title>
+    <title>PrePeak Pro | AI Market Intel</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .page-content { display: none; }
         .page-content.active { display: block; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; background: #60a5fa; cursor: pointer; border-radius: 50%; }
     </style>
 </head>
 <body class="bg-slate-900 text-white min-h-screen font-sans">
 
     <div id="auth-section" class="flex items-center justify-center min-h-screen">
         <div class="bg-slate-800 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-slate-700">
-            <h1 class="text-3xl font-bold text-blue-400 text-center mb-2">PrePeak Pro</h1>
-            <p class="text-slate-400 text-center mb-8 text-sm">Validate your product before you build.</p>
+            <h1 class="text-4xl font-black text-blue-500 text-center mb-2 tracking-tighter">PrePeak Pro</h1>
+            <p class="text-slate-400 text-center mb-8 text-sm">Product Validation at AI Speed.</p>
             
-            <input id="email" type="email" placeholder="Email" class="w-full p-3 mb-4 bg-slate-700 rounded-lg border border-slate-600 focus:outline-none focus:border-blue-500">
-            <input id="password" type="password" placeholder="Password" class="w-full p-3 mb-6 bg-slate-700 rounded-lg border border-slate-600 focus:outline-none focus:border-blue-500">
-            
-            <button onclick="handleAuth('login')" class="w-full bg-blue-600 hover:bg-blue-500 p-3 rounded-lg font-bold transition mb-4">Sign In</button>
-            <button onclick="handleAuth('signup')" class="w-full text-slate-400 text-sm hover:text-white underline text-center block">Create New Account</button>
-            <div id="auth-msg" class="mt-4 text-center text-xs text-red-400"></div>
+            <div class="space-y-4">
+                <input id="email" type="email" placeholder="Email" class="w-full p-3 bg-slate-700 rounded-lg border border-slate-600 focus:outline-none focus:border-blue-500 transition-all">
+                <input id="password" type="password" placeholder="Password" class="w-full p-3 bg-slate-700 rounded-lg border border-slate-600 focus:outline-none focus:border-blue-500 transition-all">
+                
+                <button onclick="handleAuth('login')" class="w-full bg-blue-600 hover:bg-blue-500 p-3 rounded-lg font-bold transition-all transform active:scale-95">Sign In</button>
+                <button onclick="handleAuth('signup')" class="w-full text-slate-400 text-sm hover:text-white underline text-center block">Create New Account</button>
+            </div>
+            <div id="auth-msg" class="mt-6 text-center text-xs font-medium"></div>
         </div>
     </div>
 
     <div id="dashboard" class="hidden flex h-screen overflow-hidden">
         <aside class="w-64 bg-slate-800 border-r border-slate-700 p-6 flex flex-col">
-            <h2 class="text-xl font-bold text-blue-400 mb-8">PrePeak Pro</h2>
+            <h2 class="text-2xl font-black text-blue-500 mb-8 tracking-tighter">PrePeak Pro</h2>
             <nav class="space-y-2 flex-1">
-                <button onclick="showPage('seo')" class="nav-btn w-full text-left p-3 rounded-lg hover:bg-slate-700 text-blue-400 font-bold">📈 SEO Hub</button>
-                <button onclick="showPage('sem')" class="nav-btn w-full text-left p-3 rounded-lg hover:bg-slate-700">🕵️ SEM Spy</button>
-                <button onclick="showPage('ad')" class="nav-btn w-full text-left p-3 rounded-lg hover:bg-slate-700">🎨 Ad Factory</button>
-                <button onclick="showPage('success')" class="nav-btn w-full text-left p-3 rounded-lg hover:bg-slate-700">🔮 Success AI</button>
+                <button onclick="showPage('seo')" class="nav-btn w-full text-left p-3 rounded-lg hover:bg-slate-700 text-blue-400 font-bold flex items-center gap-3"><span>📈</span> SEO Hub</button>
+                <button onclick="showPage('sem')" class="nav-btn w-full text-left p-3 rounded-lg hover:bg-slate-700 flex items-center gap-3"><span>🕵️</span> SEM Spy</button>
+                <button onclick="showPage('ad')" class="nav-btn w-full text-left p-3 rounded-lg hover:bg-slate-700 flex items-center gap-3"><span>🎨</span> Ad Factory</button>
+                <button onclick="showPage('success')" class="nav-btn w-full text-left p-3 rounded-lg hover:bg-slate-700 flex items-center gap-3"><span>🔮</span> Success AI</button>
             </nav>
             
             <div class="mt-auto pt-6 border-t border-slate-700">
-                <p class="text-[10px] uppercase text-slate-500 font-bold mb-2 tracking-widest">Your Gemini API Key</p>
-                <input id="gemini-key" type="password" placeholder="Key for AI analysis" class="w-full p-2 text-xs bg-slate-700 rounded border border-slate-600">
-                <button onclick="logout()" class="w-full mt-4 text-xs text-slate-500 hover:text-white">Logout</button>
+                <p class="text-[10px] uppercase text-slate-500 font-bold mb-2 tracking-widest">Admin Controls</p>
+                <input id="gemini-key" type="password" placeholder="Gemini API Key" class="w-full p-2 text-xs bg-slate-700 rounded border border-slate-600 mb-2">
+                <button onclick="logout()" class="w-full text-xs text-slate-500 hover:text-red-400 transition-colors">Logout Account</button>
             </div>
         </aside>
 
-        <main class="flex-1 p-10 overflow-y-auto">
+        <main class="flex-1 p-10 overflow-y-auto bg-slate-900">
             
-            <div id="seo" class="page-content active">
-                <h2 class="text-2xl font-bold mb-6">SEO & Market Saturation</h2>
-                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 mb-8">
-                    <label class="block text-sm text-slate-400 mb-4">Analysis Range: <span id="range-val" class="text-blue-400">3 Months</span></label>
-                    <input type="range" min="1" max="5" value="3" oninput="updateRange(this.value)" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
-                </div>
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
-                        <p class="text-slate-400 text-sm mb-1">Market Saturation</p>
-                        <h3 class="text-3xl font-bold text-green-400">34%</h3>
-                        <div class="w-full bg-slate-700 h-2 rounded-full mt-4"><div class="bg-green-500 h-full rounded-full" style="width: 34%"></div></div>
+            <div id="seo" class="page-content active animate-in fade-in duration-500">
+                <h2 class="text-3xl font-bold mb-2">Market Saturation & Trends</h2>
+                <p class="text-slate-400 mb-8">Analyze search volume and organic competition.</p>
+                
+                <div class="bg-slate-800 p-8 rounded-2xl border border-slate-700 mb-8 shadow-lg">
+                    <label class="block text-sm font-bold text-slate-400 mb-6 uppercase tracking-widest">Historical Data Range: <span id="range-val" class="text-blue-400 ml-2">3 Months</span></label>
+                    <input type="range" min="1" max="5" value="3" oninput="updateRange(this.value)" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between text-[10px] mt-4 text-slate-500 font-bold">
+                        <span>7 DAYS</span><span>30 DAYS</span><span>3 MONTHS</span><span>6 MONTHS</span><span>1 YEAR</span>
                     </div>
-                    <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
-                        <p class="text-slate-400 text-sm mb-1">SEO Difficulty</p>
-                        <h3 class="text-3xl font-bold text-yellow-400">48/100</h3>
-                        <p class="text-xs text-slate-500 mt-4">Growth opportunity found.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-800 p-8 rounded-2xl border border-slate-700 hover:border-blue-500 transition-all">
+                        <p class="text-slate-400 text-sm mb-1 font-bold uppercase">Market Saturation</p>
+                        <h3 class="text-5xl font-black text-green-400">34%</h3>
+                        <div class="w-full bg-slate-700 h-3 rounded-full mt-6 overflow-hidden">
+                            <div class="bg-green-500 h-full rounded-full shadow-[0_0_15px_rgba(34,197,94,0.5)]" style="width: 34%"></div>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-4">Status: <span class="text-green-400 font-bold">Healthy Opportunity</span></p>
+                    </div>
+                    <div class="bg-slate-800 p-8 rounded-2xl border border-slate-700 hover:border-blue-500 transition-all">
+                        <p class="text-slate-400 text-sm mb-1 font-bold uppercase">SEO Difficulty</p>
+                        <h3 class="text-5xl font-black text-yellow-400">48<span class="text-xl text-slate-500">/100</span></h3>
+                        <p class="text-xs text-slate-500 mt-10">Moderate competition. Content-led growth is viable for this niche.</p>
                     </div>
                 </div>
             </div>
 
             <div id="sem" class="page-content">
-                <h2 class="text-2xl font-bold mb-6">Competitor Intelligence</h2>
-                <div class="flex gap-4 mb-8">
-                    <input type="text" placeholder="Competitor URL" class="flex-1 p-3 bg-slate-800 rounded-lg border border-slate-700">
-                    <button class="bg-blue-600 px-6 py-3 rounded-lg font-bold">Spy</button>
+                <h2 class="text-3xl font-bold mb-8">Competitor Intelligence</h2>
+                <div class="flex gap-4 mb-10">
+                    <input type="text" placeholder="Enter competitor domain (e.g. apple.com)" class="flex-1 p-4 bg-slate-800 rounded-xl border border-slate-700 focus:border-blue-500 outline-none shadow-inner">
+                    <button onclick="alert('Scanning Paid Traffic...')" class="bg-blue-600 px-8 py-4 rounded-xl font-bold hover:bg-blue-500 transition-all shadow-lg shadow-blue-900/20">Spy Now</button>
+                </div>
+                <div class="grid grid-cols-3 gap-6">
+                    <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 text-center">
+                        <p class="text-slate-500 text-xs font-bold uppercase mb-2">Paid Keywords</p>
+                        <p class="text-3xl font-black text-blue-400">1.2K</p>
+                    </div>
+                    <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 text-center">
+                        <p class="text-slate-500 text-xs font-bold uppercase mb-2">Monthly Ads Spend</p>
+                        <p class="text-3xl font-black text-blue-400">$4.5K</p>
+                    </div>
+                    <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 text-center">
+                        <p class="text-slate-500 text-xs font-bold uppercase mb-2">Est. CPC</p>
+                        <p class="text-3xl font-black text-blue-400">$2.10</p>
+                    </div>
                 </div>
             </div>
 
             <div id="ad" class="page-content">
-                <h2 class="text-2xl font-bold mb-6">AI Ad Factory</h2>
-                <p class="text-slate-400">Select a platform and click generate to use your Gemini key.</p>
-                <button onclick="alert('Generating using your Gemini key...')" class="mt-6 bg-blue-600 p-4 rounded-xl font-bold">Generate Assets</button>
+                <h2 class="text-3xl font-bold mb-8">AI Ad Creative Factory</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    <div class="p-6 bg-slate-800 rounded-xl border border-slate-700 cursor-pointer hover:border-blue-500 group transition-all">
+                        <h4 class="font-bold group-hover:text-blue-400">Instagram Feed</h4>
+                        <p class="text-xs text-slate-500 mt-2">1080x1080 Square Post</p>
+                    </div>
+                    <div class="p-6 bg-slate-800 rounded-xl border border-slate-700 cursor-pointer hover:border-blue-500 group transition-all">
+                        <h4 class="font-bold group-hover:text-blue-400">Facebook Carousel</h4>
+                        <p class="text-xs text-slate-500 mt-2">Multi-card Ad Sequence</p>
+                    </div>
+                    <div class="p-6 bg-slate-800 rounded-xl border border-slate-700 cursor-pointer hover:border-blue-500 group transition-all">
+                        <h4 class="font-bold group-hover:text-blue-400">YouTube Shorts</h4>
+                        <p class="text-xs text-slate-500 mt-2">9:16 Vertical Video Hook</p>
+                    </div>
+                </div>
+                <button onclick="generateAd()" class="w-full bg-blue-600 p-5 rounded-2xl font-black text-lg shadow-xl shadow-blue-900/40 hover:bg-blue-500 transition-all">⚡ Generate High-Conversion Assets</button>
             </div>
 
             <div id="success" class="page-content">
-                <h2 class="text-2xl font-bold mb-6">Success Predictor</h2>
-                <div class="border-2 border-dashed border-slate-700 p-20 rounded-2xl text-center">
-                    <p class="text-slate-400">Upload Product Image</p>
+                <h2 class="text-3xl font-bold mb-8">Product Success Predictor</h2>
+                <div class="bg-slate-800 border-4 border-dashed border-slate-700 p-20 rounded-3xl text-center group hover:border-blue-500/50 transition-all">
+                    <div class="text-6xl mb-6">📸</div>
+                    <p class="text-slate-400 text-lg mb-6">Drop your product mockup or landing page screenshot here.</p>
+                    <input type="file" id="prod-img" class="hidden" onchange="previewFile()">
+                    <button onclick="document.getElementById('prod-img').click()" class="bg-slate-700 px-10 py-4 rounded-xl font-bold hover:bg-slate-600 transition-all border border-slate-600">Choose Analysis Image</button>
+                    <div id="preview-container" class="mt-8 hidden">
+                        <img id="file-preview" class="max-w-xs mx-auto rounded-lg border border-slate-600 shadow-2xl">
+                    </div>
                 </div>
             </div>
 
@@ -91,42 +136,83 @@
     </div>
 
     <script>
-        // --- SECURE CONFIGURATION ---
+        // --- 1. CORE CONFIG ---
         const SB_URL = "https://fbsgqizdahbkleggxmgr.supabase.co";
-        const SB_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZic2dxaXpkYWhia2xlZ2d4bWdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyNjg3NDIsImV4cCI6MjA4Nzg0NDc0Mn0.N08Z9v9-jkKLqIh0x5pgDl8zbxTVugeCvzMsY8dVIFM";
+        const SB_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZic2dxaXpkYWhia2xlZ2d4bWdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyNjg3NDIsImV4cCI6MjA4Nzg0NDc0Mn0.N08Z9v9-jkKLqIh0x5pgDl8zbxTVugeCvzMsY8dVIFM";
 
-        const sb = supabase.createClient(SB_URL, SB_ANON_KEY);
+        // Initialize Supabase (Use window.supabase to ensure library is loaded)
+        const sb = supabase.createClient(SB_URL, SB_ANON);
 
+        // --- 2. AUTH LOGIC ---
         async function handleAuth(type) {
-            const email = document.getElementById('email').value;
+            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             const msg = document.getElementById('auth-msg');
-            msg.innerText = "Processing...";
+            
+            if(!email || !password) {
+                msg.innerText = "Please fill in all fields.";
+                msg.className = "mt-6 text-center text-xs text-yellow-500";
+                return;
+            }
 
-            if(type === 'signup') {
-                const { error } = await sb.auth.signUp({ email, password });
-                if(error) msg.innerText = error.message;
-                else msg.innerHTML = "<span class='text-green-400'>Check email (or log in if you disabled confirmation).</span>";
-            } else {
-                const { error } = await sb.auth.signInWithPassword({ email, password });
-                if(error) msg.innerText = error.message;
-                else {
+            msg.innerText = "Connecting to Secure Server...";
+            msg.className = "mt-6 text-center text-xs text-blue-400 animate-pulse";
+
+            try {
+                if(type === 'signup') {
+                    const { error } = await sb.auth.signUp({ email, password });
+                    if(error) throw error;
+                    msg.innerHTML = "<span class='text-green-400 font-bold text-sm'>Account Created! You can now Sign In.</span>";
+                } else {
+                    const { error } = await sb.auth.signInWithPassword({ email, password });
+                    if(error) throw error;
+                    // Success: Toggle Screens
                     document.getElementById('auth-section').classList.add('hidden');
                     document.getElementById('dashboard').classList.remove('hidden');
                 }
+            } catch (err) {
+                msg.innerText = "ERROR: " + err.message;
+                msg.className = "mt-6 text-center text-xs text-red-500 font-bold bg-red-900/20 p-2 rounded";
+                console.error("Auth Fail:", err);
             }
         }
 
+        // --- 3. UI LOGIC ---
         function showPage(id) {
             document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('text-blue-400', 'font-bold'));
-            event.target.classList.add('text-blue-400', 'font-bold');
+            
+            // Sidebar active styling
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('text-blue-400', 'font-bold', 'bg-slate-700/50'));
+            event.currentTarget.classList.add('text-blue-400', 'font-bold', 'bg-slate-700/50');
         }
 
         function updateRange(val) {
             const labels = ["7 Days", "30 Days", "3 Months", "6 Months", "1 Year"];
             document.getElementById('range-val').innerText = labels[val-1];
+        }
+
+        function previewFile() {
+            const preview = document.getElementById('file-preview');
+            const file = document.getElementById('prod-img').files[0];
+            const reader = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+                document.getElementById('preview-container').classList.remove('hidden');
+                alert("Image uploaded for Visual AI Analysis. Click 'Generate' to analyze (Requires Gemini Key).");
+            }
+
+            if (file) { reader.readAsDataURL(file); }
+        }
+
+        function generateAd() {
+            const key = document.getElementById('gemini-key').value;
+            if(!key) {
+                alert("⚠️ Critical: Please enter your Gemini API Key in the sidebar to power the AI Factory.");
+            } else {
+                alert("Connecting to Gemini 1.5 Pro... Generating 3 variations of high-CTR ad copy based on your current market trends.");
+            }
         }
 
         function logout() { location.reload(); }
