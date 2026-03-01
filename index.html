@@ -146,34 +146,109 @@
         }
 
         async function execute() {
-            const q = document.getElementById('main-q').value; if(!q) return;
+            const q = document.getElementById('main-q').value; 
+            if(!q) return alert("Please enter a niche or URL to analyze.");
+            
             document.getElementById('loader').classList.remove('hidden');
 
-            const prompt = `Analyze: "${q}". Respond ONLY in raw JSON: {"sat": 45, "cost": 5000, "spy": "Deep strategy here", "ads": [{"h": "Headline", "b": "Body text", "cta": "Click Me"}]}`;
+            const prompt = `Analyze: "${q}". Respond ONLY in raw JSON format with no markdown, no code blocks, just pure JSON: {"sat": 45, "cost": 5000, "spy": "Deep strategy analysis here", "ads": [{"h": "Headline", "b": "Body text", "cta": "Click Me"}]}`;
 
             try {
                 let url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${mK}`;
-                let res = await fetch(url, { method: 'POST', body: JSON.stringify({contents: [{parts: [{text: prompt}]}]}) });
+                
+                // FIXED: Added proper headers
+                let res = await fetch(url, { 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{text: prompt}]
+                        }]
+                    })
+                });
+                
                 let data = await res.json();
+                
+                // FIXED: Validate response structure before accessing
+                if (!data.candidates || !data.candidates[0]) {
+                    // Check if there's an error message
+                    if (data.error) {
+                        throw new Error(`API Error: ${data.error.message || 'Unknown API error'}`);
+                    }
+                    throw new Error('Invalid API response structure. Check your API key.');
+                }
+                
+                if (!data.candidates[0].content || !data.candidates[0].content.parts || !data.candidates[0].content.parts[0]) {
+                    throw new Error('Incomplete response from API. Please try again.');
+                }
                 
                 // BULLETPROOF PARSING
                 let text = data.candidates[0].content.parts[0].text;
-                let cleanJson = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+                
+                // Remove markdown code blocks if present
+                text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '');
+                
+                // Find JSON object
+                let startIdx = text.indexOf('{');
+                let endIdx = text.lastIndexOf('}');
+                
+                if (startIdx === -1 || endIdx === -1) {
+                    throw new Error('No valid JSON found in API response');
+                }
+                
+                let cleanJson = text.substring(startIdx, endIdx + 1);
                 let j = JSON.parse(cleanJson);
+                
+                // Validate required fields
+                if (typeof j.sat === 'undefined' || typeof j.cost === 'undefined') {
+                    throw new Error('Missing required fields in response');
+                }
 
                 rawU = j.cost;
                 document.getElementById('sat-val').innerText = j.sat + "%";
-                document.getElementById('spy-results').innerHTML = `<div class="glass p-12 rounded-[3rem] border-l-8 border-blue-500 col-span-2"><p class="text-slate-200 text-3xl font-bold italic">${j.spy}</p></div>`;
-                document.getElementById('ad-results').innerHTML = j.ads.map(a => `<div class="glass p-10 rounded-[3rem] border-t-4 border-green-500 flex flex-col h-full"><h5 class="text-2xl font-black mb-4">${a.h}</h5><p class="text-slate-400 mb-8">${a.b}</p><span class="mt-auto bg-blue-600 p-4 rounded-xl font-black text-center text-xs uppercase tracking-widest">${a.cta}</span></div>`).join('');
+                
+                if (j.spy) {
+                    document.getElementById('spy-results').innerHTML = `<div class="glass p-12 rounded-[3rem] border-l-8 border-blue-500 col-span-2"><p class="text-slate-200 text-3xl font-bold italic">${j.spy}</p></div>`;
+                }
+                
+                if (j.ads && Array.isArray(j.ads) && j.ads.length > 0) {
+                    document.getElementById('ad-results').innerHTML = j.ads.map(a => `
+                        <div class="glass p-10 rounded-[3rem] border-t-4 border-green-500 flex flex-col h-full">
+                            <h5 class="text-2xl font-black mb-4">${a.h || 'Untitled'}</h5>
+                            <p class="text-slate-400 mb-8">${a.b || ''}</p>
+                            <span class="mt-auto bg-blue-600 p-4 rounded-xl font-black text-center text-xs uppercase tracking-widest">${a.cta || 'Learn More'}</span>
+                        </div>
+                    `).join('');
+                }
+                
                 conv();
+                
             } catch (e) {
-                alert("CRITICAL ERROR: " + e.message);
-                console.error(e);
-            } finally { document.getElementById('loader').classList.add('hidden'); }
+                let errorMsg = e.message;
+                
+                // Provide helpful error messages
+                if (errorMsg.includes('API key not valid')) {
+                    errorMsg = 'Invalid API Key. Please check your Gemini API key.';
+                } else if (errorMsg.includes('fetch')) {
+                    errorMsg = 'Network error. Check your internet connection.';
+                } else if (errorMsg.includes('JSON')) {
+                    errorMsg = 'Failed to parse AI response. Try again.';
+                }
+                
+                alert("⚠️ ERROR: " + errorMsg);
+                console.error('Full error:', e);
+                console.error('Raw response:', data);
+            } finally { 
+                document.getElementById('loader').classList.add('hidden'); 
+            }
         }
 
         function conv() {
-            const s = document.getElementById('curr'); const c = s.value; const sym = s.options[s.selectedIndex].getAttribute('data-s');
+            const s = document.getElementById('curr'); 
+            const c = s.value; 
+            const sym = s.options[s.selectedIndex].getAttribute('data-s');
             const rates = {USD:1, INR:83, EUR:0.92, AED:3.67};
             document.getElementById('cost-display').innerText = sym + (rawU * rates[c]).toLocaleString();
         }
