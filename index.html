@@ -22,7 +22,7 @@
             <input id="password" type="password" placeholder="Password" class="w-full p-3 mb-6 bg-slate-700 rounded-lg border border-slate-600 focus:outline-none focus:border-blue-500">
             
             <button onclick="handleAuth('login')" class="w-full bg-blue-600 hover:bg-blue-500 p-3 rounded-lg font-bold transition mb-4">Sign In</button>
-            <button onclick="handleAuth('signup')" class="w-full text-slate-400 text-sm hover:text-white underline text-center block">Create New Account (Instant)</button>
+            <button onclick="handleAuth('signup')" class="w-full text-slate-400 text-sm hover:text-white underline text-center block">Create New Account</button>
             <div id="auth-msg" class="mt-4 text-center text-xs text-red-400"></div>
         </div>
     </div>
@@ -38,8 +38,8 @@
             </nav>
             
             <div class="mt-auto pt-6 border-t border-slate-700">
-                <p class="text-[10px] uppercase text-slate-500 font-bold mb-2 tracking-widest">Your API Key</p>
-                <input id="gemini-key" type="password" placeholder="Gemini API Key" class="w-full p-2 text-xs bg-slate-700 rounded border border-slate-600">
+                <p class="text-[10px] uppercase text-slate-500 font-bold mb-2 tracking-widest">Your Gemini API Key</p>
+                <input id="gemini-key" type="password" placeholder="Key for AI analysis" class="w-full p-2 text-xs bg-slate-700 rounded border border-slate-600">
                 <button onclick="logout()" class="w-full mt-4 text-xs text-slate-500 hover:text-white">Logout</button>
             </div>
         </aside>
@@ -61,7 +61,7 @@
                     <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
                         <p class="text-slate-400 text-sm mb-1">SEO Difficulty</p>
                         <h3 class="text-3xl font-bold text-yellow-400">48/100</h3>
-                        <p class="text-xs text-slate-500 mt-4">Niche opportunity detected.</p>
+                        <p class="text-xs text-slate-500 mt-4">Growth opportunity found.</p>
                     </div>
                 </div>
             </div>
@@ -69,5 +69,67 @@
             <div id="sem" class="page-content">
                 <h2 class="text-2xl font-bold mb-6">Competitor Intelligence</h2>
                 <div class="flex gap-4 mb-8">
-                    <input type="text" placeholder="Enter competitor URL..." class="flex-1 p-3 bg-slate-800 rounded-lg border border-slate-700 outline-none focus:border-blue-500">
-                    <button onclick="alert('Analyzing Competitor...')" class="bg-blue-600 px-6 py-3 rounded-lg font-bold">Spy</button>
+                    <input type="text" placeholder="Competitor URL" class="flex-1 p-3 bg-slate-800 rounded-lg border border-slate-700">
+                    <button class="bg-blue-600 px-6 py-3 rounded-lg font-bold">Spy</button>
+                </div>
+            </div>
+
+            <div id="ad" class="page-content">
+                <h2 class="text-2xl font-bold mb-6">AI Ad Factory</h2>
+                <p class="text-slate-400">Select a platform and click generate to use your Gemini key.</p>
+                <button onclick="alert('Generating using your Gemini key...')" class="mt-6 bg-blue-600 p-4 rounded-xl font-bold">Generate Assets</button>
+            </div>
+
+            <div id="success" class="page-content">
+                <h2 class="text-2xl font-bold mb-6">Success Predictor</h2>
+                <div class="border-2 border-dashed border-slate-700 p-20 rounded-2xl text-center">
+                    <p class="text-slate-400">Upload Product Image</p>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // --- SECURE CONFIGURATION ---
+        const SB_URL = "https://fbsgqizdahbkleggxmgr.supabase.co";
+        const SB_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZic2dxaXpkYWhia2xlZ2d4bWdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyNjg3NDIsImV4cCI6MjA4Nzg0NDc0Mn0.N08Z9v9-jkKLqIh0x5pgDl8zbxTVugeCvzMsY8dVIFM";
+
+        const sb = supabase.createClient(SB_URL, SB_ANON_KEY);
+
+        async function handleAuth(type) {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const msg = document.getElementById('auth-msg');
+            msg.innerText = "Processing...";
+
+            if(type === 'signup') {
+                const { error } = await sb.auth.signUp({ email, password });
+                if(error) msg.innerText = error.message;
+                else msg.innerHTML = "<span class='text-green-400'>Check email (or log in if you disabled confirmation).</span>";
+            } else {
+                const { error } = await sb.auth.signInWithPassword({ email, password });
+                if(error) msg.innerText = error.message;
+                else {
+                    document.getElementById('auth-section').classList.add('hidden');
+                    document.getElementById('dashboard').classList.remove('hidden');
+                }
+            }
+        }
+
+        function showPage(id) {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('text-blue-400', 'font-bold'));
+            event.target.classList.add('text-blue-400', 'font-bold');
+        }
+
+        function updateRange(val) {
+            const labels = ["7 Days", "30 Days", "3 Months", "6 Months", "1 Year"];
+            document.getElementById('range-val').innerText = labels[val-1];
+        }
+
+        function logout() { location.reload(); }
+    </script>
+</body>
+</html>
