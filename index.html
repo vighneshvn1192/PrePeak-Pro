@@ -1,37 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><title>PrePeak Pro</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrePeak Pro | AI Market Intelligence</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .page-content { display: none; }
+        .page-content.active { display: block; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: #3b82f6; cursor: pointer; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
+    </style>
 </head>
-<body class="bg-slate-950 text-white min-h-screen font-sans">
-    <div id="auth-section" class="flex items-center justify-center min-h-screen">
-        <div class="bg-slate-900 p-10 rounded-3xl border border-slate-800 w-full max-w-md">
-            <h1 class="text-4xl font-black text-blue-500 text-center mb-8">PrePeak Pro</h1>
-            <input id="email" type="email" placeholder="Email (use 'test')" class="w-full p-4 bg-slate-800 rounded-xl mb-4 border border-slate-700 outline-none">
-            <input id="password" type="password" placeholder="Password (use 'test')" class="w-full p-4 bg-slate-800 rounded-xl mb-6 border border-slate-700 outline-none">
-            <button onclick="login()" class="w-full bg-blue-600 p-4 rounded-xl font-bold">ENTER DASHBOARD</button>
-            <p id="msg" class="mt-4 text-center text-xs text-slate-500 font-bold"></p>
+<body class="bg-slate-950 text-white min-h-screen font-sans selection:bg-blue-500/30">
+
+    <div id="auth-section" class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-slate-900 p-10 rounded-3xl shadow-2xl w-full max-w-md border border-slate-800">
+            <h1 class="text-5xl font-black text-blue-500 text-center mb-2 tracking-tighter">PrePeak</h1>
+            <p class="text-slate-500 text-center mb-10 text-xs font-bold uppercase tracking-widest">Market Intel MVP</p>
+            <div class="space-y-4">
+                <input id="email" type="text" placeholder="Username (use 'test')" class="w-full p-4 bg-slate-800 rounded-xl border border-slate-700 focus:outline-none focus:border-blue-500 transition-all text-sm">
+                <input id="password" type="password" placeholder="Password (use 'test')" class="w-full p-4 bg-slate-800 rounded-xl border border-slate-700 focus:outline-none focus:border-blue-500 transition-all text-sm">
+                <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-500 p-4 rounded-xl font-black text-lg transition-all transform active:scale-95 shadow-lg shadow-blue-900/20">ACCESS DASHBOARD</button>
+            </div>
+            <p id="auth-msg" class="mt-8 text-center text-[10px] font-black text-slate-600 uppercase tracking-widest"></p>
         </div>
     </div>
-    <div id="dashboard" class="hidden p-10">
-        <h2 class="text-3xl font-black text-blue-500 mb-4">Dashboard Live</h2>
-        <div class="bg-slate-900 p-8 rounded-2xl border border-slate-800">
-            <p class="text-green-400 font-bold">SEO Hub Active: 34% Saturation</p>
-            <button onclick="location.reload()" class="mt-4 text-xs text-slate-500 underline">Logout</button>
-        </div>
-    </div>
-    <script>
-        function login() {
-            const e = document.getElementById('email').value;
-            const p = document.getElementById('password').value;
-            if(e === 'test' && p === 'test') {
-                document.getElementById('auth-section').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-            } else {
-                document.getElementById('msg').innerText = "Try email: test / pass: test";
-            }
-        }
-    </script>
-</body>
-</html>
+
+    <div id="dashboard" class="hidden flex h-screen overflow-hidden">
+        <aside class="w-72 bg-slate-900 border-r border-slate-800 p-8 flex flex-col">
+            <h2 class="text-3xl font-black text-blue-500 mb-12 tracking-tighter">PrePeak Pro</h2>
+            <nav class="space-y-3 flex-1">
+                <button onclick="showPage('seo')" class="nav-btn w-full text-left p-4 rounded-xl hover:bg-slate-800 text-blue-400 font-black flex items-center gap-3 transition-all bg-slate-800">📈 SEO HUB</button>
+                <button onclick="showPage('sem')" class="nav-btn w-full text-left p-4 rounded-xl hover:bg-slate-800 flex items-center gap-3 transition-all text-slate-400 font-bold">🕵️ SEM SPY</button>
+                <button onclick="showPage('ad')" class="nav-btn w-full text-left p-4 rounded-xl hover:bg-slate-800 flex items-center gap-3 transition-all text-slate-400 font-bold">🎨 AD FACTORY</button>
+                <button onclick="showPage('success')" class="nav-btn w-full text-left p-4 rounded-xl hover:bg-slate-800 flex items-center gap-3 transition-all text-slate-400 font-bold">🔮 SUCCESS AI</button>
+            </nav>
+            <div class="mt-auto pt-8 border-t border-slate-800">
+                <button onclick="location.reload()" class="w-full text-xs text-slate-600 hover:text-red-500 font-bold transition-colors">LOGOUT SESSION</button>
+            </div>
+        </aside>
+
+        <main class="flex-1 p-12 overflow-y-auto bg-slate-950">
+            
+            <div id="seo" class="page-content active">
+                <div class="flex justify-between items-end mb-12">
+                    <div>
+                        <h2 class="text-4xl font-black mb-2 italic">Market Saturation</h2>
+                        <p class="text-slate-500 font-medium">Analyze search difficulty & volume trends.</p>
+                    </div>
+                    <div class="bg-blue-500/10 text-blue-400 px-4 py-2 rounded-full text-[10px] font-black border border-blue-500/20 uppercase tracking-widest">Live Engine Active</div>
+                </div>
+                
+                <div class="bg-slate-900 p-10 rounded-3xl border border-slate-800 mb-10 shadow-2xl">
+                    <div class="flex justify-between items-center mb-8">
+                        <label class="text-xs font-black text-slate-500 uppercase tracking-[0.2em]">Historical Data Range</label>
+                        <span id="range-val" class="text-blue-400 font-black text-sm bg-blue-500/10 px-4 py-1 rounded-lg">90 DAYS</span>
+                    </div>
+                    <input type="range" min="1" max="5" value="3" oninput="updateRange(this.value)" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between text-[10px] mt-6 text-slate-600 font-black uppercase tracking-tighter">
+                        <span>7d</span><span>30d</span><span>90d</span><span>180d</span><span>1y</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-slate-900 p-10 rounded-3xl border border-slate-800 hover:border-blue-500/50 transition-all">
+                        <p class="text-slate-500 text-[10px] font-black uppercase mb-2 tracking-[0.2em]">Saturation Score</p>
+                        <h3 id="sat-score" class="text-7xl font-black text-green-400 mb-6">34%</h3>
+                        <div class="w-full bg-slate-800 h-4 rounded-full overflow-hidden">
+                            <div id="sat-bar" class="bg-green-500 h-full rounded-full transition-all duration-700 shadow-[0_0_20px_rgba(34,197,94,0.3)]" style="width: 34%"></div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900 p-10 rounded-3xl border border-slate-800 hover:border-blue-500/50 transition-all">
+                        <p class="text-slate-500 text-[10px] font-black uppercase mb-2 tracking-[0.2em]">SEO Difficulty</p>
+                        <h3 class="text-7xl font-black text-yellow-400 mb-4">48<span class="text-2xl text-slate-700">/100</span></h3>
+                        <p class="text-xs text-slate-500 font-bold uppercase tracking-widest">Moderate Opportunity • Content Gap Detected</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sem" class="page-content">
+                <h2 class="text-4xl font-black mb-8 italic">Competitor Intelligence</h2>
+                <div class="flex gap-4 mb-12">
+                    <input type="text" placeholder="Enter Competitor Domain (e.g. gumroad.com)" class="flex-1 p-5 bg-slate-900 rounded-2xl border border-slate-800 focus:border-blue-500 outline-none text-sm font-bold">
+                    <button onclick="alert('Analyzing Paid Search Volume...')" class="bg-blue-600 px-10 rounded-2xl font-black hover:bg-blue-500 transition-all shadow-lg shadow-blue-900/20 uppercase text-xs tracking-widest">Fetch SEM Data</button>
+                </div>
+                <div class="grid grid-cols-3 gap-6">
+                    <div class="bg-slate-900 p-8 rounded-2xl border border-slate-800 text-center">
+                        <p class="text-slate-500 text-[10px] font-black mb-2 tracking-widest uppercase">Est. Monthly Spend</p>
+                        <p class="text-3xl font-black text-blue-400">$4.2K</p>
+                    </div>
+                    <div class="bg-slate-900 p-8 rounded-2xl border border-slate-800 text-center">
+                        <p class="text-slate-500 text-[10px] font-black mb-2 tracking-widest uppercase">Avg. CPC</p>
+                        <p class="text-3xl font-black text-blue-400">$2.15</p>
+                    </div>
+                    <div class="bg-slate-900 p-8 rounded-2xl border border-slate-800 text-center">
+                        <p class="text-slate-500 text-[10px] font-black mb-2 tracking-widest uppercase">Ad Rank</p>
+                        <p class="text-3xl font-black text-blue-400">#2.4</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="ad" class="page-content">
+                <h2 class="text-4xl font-black mb-8 italic">Ad Creative Factory</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 text-center">
+                    <div class="p-10 bg-slate-900 rounded-3xl border border-slate-800 hover:border-
