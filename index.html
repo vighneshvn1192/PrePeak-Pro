@@ -17,7 +17,6 @@
             position: relative;
         }
         
-        /* Cyber Grid Background */
         body::before {
             content: '';
             position: fixed;
@@ -101,6 +100,11 @@
         .btn-cyber:hover {
             box-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
             transform: translateY(-2px);
+        }
+        
+        .btn-cyber:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
         
         .nav-btn {
@@ -197,14 +201,65 @@
             letter-spacing: 1px;
         }
         
-        .error-banner {
-            background: rgba(255, 0, 102, 0.2);
-            border: 1px solid #ff0066;
-            color: #ff0066;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #00ff8833;
+        }
+        
+        th {
+            font-weight: 700;
+            color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+        }
+        
+        tr:hover {
+            background: rgba(0, 255, 136, 0.05);
+        }
+        
+        .alert-box {
             padding: 1rem;
             border-radius: 8px;
             margin-bottom: 1rem;
+            border-left: 4px solid;
         }
+        
+        .alert-success {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: #00ff88;
+            color: #00ff88;
+        }
+        
+        .alert-danger {
+            background: rgba(255, 0, 102, 0.1);
+            border-color: #ff0066;
+            color: #ff0066;
+        }
+        
+        .alert-warning {
+            background: rgba(255, 204, 0, 0.1);
+            border-color: #ffcc00;
+            color: #ffcc00;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .badge-low { background: #00ff8833; color: #00ff88; }
+        .badge-medium { background: #ffcc0033; color: #ffcc00; }
+        .badge-high { background: #ff990033; color: #ff9900; }
+        .badge-extreme { background: #ff006633; color: #ff0066; }
     </style>
 </head>
 <body class="min-h-screen">
@@ -227,7 +282,7 @@
                 <input id="username" type="text" placeholder="ACCESS ID" 
                     class="w-full p-4 rounded font-mono text-sm tracking-wider" value="demo">
                 <input id="password" type="password" placeholder="SECURITY KEY" 
-                    class="w-full p-4 rounded font-mono text-sm tracking-wider" value="demo">
+                    class="w-full p-4 rounded font-mono text-sm tracking-wider" value="test123">
                 <button onclick="authenticate()" 
                     class="btn-cyber w-full p-4 rounded font-bold text-sm">
                     INITIALIZE SYSTEM
@@ -237,8 +292,8 @@
     </div>
 
     <!-- API CONFIGURATION -->
-    <div id="view-config" class="view-layer h-screen w-full items-center justify-center p-6">
-        <div class="cyber-box p-12 rounded-lg w-full max-w-3xl">
+    <div id="view-config" class="view-layer h-screen w-full items-center justify-center p-6 overflow-y-auto">
+        <div class="cyber-box p-12 rounded-lg w-full max-w-3xl my-8">
             <h2 class="orbitron text-3xl font-black text-center mb-8 glow-text">
                 AI ENGINE CONFIGURATION
             </h2>
@@ -277,7 +332,6 @@
                         <select id="image-provider" class="w-full p-4 rounded font-mono text-sm">
                             <option value="">None (Text Only)</option>
                             <option value="dalle">OpenAI DALL-E 3</option>
-                            <option value="stability">Stability AI</option>
                         </select>
                     </div>
                     
@@ -311,17 +365,25 @@
             </div>
             
             <nav class="space-y-3 flex-1 overflow-y-auto no-scrollbar">
-                <button onclick="switchTab('seo')" 
+                <button onclick="switchTab('oracle')" 
                     class="nav-btn active w-full text-left p-4 rounded text-sm font-bold uppercase">
-                    <span class="text-[#ff0066]">▶</span> SEO FORECAST
+                    <span class="text-[#ff0066]">▶</span> THE ORACLE
+                </button>
+                <button onclick="switchTab('keywords')" 
+                    class="nav-btn w-full text-left p-4 rounded text-sm font-bold uppercase">
+                    <span class="text-[#ff0066]">▶</span> KEYWORD LAB
+                </button>
+                <button onclick="switchTab('spy')" 
+                    class="nav-btn w-full text-left p-4 rounded text-sm font-bold uppercase">
+                    <span class="text-[#ff0066]">▶</span> COMPETITOR SPY
                 </button>
                 <button onclick="switchTab('ads')" 
                     class="nav-btn w-full text-left p-4 rounded text-sm font-bold uppercase">
-                    <span class="text-[#ff0066]">▶</span> AD CREATIVE LAB
+                    <span class="text-[#ff0066]">▶</span> AD FACTORY
                 </button>
-                <button onclick="switchTab('training')" 
+                <button onclick="switchTab('forecaster')" 
                     class="nav-btn w-full text-left p-4 rounded text-sm font-bold uppercase">
-                    <span class="text-[#ff0066]">▶</span> COMPETITOR INTEL
+                    <span class="text-[#ff0066]">▶</span> GLOBAL FORECASTER
                 </button>
             </nav>
             
@@ -334,77 +396,159 @@
         <!-- Main Content -->
         <main class="flex-1 overflow-y-auto bg-black/80 p-8 no-scrollbar">
             
-            <!-- SEO FORECAST TAB -->
-            <div id="tab-seo" class="tab-content active max-w-6xl mx-auto">
+            <!-- THE ORACLE TAB -->
+            <div id="tab-oracle" class="tab-content active max-w-6xl mx-auto">
                 <div class="mb-8">
-                    <h3 class="orbitron text-4xl font-black mb-2 glow-text">SEO SATURATION FORECAST</h3>
-                    <p class="text-sm text-gray-400">Analyze market saturation and success probability</p>
+                    <h3 class="orbitron text-4xl font-black mb-2 glow-text">THE ORACLE</h3>
+                    <p class="text-sm text-gray-400">Success Prediction Model: Market Saturation vs Success Probability</p>
                 </div>
                 
                 <div class="cyber-box p-8 rounded-lg mb-8">
                     <div class="grid md:grid-cols-2 gap-6 mb-6">
                         <div>
                             <label class="block text-xs font-bold mb-2">PRIMARY KEYWORD</label>
-                            <input id="seo-keyword" type="text" placeholder="e.g., AI productivity tools" 
+                            <input id="oracle-keyword" type="text" placeholder="e.g., AI productivity tools" 
                                 class="w-full p-4 rounded font-mono text-sm">
                         </div>
                         
                         <div>
                             <label class="block text-xs font-bold mb-2">LANDING PAGE URL (Optional)</label>
-                            <input id="seo-url" type="text" placeholder="https://yourproduct.com" 
+                            <input id="oracle-url" type="text" placeholder="https://yourproduct.com" 
                                 class="w-full p-4 rounded font-mono text-sm">
                         </div>
                     </div>
                     
                     <div class="mb-6">
                         <label class="block text-xs font-bold mb-2">PRODUCT DESCRIPTION</label>
-                        <textarea id="seo-description" rows="3" placeholder="Briefly describe your product or service..." 
+                        <textarea id="oracle-description" rows="3" placeholder="Describe your product or service..." 
                             class="w-full p-4 rounded font-mono text-sm"></textarea>
                     </div>
                     
-                    <button onclick="runSeoForecast()" 
+                    <button onclick="runOracle()" id="oracle-btn"
                         class="btn-cyber px-8 py-4 rounded font-bold text-sm">
-                        <span class="loader-dots hidden" id="seo-loader">ANALYZING</span>
-                        <span id="seo-btn-text">RUN FORECAST</span>
+                        <span class="loader-dots hidden" id="oracle-loader">ANALYZING</span>
+                        <span id="oracle-btn-text">CONSULT THE ORACLE</span>
                     </button>
                 </div>
                 
                 <!-- Results -->
-                <div id="seo-results" class="hidden">
+                <div id="oracle-results" class="hidden">
                     <div class="grid md:grid-cols-3 gap-6 mb-8">
                         <div class="cyber-box p-8 rounded-lg text-center">
                             <div class="text-xs font-bold text-gray-400 mb-2">MARKET SATURATION</div>
-                            <div id="saturation-value" class="stat-number pulse-glow" style="color: #ff0066;">--%</div>
+                            <div id="oracle-saturation" class="stat-number pulse-glow" style="color: #ff0066;">--%</div>
                         </div>
                         
                         <div class="cyber-box p-8 rounded-lg text-center">
                             <div class="text-xs font-bold text-gray-400 mb-2">SUCCESS PROBABILITY</div>
-                            <div id="success-value" class="stat-number pulse-glow" style="color: #00ff88;">--%</div>
+                            <div id="oracle-success" class="stat-number pulse-glow" style="color: #00ff88;">--%</div>
                         </div>
                         
                         <div class="cyber-box p-8 rounded-lg text-center">
-                            <div class="text-xs font-bold text-gray-400 mb-2">COMPETITION LEVEL</div>
-                            <div id="competition-value" class="text-3xl font-bold mt-4" style="color: #00ccff;">---</div>
+                            <div class="text-xs font-bold text-gray-400 mb-2">ORACLE VERDICT</div>
+                            <div id="oracle-verdict" class="text-3xl font-bold mt-4" style="color: #00ccff;">---</div>
                         </div>
                     </div>
                     
                     <div class="cyber-box p-8 rounded-lg mb-6">
-                        <h4 class="orbitron font-bold text-xl mb-4 text-[#00ff88]">INTELLIGENCE REPORT</h4>
-                        <div id="seo-analysis" class="text-sm leading-relaxed text-gray-300"></div>
+                        <h4 class="orbitron font-bold text-xl mb-4 text-[#00ff88]">MARKET INTELLIGENCE</h4>
+                        <div id="oracle-analysis" class="text-sm leading-relaxed text-gray-300"></div>
                     </div>
                     
-                    <div class="cyber-box p-8 rounded-lg">
-                        <h4 class="orbitron font-bold text-xl mb-4 text-[#00ff88]">RECOMMENDED KEYWORDS</h4>
-                        <div id="keyword-suggestions" class="grid md:grid-cols-2 gap-4"></div>
+                    <!-- PIVOT LOGIC -->
+                    <div id="pivot-section" class="cyber-box p-8 rounded-lg mb-6 hidden">
+                        <h4 class="orbitron font-bold text-xl mb-4 text-[#ffcc00]">⚡ PIVOT LOGIC: GAP OPPORTUNITIES</h4>
+                        <p class="text-sm text-gray-400 mb-4">AI-detected gaps in this saturated market:</p>
+                        <div id="pivot-gaps" class="space-y-3"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- AD CREATIVE LAB TAB -->
+            <!-- KEYWORD LAB TAB -->
+            <div id="tab-keywords" class="tab-content max-w-6xl mx-auto">
+                <div class="mb-8">
+                    <h3 class="orbitron text-4xl font-black mb-2 glow-text">KEYWORD INTELLIGENCE LAB</h3>
+                    <p class="text-sm text-gray-400">Search Volume, KD%, and Commercial Intent Analysis</p>
+                </div>
+                
+                <div class="cyber-box p-8 rounded-lg mb-8">
+                    <div class="mb-6">
+                        <label class="block text-xs font-bold mb-2">SEED KEYWORD</label>
+                        <input id="keyword-seed" type="text" placeholder="e.g., project management software" 
+                            class="w-full p-4 rounded font-mono text-sm">
+                    </div>
+                    
+                    <button onclick="analyzeKeywords()" id="keyword-btn"
+                        class="btn-cyber px-8 py-4 rounded font-bold text-sm">
+                        <span class="loader-dots hidden" id="keyword-loader">ANALYZING</span>
+                        <span id="keyword-btn-text">ANALYZE KEYWORDS</span>
+                    </button>
+                </div>
+                
+                <div id="keyword-results" class="hidden">
+                    <div class="cyber-box p-8 rounded-lg overflow-x-auto">
+                        <table id="keyword-table">
+                            <thead>
+                                <tr>
+                                    <th>KEYWORD</th>
+                                    <th>SEARCH VOLUME</th>
+                                    <th>KD%</th>
+                                    <th>INTENT</th>
+                                    <th>OPPORTUNITY</th>
+                                </tr>
+                            </thead>
+                            <tbody id="keyword-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMPETITOR SPY TAB -->
+            <div id="tab-spy" class="tab-content max-w-6xl mx-auto">
+                <div class="mb-8">
+                    <h3 class="orbitron text-4xl font-black mb-2 glow-text">COMPETITOR SPY</h3>
+                    <p class="text-sm text-gray-400">URL-Based GTM Strategy Extraction</p>
+                </div>
+                
+                <div class="cyber-box p-8 rounded-lg mb-8">
+                    <div class="mb-6">
+                        <label class="block text-xs font-bold mb-2">COMPETITOR URL</label>
+                        <input id="spy-url" type="text" placeholder="https://competitor.com" 
+                            class="w-full p-4 rounded font-mono text-sm">
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-xs font-bold mb-2">YOUR PRODUCT (For Comparison)</label>
+                        <input id="spy-product" type="text" placeholder="Your product name" 
+                            class="w-full p-4 rounded font-mono text-sm">
+                    </div>
+                    
+                    <button onclick="spyCompetitor()" id="spy-btn"
+                        class="btn-cyber px-8 py-4 rounded font-bold text-sm">
+                        <span class="loader-dots hidden" id="spy-loader">EXTRACTING</span>
+                        <span id="spy-btn-text">EXTRACT GTM STRATEGY</span>
+                    </button>
+                </div>
+                
+                <div id="spy-results" class="hidden space-y-6">
+                    <div class="cyber-box p-8 rounded-lg">
+                        <h4 class="orbitron font-bold text-xl mb-4 text-[#00ff88]">GTM STRATEGY BREAKDOWN</h4>
+                        <div id="spy-strategy" class="space-y-4"></div>
+                    </div>
+                    
+                    <div class="cyber-box p-8 rounded-lg">
+                        <h4 class="orbitron font-bold text-xl mb-4 text-[#00ff88]">ACTIONABLE INSIGHTS</h4>
+                        <div id="spy-insights" class="text-sm text-gray-300"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AD FACTORY TAB -->
             <div id="tab-ads" class="tab-content max-w-6xl mx-auto">
                 <div class="mb-8">
-                    <h3 class="orbitron text-4xl font-black mb-2 glow-text">AD CREATIVE LABORATORY</h3>
-                    <p class="text-sm text-gray-400">Generate high-converting ad creatives for Meta & Google</p>
+                    <h3 class="orbitron text-4xl font-black mb-2 glow-text">MULTI-ASSET AD FACTORY</h3>
+                    <p class="text-sm text-gray-400">Image Ads, 10-Slide Carousels, Video Scripts</p>
                 </div>
                 
                 <div class="cyber-box p-8 rounded-lg mb-8">
@@ -422,8 +566,8 @@
                             <label class="block text-xs font-bold mb-2">AD FORMAT</label>
                             <select id="ad-format" class="w-full p-4 rounded font-mono text-sm">
                                 <option value="single">Single Image Ad</option>
-                                <option value="carousel">Carousel (5 frames)</option>
-                                <option value="video">Video Script</option>
+                                <option value="carousel">10-Slide Carousel</option>
+                                <option value="video">Video Script (30-60s)</option>
                             </select>
                         </div>
                     </div>
@@ -441,9 +585,10 @@
                     </div>
                     
                     <div class="mb-6">
-                        <label class="block text-xs font-bold mb-2">KEY BENEFIT / USP</label>
-                        <textarea id="ad-benefit" rows="2" placeholder="What makes your product unique?" 
-                            class="w-full p-4 rounded font-mono text-sm"></textarea>
+                        <label class="block text-xs font-bold mb-2">COMPETITOR REFERENCE URLS (Optional - for style training)</label>
+                        <textarea id="ad-references" rows="3" placeholder="https://facebook.com/ads/library/?id=...
+https://facebook.com/ads/library/?id=..." 
+                            class="w-full p-4 rounded font-mono text-xs"></textarea>
                     </div>
                     
                     <div class="flex items-center gap-4 mb-6">
@@ -453,60 +598,94 @@
                         </label>
                     </div>
                     
-                    <button onclick="generateAdCreative()" 
+                    <button onclick="generateAds()" id="ad-btn"
                         class="btn-cyber px-8 py-4 rounded font-bold text-sm">
                         <span class="loader-dots hidden" id="ad-loader">GENERATING</span>
-                        <span id="ad-btn-text">GENERATE CREATIVES</span>
+                        <span id="ad-btn-text">GENERATE AD ASSETS</span>
                     </button>
                 </div>
                 
-                <!-- Ad Results -->
                 <div id="ad-results" class="hidden">
-                    <div id="ad-creatives-container" class="card-grid"></div>
+                    <div id="ad-container" class="card-grid"></div>
                 </div>
             </div>
 
-            <!-- COMPETITOR TRAINING TAB -->
-            <div id="tab-training" class="tab-content max-w-6xl mx-auto">
+            <!-- GLOBAL FORECASTER TAB -->
+            <div id="tab-forecaster" class="tab-content max-w-6xl mx-auto">
                 <div class="mb-8">
-                    <h3 class="orbitron text-4xl font-black mb-2 glow-text">COMPETITOR INTELLIGENCE</h3>
-                    <p class="text-sm text-gray-400">Train AI with competitor ads for style matching</p>
+                    <h3 class="orbitron text-4xl font-black mb-2 glow-text">GLOBAL FORECASTER</h3>
+                    <p class="text-sm text-gray-400">Budget Recommendations Across 10 Currencies</p>
                 </div>
                 
                 <div class="cyber-box p-8 rounded-lg mb-8">
-                    <div class="mb-6">
-                        <label class="block text-xs font-bold mb-2">COMPETITOR AD URLS</label>
-                        <p class="text-xs text-gray-400 mb-3">
-                            Paste URLs from Meta Ad Library or Google Ads Transparency Center (one per line)
-                        </p>
-                        <textarea id="training-urls" rows="5" placeholder="https://www.facebook.com/ads/library/?id=...
-https://www.facebook.com/ads/library/?id=..." 
-                            class="w-full p-4 rounded font-mono text-xs"></textarea>
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-xs font-bold mb-2">CAMPAIGN OBJECTIVE</label>
+                            <select id="forecast-objective" class="w-full p-4 rounded font-mono text-sm">
+                                <option value="awareness">Brand Awareness</option>
+                                <option value="traffic">Website Traffic</option>
+                                <option value="leads">Lead Generation</option>
+                                <option value="conversions">Conversions/Sales</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xs font-bold mb-2">TARGET MARKET</label>
+                            <select id="forecast-market" class="w-full p-4 rounded font-mono text-sm">
+                                <option value="us">United States</option>
+                                <option value="india">India</option>
+                                <option value="uae">UAE</option>
+                                <option value="nigeria">Nigeria</option>
+                                <option value="uk">United Kingdom</option>
+                                <option value="eu">European Union</option>
+                                <option value="brazil">Brazil</option>
+                                <option value="australia">Australia</option>
+                                <option value="canada">Canada</option>
+                                <option value="global">Global (Multi-Region)</option>
+                            </select>
+                        </div>
                     </div>
                     
                     <div class="mb-6">
-                        <label class="block text-xs font-bold mb-2">YOUR PRODUCT</label>
-                        <input id="training-product" type="text" placeholder="What product will you advertise?" 
-                            class="w-full p-4 rounded font-mono text-sm">
+                        <label class="block text-xs font-bold mb-2">MONTHLY AD SPEND (USD)</label>
+                        <input id="forecast-budget" type="number" placeholder="5000" 
+                            class="w-full p-4 rounded font-mono text-sm" value="5000">
                     </div>
                     
-                    <button onclick="analyzeCompetitors()" 
+                    <button onclick="generateForecast()" id="forecast-btn"
                         class="btn-cyber px-8 py-4 rounded font-bold text-sm">
-                        <span class="loader-dots hidden" id="training-loader">ANALYZING</span>
-                        <span id="training-btn-text">ANALYZE & GENERATE</span>
+                        <span class="loader-dots hidden" id="forecast-loader">CALCULATING</span>
+                        <span id="forecast-btn-text">GENERATE FORECAST</span>
                     </button>
                 </div>
                 
-                <!-- Training Results -->
-                <div id="training-results" class="hidden">
-                    <div class="cyber-box p-8 rounded-lg mb-6">
-                        <h4 class="orbitron font-bold text-xl mb-4 text-[#00ff88]">STYLE ANALYSIS</h4>
-                        <div id="style-analysis" class="text-sm leading-relaxed text-gray-300"></div>
+                <div id="forecast-results" class="hidden space-y-6">
+                    <div class="cyber-box p-8 rounded-lg">
+                        <h4 class="orbitron font-bold text-xl mb-6 text-[#00ff88]">BUDGET ALLOCATION</h4>
+                        <div id="forecast-allocation" class="grid md:grid-cols-2 gap-6"></div>
                     </div>
                     
                     <div class="cyber-box p-8 rounded-lg">
-                        <h4 class="orbitron font-bold text-xl mb-4 text-[#00ff88]">GENERATED ADS (COMPETITOR STYLE)</h4>
-                        <div id="trained-ads-container" class="card-grid"></div>
+                        <h4 class="orbitron font-bold text-xl mb-6 text-[#00ff88]">MULTI-CURRENCY BREAKDOWN</h4>
+                        <div class="overflow-x-auto">
+                            <table id="currency-table">
+                                <thead>
+                                    <tr>
+                                        <th>CURRENCY</th>
+                                        <th>SYMBOL</th>
+                                        <th>TOTAL BUDGET</th>
+                                        <th>DAILY BUDGET</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="currency-tbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="cyber-box p-8 rounded-lg">
+                        <h4 class="orbitron font-bold text-xl mb-4 text-[#00ff88]">PERFORMANCE FORECAST</h4>
+                        <div id="forecast-performance" class="text-sm text-gray-300"></div>
                     </div>
                 </div>
             </div>
@@ -524,12 +703,18 @@ https://www.facebook.com/ads/library/?id=..."
             isConnected: false
         };
 
-        // API ENDPOINTS
-        const API_ENDPOINTS = {
-            gemini: (key) => `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${key}`,
-            openai: 'https://api.openai.com/v1/chat/completions',
-            anthropic: 'https://api.anthropic.com/v1/messages',
-            dalle: 'https://api.openai.com/v1/images/generations'
+        // CURRENCY DATA
+        const CURRENCIES = {
+            'USD': { symbol: '$', rate: 1, name: 'US Dollar' },
+            'INR': { symbol: '₹', rate: 83, name: 'Indian Rupee' },
+            'AED': { symbol: 'د.إ', rate: 3.67, name: 'UAE Dirham' },
+            'NGN': { symbol: '₦', rate: 1550, name: 'Nigerian Naira' },
+            'GBP': { symbol: '£', rate: 0.79, name: 'British Pound' },
+            'EUR': { symbol: '€', rate: 0.92, name: 'Euro' },
+            'BRL': { symbol: 'R$', rate: 5.0, name: 'Brazilian Real' },
+            'AUD': { symbol: 'A$', rate: 1.52, name: 'Australian Dollar' },
+            'CAD': { symbol: 'C$', rate: 1.36, name: 'Canadian Dollar' },
+            'JPY': { symbol: '¥', rate: 149, name: 'Japanese Yen' }
         };
 
         // AUTH
@@ -537,16 +722,15 @@ https://www.facebook.com/ads/library/?id=..."
             const u = document.getElementById('username').value;
             const p = document.getElementById('password').value;
             
-            if (u === 'demo' && p === 'demo') {
+            if (u === 'demo' && p === 'test123') {
                 showView('view-config');
             } else {
-                alert('❌ Invalid credentials. Use demo/demo');
+                alert('❌ Invalid credentials. Use demo/test123');
             }
         }
 
         function updateApiConfig() {
-            const provider = document.getElementById('api-provider').value;
-            CONFIG.apiProvider = provider;
+            CONFIG.apiProvider = document.getElementById('api-provider').value;
         }
 
         function activateSystem() {
@@ -586,17 +770,19 @@ https://www.facebook.com/ads/library/?id=..."
             event.currentTarget.classList.add('active');
         }
 
-        // AI API CALL
-        async function callAI(prompt, options = {}) {
+        // AI API CALL WITH BETTER ERROR HANDLING
+        async function callAI(prompt) {
             if (!CONFIG.isConnected || !CONFIG.apiKey) {
                 throw new Error('System not connected. Configure API first.');
             }
 
             try {
-                let response;
+                let response, data;
                 
                 if (CONFIG.apiProvider === 'gemini') {
-                    response = await fetch(API_ENDPOINTS.gemini(CONFIG.apiKey), {
+                    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${CONFIG.apiKey}`;
+                    
+                    response = await fetch(url, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -604,20 +790,21 @@ https://www.facebook.com/ads/library/?id=..."
                         })
                     });
                     
-                    const data = await response.json();
-                    
-                    if (data.error) {
-                        throw new Error(data.error.message);
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error?.message || `HTTP ${response.status}`);
                     }
                     
+                    data = await response.json();
+                    
                     if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
-                        throw new Error('Invalid response structure');
+                        throw new Error('Invalid response from Gemini API');
                     }
                     
                     return data.candidates[0].content.parts[0].text;
                     
                 } else if (CONFIG.apiProvider === 'openai') {
-                    response = await fetch(API_ENDPOINTS.openai, {
+                    response = await fetch('https://api.openai.com/v1/chat/completions', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -630,16 +817,20 @@ https://www.facebook.com/ads/library/?id=..."
                         })
                     });
                     
-                    const data = await response.json();
-                    
-                    if (data.error) {
-                        throw new Error(data.error.message);
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error?.message || `HTTP ${response.status}`);
                     }
                     
+                    data = await response.json();
                     return data.choices[0].message.content;
                     
                 } else if (CONFIG.apiProvider === 'anthropic') {
-                    response = await fetch(API_ENDPOINTS.anthropic, {
+                    // NOTE: Anthropic API has CORS restrictions from browser
+                    // You need a proxy server OR use from backend
+                    // For MVP, we'll attempt direct call but warn user
+                    
+                    response = await fetch('https://api.anthropic.com/v1/messages', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -653,22 +844,387 @@ https://www.facebook.com/ads/library/?id=..."
                         })
                     });
                     
-                    const data = await response.json();
-                    
-                    if (data.error) {
-                        throw new Error(data.error.message);
+                    if (!response.ok) {
+                        // Common CORS error
+                        if (response.status === 0 || response.type === 'opaque') {
+                            throw new Error('CORS Error: Anthropic API requires backend proxy. Use Gemini or OpenAI instead.');
+                        }
+                        const errorData = await response.json();
+                        throw new Error(errorData.error?.message || `HTTP ${response.status}`);
                     }
                     
+                    data = await response.json();
                     return data.content[0].text;
                 }
                 
             } catch (error) {
                 console.error('AI API Error:', error);
-                throw new Error(`API Error: ${error.message}`);
+                
+                // User-friendly error messages
+                if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+                    throw new Error('Network error. Check your internet connection or try a different API provider.');
+                } else if (error.message.includes('API key not valid') || error.message.includes('401')) {
+                    throw new Error('Invalid API key. Please check your key in settings.');
+                } else if (error.message.includes('CORS')) {
+                    throw new Error(error.message);
+                } else if (error.message.includes('429')) {
+                    throw new Error('Rate limit exceeded. Please wait a moment and try again.');
+                } else {
+                    throw error;
+                }
             }
         }
 
-        // GENERATE AI IMAGE
+        // EXTRACT JSON FROM AI RESPONSE
+        function extractJSON(text) {
+            // Remove markdown code blocks
+            text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+            
+            // Find JSON object
+            const startIdx = text.indexOf('{');
+            const endIdx = text.lastIndexOf('}');
+            
+            if (startIdx === -1 || endIdx === -1) {
+                throw new Error('No JSON found in AI response');
+            }
+            
+            const jsonStr = text.substring(startIdx, endIdx + 1);
+            return JSON.parse(jsonStr);
+        }
+
+        // THE ORACLE
+        async function runOracle() {
+            const keyword = document.getElementById('oracle-keyword').value.trim();
+            const url = document.getElementById('oracle-url').value.trim();
+            const description = document.getElementById('oracle-description').value.trim();
+            
+            if (!keyword) {
+                alert('❌ Primary keyword required');
+                return;
+            }
+            
+            setLoading('oracle', true);
+            
+            const prompt = `You are PrePeak Pro's Oracle - an AI market intelligence system.
+
+Analyze this market opportunity:
+- KEYWORD: "${keyword}"
+${url ? `- LANDING PAGE: ${url}` : ''}
+${description ? `- PRODUCT: ${description}` : ''}
+
+Provide detailed analysis in JSON format:
+{
+  "saturation": 75,
+  "successProbability": 45,
+  "verdict": "PROCEED WITH CAUTION",
+  "analysis": "Multi-paragraph detailed analysis covering: market dynamics, competition landscape, entry barriers, success factors, risks...",
+  "pivotGaps": [
+    {"gap": "Underserved niche segment", "opportunity": "How to exploit this gap", "potential": "HIGH"},
+    {"gap": "Another gap", "opportunity": "Explanation", "potential": "MEDIUM"}
+  ]
+}
+
+Metrics:
+- saturation: 0-100% (how crowded the market is)
+- successProbability: 0-100% (realistic chance of top 10 ranking)
+- verdict: "GO ALL IN" / "PROCEED WITH CAUTION" / "PIVOT REQUIRED" / "ABANDON SHIP"
+- analysis: Comprehensive market intelligence report (200+ words)
+- pivotGaps: 3-5 specific gaps in saturated markets where user can differentiate
+
+If saturation >70%, provide PIVOT GAPS showing how to find opportunities in crowded markets.
+
+Respond ONLY with valid JSON, no markdown.`;
+
+            try {
+                const response = await callAI(prompt);
+                const data = extractJSON(response);
+                
+                // Display results
+                document.getElementById('oracle-saturation').textContent = data.saturation + '%';
+                document.getElementById('oracle-success').textContent = data.successProbability + '%';
+                document.getElementById('oracle-verdict').textContent = data.verdict;
+                document.getElementById('oracle-analysis').textContent = data.analysis;
+                
+                // Show pivot logic if high saturation
+                if (data.saturation >= 70 && data.pivotGaps && data.pivotGaps.length > 0) {
+                    const gapsHtml = data.pivotGaps.map(gap => `
+                        <div class="p-4 bg-black/50 border-l-4 border-[#ffcc00] rounded">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="font-bold text-[#ffcc00]">${gap.gap}</div>
+                                <span class="badge badge-${gap.potential.toLowerCase()}">${gap.potential}</span>
+                            </div>
+                            <div class="text-sm text-gray-300">${gap.opportunity}</div>
+                        </div>
+                    `).join('');
+                    
+                    document.getElementById('pivot-gaps').innerHTML = gapsHtml;
+                    document.getElementById('pivot-section').classList.remove('hidden');
+                } else {
+                    document.getElementById('pivot-section').classList.add('hidden');
+                }
+                
+                document.getElementById('oracle-results').classList.remove('hidden');
+                
+            } catch (error) {
+                alert('❌ ' + error.message);
+            } finally {
+                setLoading('oracle', false);
+            }
+        }
+
+        // KEYWORD INTELLIGENCE LAB
+        async function analyzeKeywords() {
+            const seed = document.getElementById('keyword-seed').value.trim();
+            
+            if (!seed) {
+                alert('❌ Seed keyword required');
+                return;
+            }
+            
+            setLoading('keyword', true);
+            
+            const prompt = `You are PrePeak Pro's Keyword Intelligence Lab.
+
+Analyze this seed keyword: "${seed}"
+
+Generate 10-15 related keywords with detailed metrics in JSON format:
+{
+  "keywords": [
+    {
+      "keyword": "project management software",
+      "volume": "49K",
+      "kd": 78,
+      "intent": "Commercial",
+      "opportunity": "Medium"
+    }
+  ]
+}
+
+Metrics:
+- keyword: Related keyword phrase
+- volume: Monthly search volume (format: "5K", "10K", "100K", "1M")
+- kd: Keyword Difficulty 0-100
+- intent: "Commercial", "Informational", "Transactional", "Navigational"
+- opportunity: "Low", "Medium", "High", "Very High" (based on volume vs difficulty)
+
+Provide 10-15 diverse keywords covering:
+- Direct variations
+- Long-tail opportunities
+- Question-based keywords
+- Competitor-focused terms
+
+Respond ONLY with valid JSON, no markdown.`;
+
+            try {
+                const response = await callAI(prompt);
+                const data = extractJSON(response);
+                
+                // Display table
+                const tbody = document.getElementById('keyword-tbody');
+                tbody.innerHTML = data.keywords.map(k => {
+                    const kdClass = k.kd < 30 ? 'badge-low' : k.kd < 50 ? 'badge-medium' : k.kd < 70 ? 'badge-high' : 'badge-extreme';
+                    const oppClass = k.opportunity === 'Very High' ? 'badge-low' : k.opportunity === 'High' ? 'badge-medium' : k.opportunity === 'Medium' ? 'badge-high' : 'badge-extreme';
+                    
+                    return `
+                        <tr>
+                            <td class="font-bold">${k.keyword}</td>
+                            <td>${k.volume}</td>
+                            <td><span class="badge ${kdClass}">${k.kd}%</span></td>
+                            <td><span class="text-xs text-gray-400">${k.intent}</span></td>
+                            <td><span class="badge ${oppClass}">${k.opportunity}</span></td>
+                        </tr>
+                    `;
+                }).join('');
+                
+                document.getElementById('keyword-results').classList.remove('hidden');
+                
+            } catch (error) {
+                alert('❌ ' + error.message);
+            } finally {
+                setLoading('keyword', false);
+            }
+        }
+
+        // COMPETITOR SPY
+        async function spyCompetitor() {
+            const url = document.getElementById('spy-url').value.trim();
+            const product = document.getElementById('spy-product').value.trim();
+            
+            if (!url) {
+                alert('❌ Competitor URL required');
+                return;
+            }
+            
+            setLoading('spy', true);
+            
+            const prompt = `You are PrePeak Pro's Competitor Spy - extract GTM (Go-To-Market) strategy.
+
+Analyze this competitor:
+- URL: ${url}
+${product ? `- Compare to: ${product}` : ''}
+
+Extract their GTM strategy in JSON format:
+{
+  "strategy": {
+    "positioning": "How they position themselves",
+    "targetAudience": "Who they target",
+    "valueProposition": "Their unique value",
+    "pricingStrategy": "Their pricing model",
+    "channels": ["Channel 1", "Channel 2"],
+    "messaging": "Key messaging themes"
+  },
+  "insights": "3-5 paragraph analysis with actionable recommendations for ${product || 'your product'} to compete or differentiate"
+}
+
+Provide deep GTM intelligence covering:
+- Market positioning
+- Target customer profile
+- Unique value proposition
+- Pricing strategy
+- Marketing channels
+- Messaging framework
+- Competitive advantages
+- Weaknesses to exploit
+
+Respond ONLY with valid JSON, no markdown.`;
+
+            try {
+                const response = await callAI(prompt);
+                const data = extractJSON(response);
+                
+                // Display strategy
+                const strategyHtml = Object.entries(data.strategy).map(([key, value]) => {
+                    const label = key.replace(/([A-Z])/g, ' $1').toUpperCase();
+                    const displayValue = Array.isArray(value) ? value.join(', ') : value;
+                    
+                    return `
+                        <div class="mb-4">
+                            <div class="text-xs font-bold text-[#00ff88] mb-1">${label}</div>
+                            <div class="text-sm text-gray-300">${displayValue}</div>
+                        </div>
+                    `;
+                }).join('');
+                
+                document.getElementById('spy-strategy').innerHTML = strategyHtml;
+                document.getElementById('spy-insights').textContent = data.insights;
+                document.getElementById('spy-results').classList.remove('hidden');
+                
+            } catch (error) {
+                alert('❌ ' + error.message);
+            } finally {
+                setLoading('spy', false);
+            }
+        }
+
+        // AD FACTORY
+        async function generateAds() {
+            const platform = document.getElementById('ad-platform').value;
+            const format = document.getElementById('ad-format').value;
+            const product = document.getElementById('ad-product').value.trim();
+            const audience = document.getElementById('ad-audience').value.trim();
+            const references = document.getElementById('ad-references').value.trim();
+            const generateImages = document.getElementById('ad-image-gen').checked;
+            
+            if (!product) {
+                alert('❌ Product/service required');
+                return;
+            }
+            
+            setLoading('ad', true);
+            
+            const formatCount = format === 'carousel' ? 10 : format === 'video' ? 1 : 3;
+            const formatDesc = format === 'carousel' ? '10-slide carousel' : format === 'video' ? 'video script' : 'single image ads';
+            
+            let prompt = `You are PrePeak Pro's Multi-Asset Ad Factory.
+
+Create ${formatCount} ${formatDesc} for ${platform} advertising.
+
+PRODUCT: ${product}
+TARGET AUDIENCE: ${audience || 'General audience'}
+${references ? `\n COMPETITOR REFERENCES (match this style):\n${references}\n` : ''}
+
+Generate ${formatCount} ad variations in JSON format:
+{
+  "ads": [
+    {
+      "headline": "...",
+      "body": "...",
+      "cta": "...",
+      ${format === 'video' ? '"script": "Full 30-60s video script with scenes",' : ''}
+      ${generateImages ? '"imagePrompt": "Detailed DALL-E prompt",' : ''}
+      "notes": "Why this works"
+    }
+  ]
+}
+
+Requirements:
+- headline: ${platform === 'google' ? '30' : '40'} chars max
+- body: 125 chars max
+- cta: Action-oriented (${format === 'video' ? '"Watch Now", "Learn More"' : '"Shop Now", "Sign Up", "Get Started"'})
+${format === 'carousel' ? '- Each carousel slide should tell a story (problem → solution → benefit → proof → CTA)' : ''}
+${format === 'video' ? '- Script should be 30-60 seconds, include hooks, key points, and strong CTA' : ''}
+${references ? '- MATCH the style, tone, and structure of competitor reference ads' : ''}
+
+Use proven copywriting frameworks (AIDA, PAS, BAB).
+
+Respond ONLY with valid JSON, no markdown.`;
+
+            try {
+                const response = await callAI(prompt);
+                const data = extractJSON(response);
+                
+                // Generate images if requested
+                if (generateImages && CONFIG.imageProvider) {
+                    for (let ad of data.ads) {
+                        if (ad.imagePrompt) {
+                            try {
+                                ad.imageUrl = await generateImage(ad.imagePrompt);
+                            } catch (e) {
+                                console.error('Image generation failed:', e);
+                            }
+                        }
+                    }
+                }
+                
+                // Display ads
+                const adsHtml = data.ads.map((ad, i) => `
+                    <div class="ad-preview p-6 rounded-lg">
+                        ${ad.imageUrl ? `<img src="${ad.imageUrl}" alt="Ad ${i+1}" class="w-full h-48 object-cover rounded mb-4">` : ''}
+                        <div class="text-xs text-gray-500 mb-3">${format.toUpperCase()} ${i+1}</div>
+                        <div class="mb-3">
+                            <div class="text-xs text-gray-500 mb-1">HEADLINE</div>
+                            <div class="font-bold text-lg text-[#00ff88]">${ad.headline}</div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="text-xs text-gray-500 mb-1">BODY</div>
+                            <div class="text-sm text-gray-300">${ad.body}</div>
+                        </div>
+                        ${ad.script ? `
+                            <div class="mb-3">
+                                <div class="text-xs text-gray-500 mb-1">VIDEO SCRIPT</div>
+                                <div class="text-xs text-gray-400 whitespace-pre-wrap">${ad.script}</div>
+                            </div>
+                        ` : ''}
+                        <div class="flex justify-between items-center">
+                            <span class="inline-block px-4 py-2 bg-[#00ff88] text-black font-bold text-xs rounded">
+                                ${ad.cta}
+                            </span>
+                            ${ad.notes ? `<span class="text-xs text-gray-500 italic">${ad.notes}</span>` : ''}
+                        </div>
+                    </div>
+                `).join('');
+                
+                document.getElementById('ad-container').innerHTML = adsHtml;
+                document.getElementById('ad-results').classList.remove('hidden');
+                
+            } catch (error) {
+                alert('❌ ' + error.message);
+            } finally {
+                setLoading('ad', false);
+            }
+        }
+
+        // IMAGE GENERATION
         async function generateImage(prompt) {
             if (!CONFIG.imageProvider || !CONFIG.imageApiKey) {
                 return null;
@@ -676,7 +1232,7 @@ https://www.facebook.com/ads/library/?id=..."
 
             try {
                 if (CONFIG.imageProvider === 'dalle') {
-                    const response = await fetch(API_ENDPOINTS.dalle, {
+                    const response = await fetch('https://api.openai.com/v1/images/generations', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -699,271 +1255,104 @@ https://www.facebook.com/ads/library/?id=..."
             }
         }
 
-        // SEO FORECAST
-        async function runSeoForecast() {
-            const keyword = document.getElementById('seo-keyword').value;
-            const url = document.getElementById('seo-url').value;
-            const description = document.getElementById('seo-description').value;
+        // GLOBAL FORECASTER
+        async function generateForecast() {
+            const objective = document.getElementById('forecast-objective').value;
+            const market = document.getElementById('forecast-market').value;
+            const budget = parseInt(document.getElementById('forecast-budget').value);
             
-            if (!keyword) {
-                alert('❌ Primary keyword required');
+            if (!budget || budget <= 0) {
+                alert('❌ Valid budget required');
                 return;
             }
             
-            setLoading('seo', true);
+            setLoading('forecast', true);
             
-            const prompt = `You are a market intelligence analyst. Analyze this SEO opportunity:
+            const prompt = `You are PrePeak Pro's Global Forecaster.
 
-KEYWORD: "${keyword}"
-${url ? `LANDING PAGE: ${url}` : ''}
-${description ? `PRODUCT: ${description}` : ''}
+Generate budget recommendations:
+- OBJECTIVE: ${objective}
+- TARGET MARKET: ${market}
+- MONTHLY BUDGET: $${budget} USD
 
-Provide analysis in JSON format:
+Provide forecast in JSON format:
 {
-  "saturation": 75,
-  "successProbability": 45,
-  "competition": "HIGH",
-  "analysis": "Detailed market analysis explaining saturation, competition landscape, and success factors...",
-  "keywords": [
-    {"keyword": "alternative keyword 1", "volume": "10K", "difficulty": "Medium"},
-    {"keyword": "alternative keyword 2", "volume": "5K", "difficulty": "Low"}
-  ]
+  "allocation": {
+    "meta": 45,
+    "google": 30,
+    "linkedin": 15,
+    "other": 10
+  },
+  "performance": "Multi-paragraph forecast explaining expected results: impressions, clicks, conversions, ROI. Include market-specific insights for ${market}. Provide realistic projections for ${objective} objective with $${budget} budget."
 }
 
-Base your analysis on:
-- Market saturation (0-100%): How crowded is this niche?
-- Success probability (0-100%): Likelihood of ranking in top 10
-- Competition level: LOW/MEDIUM/HIGH/EXTREME
-- Detailed analysis of market dynamics
-- 3-5 alternative/long-tail keywords
+allocation: percentage split across platforms (must total 100)
+performance: Detailed forecast with specific metrics and market insights (200+ words)
 
 Respond ONLY with valid JSON, no markdown.`;
 
             try {
                 const response = await callAI(prompt);
+                const data = extractJSON(response);
                 
-                // Parse JSON
-                let jsonMatch = response.match(/\{[\s\S]*\}/);
-                if (!jsonMatch) {
-                    throw new Error('No JSON found in response');
-                }
-                
-                const data = JSON.parse(jsonMatch[0]);
-                
-                // Display results
-                document.getElementById('saturation-value').textContent = data.saturation + '%';
-                document.getElementById('success-value').textContent = data.successProbability + '%';
-                document.getElementById('competition-value').textContent = data.competition;
-                document.getElementById('seo-analysis').textContent = data.analysis;
-                
-                // Display keywords
-                const keywordsHtml = data.keywords.map(k => `
-                    <div class="p-4 bg-black/50 border border-[#00ff8833] rounded">
-                        <div class="font-bold text-[#00ff88] mb-1">${k.keyword}</div>
-                        <div class="flex gap-4 text-xs text-gray-400">
-                            <span>Volume: ${k.volume}</span>
-                            <span>Difficulty: ${k.difficulty}</span>
+                // Display allocation
+                const allocationHtml = Object.entries(data.allocation).map(([platform, pct]) => {
+                    const amount = (budget * pct / 100).toFixed(0);
+                    return `
+                        <div class="p-4 bg-black/50 border border-[#00ff8833] rounded">
+                            <div class="text-xs text-gray-500 mb-1">${platform.toUpperCase()}</div>
+                            <div class="text-2xl font-bold text-[#00ff88]">${pct}%</div>
+                            <div class="text-sm text-gray-400 mt-1">$${amount}</div>
                         </div>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
                 
-                document.getElementById('keyword-suggestions').innerHTML = keywordsHtml;
-                document.getElementById('seo-results').classList.remove('hidden');
+                document.getElementById('forecast-allocation').innerHTML = allocationHtml;
                 
-            } catch (error) {
-                alert('❌ ' + error.message);
-            } finally {
-                setLoading('seo', false);
-            }
-        }
-
-        // AD CREATIVE GENERATION
-        async function generateAdCreative() {
-            const platform = document.getElementById('ad-platform').value;
-            const format = document.getElementById('ad-format').value;
-            const product = document.getElementById('ad-product').value;
-            const audience = document.getElementById('ad-audience').value;
-            const benefit = document.getElementById('ad-benefit').value;
-            const generateImages = document.getElementById('ad-image-gen').checked;
-            
-            if (!product) {
-                alert('❌ Product/service required');
-                return;
-            }
-            
-            setLoading('ad', true);
-            
-            const formatDesc = {
-                'single': '1 single image ad',
-                'carousel': '5 carousel frames',
-                'video': '1 video script (30-60s)'
-            };
-            
-            const prompt = `Create ${formatDesc[format]} for ${platform === 'both' ? 'Meta AND Google Ads' : platform} campaign.
-
-PRODUCT: ${product}
-TARGET AUDIENCE: ${audience || 'General audience'}
-KEY BENEFIT: ${benefit || 'Not specified'}
-
-Generate ${format === 'carousel' ? '5 different frames' : format === 'video' ? '1 video script' : '3 ad variations'}.
-
-For each ad provide:
-- headline (max 40 chars for Meta, 30 for Google)
-- body (max 125 chars)
-- cta (call to action)
-${generateImages ? '- imagePrompt (detailed prompt for AI image generation)' : ''}
-
-Respond in JSON:
-{
-  "ads": [
-    {
-      "headline": "...",
-      "body": "...",
-      "cta": "...",
-      ${generateImages ? '"imagePrompt": "..."' : ''}
-    }
-  ]
-}
-
-Make ads compelling, benefit-focused, and platform-optimized. Use proven copywriting frameworks (AIDA, PAS, etc.).
-
-Respond ONLY with valid JSON, no markdown.`;
-
-            try {
-                const response = await callAI(prompt);
+                // Display currency breakdown
+                const tbody = document.getElementById('currency-tbody');
+                tbody.innerHTML = Object.entries(CURRENCIES).map(([code, info]) => {
+                    const total = (budget * info.rate).toFixed(2);
+                    const daily = (total / 30).toFixed(2);
+                    
+                    return `
+                        <tr>
+                            <td class="font-bold">${code}</td>
+                            <td>${info.symbol}</td>
+                            <td>${info.symbol}${parseInt(total).toLocaleString()}</td>
+                            <td>${info.symbol}${parseInt(daily).toLocaleString()}</td>
+                        </tr>
+                    `;
+                }).join('');
                 
-                let jsonMatch = response.match(/\{[\s\S]*\}/);
-                if (!jsonMatch) {
-                    throw new Error('No JSON found in response');
-                }
-                
-                const data = JSON.parse(jsonMatch[0]);
-                
-                // Generate images if requested
-                if (generateImages && CONFIG.imageProvider) {
-                    for (let ad of data.ads) {
-                        if (ad.imagePrompt) {
-                            ad.imageUrl = await generateImage(ad.imagePrompt);
-                        }
-                    }
-                }
-                
-                // Display ads
-                displayAds(data.ads, 'ad-creatives-container');
-                document.getElementById('ad-results').classList.remove('hidden');
+                document.getElementById('forecast-performance').textContent = data.performance;
+                document.getElementById('forecast-results').classList.remove('hidden');
                 
             } catch (error) {
                 alert('❌ ' + error.message);
             } finally {
-                setLoading('ad', false);
+                setLoading('forecast', false);
             }
-        }
-
-        // COMPETITOR ANALYSIS
-        async function analyzeCompetitors() {
-            const urls = document.getElementById('training-urls').value;
-            const product = document.getElementById('training-product').value;
-            
-            if (!urls.trim()) {
-                alert('❌ Add competitor ad URLs');
-                return;
-            }
-            
-            if (!product.trim()) {
-                alert('❌ Enter your product');
-                return;
-            }
-            
-            setLoading('training', true);
-            
-            const prompt = `Analyze these competitor ad URLs and generate similar ads for my product.
-
-COMPETITOR AD URLS:
-${urls}
-
-MY PRODUCT: ${product}
-
-Task:
-1. Analyze the style, tone, copywriting patterns, and hooks used in competitor ads
-2. Generate 3 new ads for MY product that match the competitor style
-
-Respond in JSON:
-{
-  "styleAnalysis": "Detailed analysis of competitor ad patterns, tone, hooks, CTAs...",
-  "ads": [
-    {
-      "headline": "...",
-      "body": "...",
-      "cta": "...",
-      "styleNote": "Why this matches competitor style"
-    }
-  ]
-}
-
-Respond ONLY with valid JSON, no markdown.`;
-
-            try {
-                const response = await callAI(prompt);
-                
-                let jsonMatch = response.match(/\{[\s\S]*\}/);
-                if (!jsonMatch) {
-                    throw new Error('No JSON found in response');
-                }
-                
-                const data = JSON.parse(jsonMatch[0]);
-                
-                document.getElementById('style-analysis').textContent = data.styleAnalysis;
-                displayAds(data.ads, 'trained-ads-container');
-                document.getElementById('training-results').classList.remove('hidden');
-                
-            } catch (error) {
-                alert('❌ ' + error.message);
-            } finally {
-                setLoading('training', false);
-            }
-        }
-
-        // DISPLAY ADS
-        function displayAds(ads, containerId) {
-            const html = ads.map((ad, i) => `
-                <div class="ad-preview p-6 rounded-lg">
-                    ${ad.imageUrl ? `<img src="${ad.imageUrl}" alt="Ad ${i+1}" class="w-full h-48 object-cover rounded mb-4">` : ''}
-                    <div class="mb-3">
-                        <div class="text-xs text-gray-500 mb-1">HEADLINE</div>
-                        <div class="font-bold text-lg text-[#00ff88]">${ad.headline}</div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="text-xs text-gray-500 mb-1">BODY</div>
-                        <div class="text-sm text-gray-300">${ad.body}</div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="inline-block px-4 py-2 bg-[#00ff88] text-black font-bold text-xs rounded">
-                            ${ad.cta}
-                        </span>
-                        ${ad.styleNote ? `<span class="text-xs text-gray-500 italic">${ad.styleNote}</span>` : ''}
-                    </div>
-                </div>
-            `).join('');
-            
-            document.getElementById(containerId).innerHTML = html;
         }
 
         // LOADING STATE
         function setLoading(module, isLoading) {
+            const btn = document.getElementById(`${module}-btn`);
             const loader = document.getElementById(`${module}-loader`);
             const btnText = document.getElementById(`${module}-btn-text`);
             
             if (isLoading) {
+                btn.disabled = true;
                 loader.classList.remove('hidden');
                 btnText.classList.add('hidden');
             } else {
+                btn.disabled = false;
                 loader.classList.add('hidden');
                 btnText.classList.remove('hidden');
             }
         }
 
-        // Initialize
-        console.log('PrePeak Pro initialized');
+        console.log('PrePeak Pro initialized - All systems ready');
     </script>
 </body>
 </html>
