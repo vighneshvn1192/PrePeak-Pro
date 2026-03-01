@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrePeak Pro | AI Market Intelligence</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .page-content { display: none; }
+        .page-content.active { display: block; }
+    </style>
+</head>
+<body class="bg-slate-900 text-white min-h-screen font-sans">
+
+    <div id="auth-section" class="flex items-center justify-center min-h-screen">
+        <div class="bg-slate-800 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-slate-700">
+            <h1 class="text-3xl font-bold text-blue-400 text-center mb-2">PrePeak Pro</h1>
+            <p class="text-slate-400 text-center mb-8 text-sm">Validate your product before you build.</p>
+            
+            <input id="email" type="email" placeholder="Email" class="w-full p-3 mb-4 bg-slate-700 rounded-lg border border-slate-600 focus:outline-none focus:border-blue-500">
+            <input id="password" type="password" placeholder="Password" class="w-full p-3 mb-6 bg-slate-700 rounded-lg border border-slate-600 focus:outline-none focus:border-blue-500">
+            
+            <button onclick="handleAuth('login')" class="w-full bg-blue-600 hover:bg-blue-500 p-3 rounded-lg font-bold transition mb-4">Sign In</button>
+            <button onclick="handleAuth('signup')" class="w-full text-slate-400 text-sm hover:text-white underline text-center block">Create New Account (Instant)</button>
+            <div id="auth-msg" class="mt-4 text-center text-xs text-red-400"></div>
+        </div>
+    </div>
+
+    <div id="dashboard" class="hidden flex h-screen overflow-hidden">
+        <aside class="w-64 bg-slate-800 border-r border-slate-700 p-6 flex flex-col">
+            <h2 class="text-xl font-bold text-blue-400 mb-8">PrePeak Pro</h2>
+            <nav class="space-y-2 flex-1">
+                <button onclick="showPage('seo')" class="nav-btn w-full text-left p-3 rounded-lg hover:bg-slate-700 text-blue-400 font-bold">📈 SEO Hub</button>
+                <button onclick="showPage('sem')" class="nav-btn w-full text-left p-3 rounded-lg hover:bg-slate-700">🕵️ SEM Spy</button>
+                <button onclick="showPage('ad')" class="nav-btn w-full text-left p-3 rounded-lg hover:bg-slate-700">🎨 Ad Factory</button>
+                <button onclick="showPage('success')" class="nav-btn w-full text-left p-3 rounded-lg hover:bg-slate-700">🔮 Success AI</button>
+            </nav>
+            
+            <div class="mt-auto pt-6 border-t border-slate-700">
+                <p class="text-[10px] uppercase text-slate-500 font-bold mb-2 tracking-widest">Your API Key</p>
+                <input id="gemini-key" type="password" placeholder="Gemini API Key" class="w-full p-2 text-xs bg-slate-700 rounded border border-slate-600">
+                <button onclick="logout()" class="w-full mt-4 text-xs text-slate-500 hover:text-white">Logout</button>
+            </div>
+        </aside>
+
+        <main class="flex-1 p-10 overflow-y-auto">
+            
+            <div id="seo" class="page-content active">
+                <h2 class="text-2xl font-bold mb-6">SEO & Market Saturation</h2>
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 mb-8">
+                    <label class="block text-sm text-slate-400 mb-4">Analysis Range: <span id="range-val" class="text-blue-400">3 Months</span></label>
+                    <input type="range" min="1" max="5" value="3" oninput="updateRange(this.value)" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                </div>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                        <p class="text-slate-400 text-sm mb-1">Market Saturation</p>
+                        <h3 class="text-3xl font-bold text-green-400">34%</h3>
+                        <div class="w-full bg-slate-700 h-2 rounded-full mt-4"><div class="bg-green-500 h-full rounded-full" style="width: 34%"></div></div>
+                    </div>
+                    <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                        <p class="text-slate-400 text-sm mb-1">SEO Difficulty</p>
+                        <h3 class="text-3xl font-bold text-yellow-400">48/100</h3>
+                        <p class="text-xs text-slate-500 mt-4">Niche opportunity detected.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sem" class="page-content">
+                <h2 class="text-2xl font-bold mb-6">Competitor Intelligence</h2>
+                <div class="flex gap-4 mb-8">
+                    <input type="text" placeholder="Enter competitor URL..." class="flex-1 p-3 bg-slate-800 rounded-lg border border-slate-700 outline-none focus:border-blue-500">
+                    <button onclick="alert('Analyzing Competitor...')" class="bg-blue-600 px-6 py-3 rounded-lg font-bold">Spy</button>
