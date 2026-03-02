@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PrePeak Pro | Market Intelligence Engine</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        body { 
+        body {
             font-family: 'IBM Plex Mono', monospace;
-            background: #000000;
+            background: #000;
             color: #00ff88;
             overflow-x: hidden;
-            position: relative;
         }
-        
+
         body::before {
             content: '';
             position: fixed;
@@ -28,28 +28,36 @@
             pointer-events: none;
             z-index: 0;
         }
-        
-        .orbitron { font-family: 'Orbitron', sans-serif; }
-        
-        .view-layer { 
-            display: none; 
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
             position: relative;
             z-index: 1;
         }
-        .view-layer.active { display: flex; }
-        
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        
-        .cyber-box {
-            background: rgba(0, 20, 10, 0.9);
-            border: 2px solid #00ff88;
-            box-shadow: 
-                0 0 20px rgba(0, 255, 136, 0.3),
-                inset 0 0 30px rgba(0, 255, 136, 0.05);
-            position: relative;
+
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+
+        /* Screens */
+        .screen { display: none; }
+        .screen.active { display: block; animation: fadeIn 0.3s; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-        
+
+        /* Cyber Box */
+        .cyber-box {
+            background: rgba(0, 20, 10, 0.95);
+            border: 2px solid #00ff88;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
         .cyber-box::before {
             content: '';
             position: absolute;
@@ -58,7 +66,7 @@
             border-top: 4px solid #ff0066;
             border-left: 4px solid #ff0066;
         }
-        
+
         .cyber-box::after {
             content: '';
             position: absolute;
@@ -67,774 +75,1019 @@
             border-bottom: 4px solid #ff0066;
             border-right: 4px solid #ff0066;
         }
-        
-        .glow-text {
-            text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
         }
-        
-        .btn-cyber {
-            background: linear-gradient(135deg, #00ff88, #00cc6a);
-            color: #000;
-            border: none;
+
+        .header h1 {
+            font-size: 4rem;
             font-weight: 900;
+            background: linear-gradient(135deg, #00ff88, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            color: #888;
             text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
             letter-spacing: 2px;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
         }
-        
-        .btn-cyber::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s;
-        }
-        
-        .btn-cyber:hover::before {
-            left: 100%;
-        }
-        
-        .btn-cyber:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
-            transform: translateY(-2px);
-        }
-        
-        .btn-cyber:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .nav-btn {
-            background: transparent;
-            border: 1px solid #00ff8844;
-            color: #00ff88;
-            transition: all 0.3s;
-        }
-        
-        .nav-btn:hover {
-            background: rgba(0, 255, 136, 0.1);
-            border-color: #00ff88;
-        }
-        
-        .nav-btn.active {
-            background: rgba(0, 255, 136, 0.2);
-            border-color: #00ff88;
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
-        }
-        
-        input, select, textarea {
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
             background: rgba(0, 0, 0, 0.8);
-            border: 1px solid #00ff8844;
+            border: 1px solid rgba(0, 255, 136, 0.4);
+            border-radius: 0.5rem;
             color: #00ff88;
-            outline: none;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1rem;
         }
-        
-        input:focus, select:focus, textarea:focus {
+
+        .form-input:focus {
+            outline: none;
             border-color: #00ff88;
             box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
         }
-        
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
+
+        /* Autocomplete */
+        .autocomplete-container {
+            position: relative;
         }
-        
-        .stat-number {
-            font-family: 'Orbitron', sans-serif;
+
+        .autocomplete-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(0, 20, 10, 0.98);
+            border: 1px solid #00ff88;
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .autocomplete-list.show {
+            display: block;
+        }
+
+        .autocomplete-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+        }
+
+        .autocomplete-item:hover {
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #00ff88, #00cc6a);
+            color: #000;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
             font-weight: 900;
-            font-size: 6rem;
-            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
         }
-        
-        .pulse-glow {
-            animation: pulseGlow 2s ease-in-out infinite;
+
+        .btn-primary:hover:not(:disabled) {
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
+            transform: translateY(-2px);
         }
-        
-        @keyframes pulseGlow {
-            0%, 100% { opacity: 1; text-shadow: 0 0 20px currentColor; }
-            50% { opacity: 0.7; text-shadow: 0 0 40px currentColor; }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
-        
-        .loader-dots::after {
+
+        .btn-link {
+            background: none;
+            border: none;
+            color: #00ccff;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        /* Results */
+        .result-card {
+            background: rgba(0, 20, 10, 0.9);
+            border: 2px solid rgba(0, 255, 136, 0.4);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .badge-green {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            border: 1px solid #00ff88;
+        }
+
+        .badge-red {
+            background: rgba(255, 0, 102, 0.2);
+            color: #ff0066;
+            border: 1px solid #ff0066;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            color: #888;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+        }
+
+        .competitor-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .competitor-item {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .competitor-item h4 {
+            color: #00ff88;
+            margin-bottom: 0.5rem;
+        }
+
+        .competitor-item p {
+            color: #ccc;
+            font-size: 0.85rem;
+        }
+
+        .trend-chart {
+            height: 100px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            display: flex;
+            align-items: flex-end;
+            gap: 0.5rem;
+        }
+
+        .trend-bar {
+            flex: 1;
+            background: linear-gradient(to top, #00ff88, #00cc6a);
+            border-radius: 0.25rem;
+            min-height: 10px;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .alert-error {
+            background: rgba(255, 0, 102, 0.1);
+            border: 1px solid #ff0066;
+            color: #ff0066;
+        }
+
+        .alert-info {
+            background: rgba(0, 204, 255, 0.1);
+            border: 1px solid #00ccff;
+            color: #00ccff;
+        }
+
+        .loading {
+            display: inline-block;
+        }
+
+        .loading::after {
             content: '...';
             animation: dots 1.5s steps(4, end) infinite;
         }
-        
+
         @keyframes dots {
             0%, 20% { content: ''; }
             40% { content: '.'; }
             60% { content: '..'; }
             80%, 100% { content: '...'; }
         }
-        
-        .api-status {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
-        
-        .api-status.connected { background: #00ff88; box-shadow: 0 0 10px #00ff88; }
-        .api-status.disconnected { background: #ff0066; box-shadow: 0 0 10px #ff0066; }
-        
-        .ad-preview {
-            background: #111;
-            border: 1px solid #00ff8833;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .ad-preview::before {
-            content: 'PREVIEW';
+
+        .hidden { display: none !important; }
+
+        .logout-btn {
             position: absolute;
-            top: 10px; right: 10px;
-            font-size: 0.6rem;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(255, 0, 102, 0.2);
+            border: 1px solid #ff0066;
             color: #ff0066;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #00ff8833;
-        }
-        
-        th {
-            font-weight: 700;
-            color: #00ff88;
-            background: rgba(0, 255, 136, 0.1);
-        }
-        
-        tr:hover {
-            background: rgba(0, 255, 136, 0.05);
-        }
-        
-        .alert-box {
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            border-left: 4px solid;
-        }
-        
-        .alert-success {
-            background: rgba(0, 255, 136, 0.1);
-            border-color: #00ff88;
-            color: #00ff88;
-        }
-        
-        .alert-danger {
-            background: rgba(255, 0, 102, 0.1);
-            border-color: #ff0066;
-            color: #ff0066;
-        }
-        
-        .alert-warning {
-            background: rgba(255, 204, 0, 0.1);
-            border-color: #ffcc00;
-            color: #ffcc00;
-        }
-        
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: 700;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: bold;
             text-transform: uppercase;
+            font-size: 0.8rem;
         }
-        
-        .badge-low { background: #00ff8833; color: #00ff88; }
-        .badge-medium { background: #ffcc0033; color: #ffcc00; }
-        .badge-high { background: #ff990033; color: #ff9900; }
-        .badge-extreme { background: #ff006633; color: #ff0066; }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            color: #00ff88;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: #00ff88;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.5rem; }
+            .logout-btn { position: static; margin-bottom: 1rem; }
+            .tabs { flex-direction: column; }
+        }
     </style>
 </head>
-<body class="min-h-screen">
-
-    <!-- LOGIN SCREEN -->
-    <div id="view-login" class="view-layer active h-screen w-full items-center justify-center p-6">
-        <div class="cyber-box p-12 rounded-lg w-full max-w-md">
-            <div class="text-center mb-12">
-                <h1 class="orbitron text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#00ff88] to-[#00ccff] glow-text mb-3">
-                    PREPEAK
-                </h1>
-                <div class="flex items-center justify-center gap-2 text-xs text-[#ff0066] font-bold">
-                    <span class="w-8 h-[2px] bg-[#ff0066]"></span>
-                    <span>MARKET INTELLIGENCE</span>
-                    <span class="w-8 h-[2px] bg-[#ff0066]"></span>
-                </div>
+<body>
+    <div class="container">
+        <!-- LOGIN SCREEN -->
+        <div id="loginScreen" class="screen active">
+            <div class="header">
+                <h1 class="orbitron">PREPEAK PRO</h1>
+                <p style="color: #888; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 3px;">Market Intelligence Engine</p>
             </div>
-            
-            <div class="space-y-4">
-                <input id="username" type="text" placeholder="ACCESS ID" 
-                    class="w-full p-4 rounded font-mono text-sm tracking-wider" value="demo">
-                <input id="password" type="password" placeholder="SECURITY KEY" 
-                    class="w-full p-4 rounded font-mono text-sm tracking-wider" value="test123">
-                <button onclick="authenticate()" 
-                    class="btn-cyber w-full p-4 rounded font-bold text-sm">
-                    INITIALIZE SYSTEM
+
+            <div class="cyber-box" style="max-width: 500px; margin: 0 auto;">
+                <h2 class="orbitron" style="text-align: center; margin-bottom: 2rem; font-size: 1.5rem;">SYSTEM ACCESS</h2>
+                
+                <div id="loginError" class="alert alert-error hidden"></div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" id="loginEmail" class="form-input" placeholder="your@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="loginPassword" class="form-input" placeholder="Enter password" required>
+                </div>
+
+                <button class="btn-primary" id="loginBtn" onclick="handleAuth()">
+                    <span class="loading hidden" id="loginLoading">AUTHENTICATING</span>
+                    <span id="loginBtnText">LOGIN</span>
+                </button>
+
+                <p style="text-align: center; margin-top: 1.5rem; color: #888; font-size: 0.85rem;">
+                    New user? Auto-signup on first login
+                </p>
+            </div>
+        </div>
+
+        <!-- API CONFIGURATION SCREEN -->
+        <div id="apiConfigScreen" class="screen">
+            <button class="logout-btn" onclick="logout()">LOGOUT</button>
+
+            <div class="header">
+                <h1 class="orbitron">API CONFIGURATION</h1>
+                <p style="color: #888; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 3px;">Configure AI Engine</p>
+            </div>
+
+            <div class="cyber-box" style="max-width: 700px; margin: 0 auto;">
+                <div class="alert alert-info">
+                    <strong>🔑 API Key Required</strong><br>
+                    PrePeak uses AI to analyze markets. You need an API key to proceed.
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">AI Provider</label>
+                    <select id="apiProvider" class="form-input">
+                        <option value="anthropic">Anthropic Claude (Recommended)</option>
+                        <option value="openai">OpenAI GPT-4</option>
+                        <option value="gemini">Google Gemini</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">API Key</label>
+                    <input type="password" id="apiKeyInput" class="form-input" placeholder="sk-ant-...">
+                    <p style="font-size: 0.75rem; color: #666; margin-top: 0.5rem;">
+                        <strong id="providerHelp">Get key: console.anthropic.com/settings/keys</strong>
+                    </p>
+                </div>
+
+                <div style="background: rgba(0, 255, 136, 0.05); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 0.5rem; padding: 1rem; margin-bottom: 1.5rem;">
+                    <p style="font-size: 0.85rem; color: #ccc; line-height: 1.6;">
+                        <strong style="color: #00ff88;">How to get API keys:</strong><br>
+                        • <strong>Claude:</strong> console.anthropic.com → API Keys → Create Key<br>
+                        • <strong>OpenAI:</strong> platform.openai.com/api-keys → Create new secret key<br>
+                        • <strong>Gemini:</strong> makersuite.google.com/app/apikey → Get API key
+                    </p>
+                </div>
+
+                <button class="btn-primary" onclick="saveApiConfig()">
+                    SAVE & CONTINUE
                 </button>
             </div>
         </div>
-    </div>
 
-    <!-- API CONFIGURATION -->
-    <div id="view-config" class="view-layer h-screen w-full items-center justify-center p-6 overflow-y-auto">
-        <div class="cyber-box p-12 rounded-lg w-full max-w-3xl my-8">
-            <h2 class="orbitron text-3xl font-black text-center mb-8 glow-text">
-                AI ENGINE CONFIGURATION
-            </h2>
-            
-            <div class="space-y-6">
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-xs font-bold mb-2 text-[#00ff88]">PRIMARY ENGINE</label>
-                        <select id="api-provider" onchange="updateApiConfig()" 
-                            class="w-full p-4 rounded font-mono text-sm">
-                            <option value="gemini">Google Gemini Pro</option>
-                            <option value="openai">OpenAI GPT-4</option>
-                            <option value="anthropic">Anthropic Claude</option>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-xs font-bold mb-2 text-[#00ff88]">API KEY</label>
-                        <input id="api-key" type="password" placeholder="sk-..." 
-                            class="w-full p-4 rounded font-mono text-xs">
-                    </div>
-                </div>
-                
-                <div id="api-help" class="text-xs text-gray-500 p-4 bg-black/50 rounded">
-                    <p class="font-bold text-[#00ff88] mb-2">GET API KEY:</p>
-                    <ul class="space-y-1 list-disc list-inside">
-                        <li>Gemini: <a href="https://makersuite.google.com/app/apikey" target="_blank" class="text-[#00ccff] hover:underline">makersuite.google.com/app/apikey</a></li>
-                        <li>OpenAI: <a href="https://platform.openai.com/api-keys" target="_blank" class="text-[#00ccff] hover:underline">platform.openai.com/api-keys</a></li>
-                        <li>Claude: <a href="https://console.anthropic.com/settings/keys" target="_blank" class="text-[#00ccff] hover:underline">console.anthropic.com/settings/keys</a></li>
-                    </ul>
-                </div>
-                
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold mb-2 text-[#00ff88]">IMAGE ENGINE (Optional)</label>
-                        <select id="image-provider" class="w-full p-4 rounded font-mono text-sm">
-                            <option value="">None (Text Only)</option>
-                            <option value="dalle">OpenAI DALL-E 3</option>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-xs font-bold mb-2 text-[#00ff88]">IMAGE API KEY</label>
-                        <input id="image-api-key" type="password" placeholder="Optional" 
-                            class="w-full p-4 rounded font-mono text-xs">
-                    </div>
-                </div>
-                
-                <button onclick="activateSystem()" 
-                    class="btn-cyber w-full p-4 rounded font-bold text-sm">
-                    ACTIVATE SYSTEM
+        <!-- MAIN APP SCREEN -->
+        <div id="appScreen" class="screen">
+            <button class="logout-btn" onclick="logout()">LOGOUT</button>
+
+            <div class="header">
+                <h1 class="orbitron">PREPEAK PRO</h1>
+                <p style="color: #888; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 3px;">
+                    Logged in as <span id="userEmail"></span>
+                </p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active orbitron" onclick="switchTab('prediction')">
+                    🎯 PREDICTION MODEL
                 </button>
+                <button class="tab-btn orbitron" onclick="switchTab('saturation')">
+                    📊 SATURATION INDEX
+                </button>
+            </div>
+
+            <!-- PREDICTION MODEL TAB -->
+            <div id="predictionTab" class="tab-content">
+                <div class="cyber-box">
+                    <h2 class="orbitron" style="margin-bottom: 2rem; font-size: 1.5rem;">MARKET PREDICTION ANALYSIS</h2>
+                    
+                    <div class="form-group autocomplete-container">
+                        <label class="form-label">Product / Keyword</label>
+                        <input type="text" id="predictionKeyword" class="form-input" 
+                            placeholder="e.g., wireless earbuds" 
+                            autocomplete="off"
+                            oninput="handleAutocomplete(this.value)">
+                        <div id="autocompleteList" class="autocomplete-list"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Product Category (Optional)</label>
+                        <select id="productCategory" class="form-input">
+                            <option value="">Auto-detect</option>
+                            <option value="ecommerce">E-commerce Product</option>
+                            <option value="saas">SaaS / Software</option>
+                            <option value="service">Service</option>
+                        </select>
+                    </div>
+
+                    <button class="btn-primary" id="predictionBtn" onclick="runPredictionAnalysis()">
+                        <span class="loading hidden" id="predictionLoading">ANALYZING</span>
+                        <span id="predictionBtnText">RUN PREDICTION ANALYSIS</span>
+                    </button>
+                </div>
+
+                <!-- Prediction Results -->
+                <div id="predictionResults" class="hidden" style="margin-top: 2rem;"></div>
+            </div>
+
+            <!-- SATURATION INDEX TAB -->
+            <div id="saturationTab" class="tab-content hidden">
+                <div class="cyber-box">
+                    <h2 class="orbitron" style="margin-bottom: 2rem; font-size: 1.5rem;">COMPETITOR URL ANALYSIS</h2>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Competitor URL</label>
+                        <input type="url" id="competitorUrl" class="form-input" 
+                            placeholder="https://competitor.com/product">
+                        <p style="font-size: 0.75rem; color: #666; margin-top: 0.5rem;">
+                            Enter competitor product page, landing page, or website
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Your Product (For Comparison)</label>
+                        <input type="text" id="yourProduct" class="form-input" 
+                            placeholder="Your product name">
+                    </div>
+
+                    <button class="btn-primary" id="saturationBtn" onclick="runSaturationAnalysis()">
+                        <span class="loading hidden" id="saturationLoading">ANALYZING</span>
+                        <span id="saturationBtnText">ANALYZE COMPETITOR</span>
+                    </button>
+                </div>
+
+                <!-- Saturation Results -->
+                <div id="saturationResults" class="hidden" style="margin-top: 2rem;"></div>
             </div>
         </div>
-    </div>
-
-    <!-- MAIN DASHBOARD -->
-    <div id="view-dashboard" class="view-layer h-screen w-full overflow-hidden">
-        <!-- Sidebar -->
-        <aside class="w-72 bg-black/90 border-r-2 border-[#00ff8844] p-6 flex flex-col shrink-0">
-            <div class="mb-12">
-                <h2 class="orbitron text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#00ff88] to-[#00ccff] glow-text">
-                    PREPEAK
-                </h2>
-                <div class="flex items-center gap-2 mt-2 text-xs">
-                    <span id="api-status" class="api-status disconnected"></span>
-                    <span id="api-label" class="text-gray-500">DISCONNECTED</span>
-                </div>
-            </div>
-            
-            <nav class="space-y-3 flex-1 overflow-y-auto no-scrollbar">
-                <button onclick="switchTab('oracle')" 
-                    class="nav-btn active w-full text-left p-4 rounded text-sm font-bold uppercase">
-                    <span class="text-[#ff0066]">▶</span> THE ORACLE
-                </button>
-                <button onclick="switchTab('keywords')" 
-                    class="nav-btn w-full text-left p-4 rounded text-sm font-bold uppercase">
-                    <span class="text-[#ff0066]">▶</span> KEYWORD LAB
-                </button>
-                <button onclick="switchTab('spy')" 
-                    class="nav-btn w-full text-left p-4 rounded text-sm font-bold uppercase">
-                    <span class="text-[#ff0066]">▶</span> COMPETITOR SPY
-                </button>
-                <button onclick="switchTab('ads')" 
-                    class="nav-btn w-full text-left p-4 rounded text-sm font-bold uppercase">
-                    <span class="text-[#ff0066]">▶</span> AD FACTORY
-                </button>
-                <button onclick="switchTab('forecaster')" 
-                    class="nav-btn w-full text-left p-4 rounded text-sm font-bold uppercase">
-                    <span class="text-[#ff0066]">▶</span> GLOBAL FORECASTER
-                </button>
-            </nav>
-            
-            <button onclick="logout()" 
-                class="w-full p-3 bg-red-900/30 border border-red-500/50 rounded text-xs font-bold text-red-400 hover:bg-red-900/50 mt-4">
-                DISCONNECT
-            </button>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="flex-1 overflow-y-auto bg-black/80 p-8 no-scrollbar">
-            
-            <!-- THE ORACLE TAB -->
-            <div id="tab-oracle" class="tab-content active max-w-6xl mx-auto">
-                <div class="mb-8">
-                    <h3 class="orbitron text-4xl font-black mb-2 glow-text">THE ORACLE</h3>
-                    <p class="text-sm text-gray-400">Success Prediction Model: Market Saturation vs Success Probability</p>
-                </div>
-                
-                <div class="cyber-box p-8 rounded-lg mb-8">
-                    <div class="grid md:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <label class="block text-xs font-bold mb-2">PRIMARY KEYWORD</label>
-                            <input id="oracle-keyword" type="text" placeholder="e.g., AI productivity tools" 
-                                class="w-full p-4 rounded font-mono text-sm">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-xs font-bold mb-2">LANDING PAGE URL (Optional)</label>
-                            <input id="oracle-url" type="text" placeholder="https://yourproduct.com" 
-                                class="w-full p-4 rounded font-mono text-sm">
-                        </div>
-                    </div>
-                    
-                    <div class="mb-6">
-                        <label class="block text-xs font-bold mb-2">PRODUCT DESCRIPTION</label>
-                        <textarea id="oracle-description" rows="3" placeholder="Describe your product or service..." 
-                            class="w-full p-4 rounded font-mono text-sm"></textarea>
-                    </div>
-                    
-                    <button onclick="runOracle()" id="oracle-btn"
-                        class="btn-cyber px-8 py-4 rounded font-bold text-sm">
-                        <span class="loader-dots hidden" id="oracle-loader">ANALYZING</span>
-                        <span id="oracle-btn-text">CONSULT THE ORACLE</span>
-                    </button>
-                </div>
-                
-                <!-- Results -->
-                <div id="oracle-results" class="hidden">
-                    <div class="grid md:grid-cols-3 gap-6 mb-8">
-                        <div class="cyber-box p-8 rounded-lg text-center">
-                            <div class="text-xs font-bold text-gray-400 mb-2">MARKET SATURATION</div>
-                            <div id="oracle-saturation" class="stat-number pulse-glow" style="color: #ff0066;">--%</div>
-                        </div>
-                        
-                        <div class="cyber-box p-8 rounded-lg text-center">
-                            <div class="text-xs font-bold text-gray-400 mb-2">SUCCESS PROBABILITY</div>
-                            <div id="oracle-success" class="stat-number pulse-glow" style="color: #00ff88;">--%</div>
-                        </div>
-                        
-                        <div class="cyber-box p-8 rounded-lg text-center">
-                            <div class="text-xs font-bold text-gray-400 mb-2">ORACLE VERDICT</div>
-                            <div id="oracle-verdict" class="text-3xl font-bold mt-4" style="color: #00ccff;">---</div>
-                        </div>
-                    </div>
-                    
-                    <div class="cyber-box p-8 rounded-lg mb-6">
-                        <h4 class="orbitron font-bold text-xl mb-4 text-[#00ff88]">MARKET INTELLIGENCE</h4>
-                        <div id="oracle-analysis" class="text-sm leading-relaxed text-gray-300"></div>
-                    </div>
-                    
-                    <!-- PIVOT LOGIC -->
-                    <div id="pivot-section" class="cyber-box p-8 rounded-lg mb-6 hidden">
-                        <h4 class="orbitron font-bold text-xl mb-4 text-[#ffcc00]">⚡ PIVOT LOGIC: GAP OPPORTUNITIES</h4>
-                        <p class="text-sm text-gray-400 mb-4">AI-detected gaps in this saturated market:</p>
-                        <div id="pivot-gaps" class="space-y-3"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- KEYWORD LAB TAB -->
-            <div id="tab-keywords" class="tab-content max-w-6xl mx-auto">
-                <div class="mb-8">
-                    <h3 class="orbitron text-4xl font-black mb-2 glow-text">KEYWORD INTELLIGENCE LAB</h3>
-                    <p class="text-sm text-gray-400">Search Volume, KD%, and Commercial Intent Analysis</p>
-                </div>
-                
-                <div class="cyber-box p-8 rounded-lg mb-8">
-                    <div class="mb-6">
-                        <label class="block text-xs font-bold mb-2">SEED KEYWORD</label>
-                        <input id="keyword-seed" type="text" placeholder="e.g., project management software" 
-                            class="w-full p-4 rounded font-mono text-sm">
-                    </div>
-                    
-                    <button onclick="analyzeKeywords()" id="keyword-btn"
-                        class="btn-cyber px-8 py-4 rounded font-bold text-sm">
-                        <span class="loader-dots hidden" id="keyword-loader">ANALYZING</span>
-                        <span id="keyword-btn-text">ANALYZE KEYWORDS</span>
-                    </button>
-                </div>
-                
-                <div id="keyword-results" class="hidden">
-                    <div class="cyber-box p-8 rounded-lg overflow-x-auto">
-                        <table id="keyword-table">
-                            <thead>
-                                <tr>
-                                    <th>KEYWORD</th>
-                                    <th>SEARCH VOLUME</th>
-                                    <th>KD%</th>
-                                    <th>INTENT</th>
-                                    <th>OPPORTUNITY</th>
-                                </tr>
-                            </thead>
-                            <tbody id="keyword-tbody">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- COMPETITOR SPY TAB -->
-            <div id="tab-spy" class="tab-content max-w-6xl mx-auto">
-                <div class="mb-8">
-                    <h3 class="orbitron text-4xl font-black mb-2 glow-text">COMPETITOR SPY</h3>
-                    <p class="text-sm text-gray-400">URL-Based GTM Strategy Extraction</p>
-                </div>
-                
-                <div class="cyber-box p-8 rounded-lg mb-8">
-                    <div class="mb-6">
-                        <label class="block text-xs font-bold mb-2">COMPETITOR URL</label>
-                        <input id="spy-url" type="text" placeholder="https://competitor.com" 
-                            class="w-full p-4 rounded font-mono text-sm">
-                    </div>
-                    
-                    <div class="mb-6">
-                        <label class="block text-xs font-bold mb-2">YOUR PRODUCT (For Comparison)</label>
-                        <input id="spy-product" type="text" placeholder="Your product name" 
-                            class="w-full p-4 rounded font-mono text-sm">
-                    </div>
-                    
-                    <button onclick="spyCompetitor()" id="spy-btn"
-                        class="btn-cyber px-8 py-4 rounded font-bold text-sm">
-                        <span class="loader-dots hidden" id="spy-loader">EXTRACTING</span>
-                        <span id="spy-btn-text">EXTRACT GTM STRATEGY</span>
-                    </button>
-                </div>
-                
-                <div id="spy-results" class="hidden space-y-6">
-                    <div class="cyber-box p-8 rounded-lg">
-                        <h4 class="orbitron font-bold text-xl mb-4 text-[#00ff88]">GTM STRATEGY BREAKDOWN</h4>
-                        <div id="spy-strategy" class="space-y-4"></div>
-                    </div>
-                    
-                    <div class="cyber-box p-8 rounded-lg">
-                        <h4 class="orbitron font-bold text-xl mb-4 text-[#00ff88]">ACTIONABLE INSIGHTS</h4>
-                        <div id="spy-insights" class="text-sm text-gray-300"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- AD FACTORY TAB -->
-            <div id="tab-ads" class="tab-content max-w-6xl mx-auto">
-                <div class="mb-8">
-                    <h3 class="orbitron text-4xl font-black mb-2 glow-text">MULTI-ASSET AD FACTORY</h3>
-                    <p class="text-sm text-gray-400">Image Ads, 10-Slide Carousels, Video Scripts</p>
-                </div>
-                
-                <div class="cyber-box p-8 rounded-lg mb-8">
-                    <div class="grid md:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <label class="block text-xs font-bold mb-2">AD PLATFORM</label>
-                            <select id="ad-platform" class="w-full p-4 rounded font-mono text-sm">
-                                <option value="meta">Meta (Facebook/Instagram)</option>
-                                <option value="google">Google Ads</option>
-                                <option value="both">Both Platforms</option>
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-xs font-bold mb-2">AD FORMAT</label>
-                            <select id="ad-format" class="w-full p-4 rounded font-mono text-sm">
-                                <option value="single">Single Image Ad</option>
-                                <option value="carousel">10-Slide Carousel</option>
-                                <option value="video">Video Script (30-60s)</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-6">
-                        <label class="block text-xs font-bold mb-2">PRODUCT/SERVICE</label>
-                        <input id="ad-product" type="text" placeholder="e.g., AI-powered project management tool" 
-                            class="w-full p-4 rounded font-mono text-sm">
-                    </div>
-                    
-                    <div class="mb-6">
-                        <label class="block text-xs font-bold mb-2">TARGET AUDIENCE</label>
-                        <input id="ad-audience" type="text" placeholder="e.g., Startup founders, 25-45, tech-savvy" 
-                            class="w-full p-4 rounded font-mono text-sm">
-                    </div>
-                    
-                    <div class="mb-6">
-                        <label class="block text-xs font-bold mb-2">COMPETITOR REFERENCE URLS (Optional - for style training)</label>
-                        <textarea id="ad-references" rows="3" placeholder="https://facebook.com/ads/library/?id=...
-https://facebook.com/ads/library/?id=..." 
-                            class="w-full p-4 rounded font-mono text-xs"></textarea>
-                    </div>
-                    
-                    <div class="flex items-center gap-4 mb-6">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input id="ad-image-gen" type="checkbox" class="w-5 h-5">
-                            <span class="text-xs font-bold">Generate AI Images</span>
-                        </label>
-                    </div>
-                    
-                    <button onclick="generateAds()" id="ad-btn"
-                        class="btn-cyber px-8 py-4 rounded font-bold text-sm">
-                        <span class="loader-dots hidden" id="ad-loader">GENERATING</span>
-                        <span id="ad-btn-text">GENERATE AD ASSETS</span>
-                    </button>
-                </div>
-                
-                <div id="ad-results" class="hidden">
-                    <div id="ad-container" class="card-grid"></div>
-                </div>
-            </div>
-
-            <!-- GLOBAL FORECASTER TAB -->
-            <div id="tab-forecaster" class="tab-content max-w-6xl mx-auto">
-                <div class="mb-8">
-                    <h3 class="orbitron text-4xl font-black mb-2 glow-text">GLOBAL FORECASTER</h3>
-                    <p class="text-sm text-gray-400">Budget Recommendations Across 10 Currencies</p>
-                </div>
-                
-                <div class="cyber-box p-8 rounded-lg mb-8">
-                    <div class="grid md:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <label class="block text-xs font-bold mb-2">CAMPAIGN OBJECTIVE</label>
-                            <select id="forecast-objective" class="w-full p-4 rounded font-mono text-sm">
-                                <option value="awareness">Brand Awareness</option>
-                                <option value="traffic">Website Traffic</option>
-                                <option value="leads">Lead Generation</option>
-                                <option value="conversions">Conversions/Sales</option>
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-xs font-bold mb-2">TARGET MARKET</label>
-                            <select id="forecast-market" class="w-full p-4 rounded font-mono text-sm">
-                                <option value="us">United States</option>
-                                <option value="india">India</option>
-                                <option value="uae">UAE</option>
-                                <option value="nigeria">Nigeria</option>
-                                <option value="uk">United Kingdom</option>
-                                <option value="eu">European Union</option>
-                                <option value="brazil">Brazil</option>
-                                <option value="australia">Australia</option>
-                                <option value="canada">Canada</option>
-                                <option value="global">Global (Multi-Region)</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-6">
-                        <label class="block text-xs font-bold mb-2">MONTHLY AD SPEND (USD)</label>
-                        <input id="forecast-budget" type="number" placeholder="5000" 
-                            class="w-full p-4 rounded font-mono text-sm" value="5000">
-                    </div>
-                    
-                    <button onclick="generateForecast()" id="forecast-btn"
-                        class="btn-cyber px-8 py-4 rounded font-bold text-sm">
-                        <span class="loader-dots hidden" id="forecast-loader">CALCULATING</span>
-                        <span id="forecast-btn-text">GENERATE FORECAST</span>
-                    </button>
-                </div>
-                
-                <div id="forecast-results" class="hidden space-y-6">
-                    <div class="cyber-box p-8 rounded-lg">
-                        <h4 class="orbitron font-bold text-xl mb-6 text-[#00ff88]">BUDGET ALLOCATION</h4>
-                        <div id="forecast-allocation" class="grid md:grid-cols-2 gap-6"></div>
-                    </div>
-                    
-                    <div class="cyber-box p-8 rounded-lg">
-                        <h4 class="orbitron font-bold text-xl mb-6 text-[#00ff88]">MULTI-CURRENCY BREAKDOWN</h4>
-                        <div class="overflow-x-auto">
-                            <table id="currency-table">
-                                <thead>
-                                    <tr>
-                                        <th>CURRENCY</th>
-                                        <th>SYMBOL</th>
-                                        <th>TOTAL BUDGET</th>
-                                        <th>DAILY BUDGET</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="currency-tbody">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    
-                    <div class="cyber-box p-8 rounded-lg">
-                        <h4 class="orbitron font-bold text-xl mb-4 text-[#00ff88]">PERFORMANCE FORECAST</h4>
-                        <div id="forecast-performance" class="text-sm text-gray-300"></div>
-                    </div>
-                </div>
-            </div>
-
-        </main>
     </div>
 
     <script>
-        // GLOBAL STATE
-        let CONFIG = {
-            apiProvider: 'gemini',
-            apiKey: '',
-            imageProvider: '',
-            imageApiKey: '',
-            isConnected: false
+        // ========================
+        // STATE MANAGEMENT
+        // ========================
+        
+        const APP_STATE = {
+            user: null,
+            apiKey: null,
+            apiProvider: 'anthropic',
+            currentTab: 'prediction'
         };
 
-        // CURRENCY DATA
-        const CURRENCIES = {
-            'USD': { symbol: '$', rate: 1, name: 'US Dollar' },
-            'INR': { symbol: '₹', rate: 83, name: 'Indian Rupee' },
-            'AED': { symbol: 'د.إ', rate: 3.67, name: 'UAE Dirham' },
-            'NGN': { symbol: '₦', rate: 1550, name: 'Nigerian Naira' },
-            'GBP': { symbol: '£', rate: 0.79, name: 'British Pound' },
-            'EUR': { symbol: '€', rate: 0.92, name: 'Euro' },
-            'BRL': { symbol: 'R$', rate: 5.0, name: 'Brazilian Real' },
-            'AUD': { symbol: 'A$', rate: 1.52, name: 'Australian Dollar' },
-            'CAD': { symbol: 'C$', rate: 1.36, name: 'Canadian Dollar' },
-            'JPY': { symbol: '¥', rate: 149, name: 'Japanese Yen' }
+        // Google Sheets Configuration
+        const GOOGLE_SHEETS_CONFIG = {
+            // REPLACE WITH YOUR GOOGLE SHEETS WEB APP URL
+            webAppUrl: 'YOUR_GOOGLE_SHEETS_WEB_APP_URL_HERE'
         };
 
-        // AUTH
-        function authenticate() {
-            const u = document.getElementById('username').value;
-            const p = document.getElementById('password').value;
+        // Keyword suggestions for autocomplete
+        const KEYWORD_SUGGESTIONS = [
+            'wireless earbuds', 'smart watch', 'fitness tracker', 'portable charger',
+            'bluetooth speaker', 'laptop stand', 'desk organizer', 'phone case',
+            'water bottle', 'yoga mat', 'resistance bands', 'protein powder',
+            'coffee maker', 'air fryer', 'vacuum cleaner', 'led lights',
+            'project management software', 'crm software', 'accounting software',
+            'email marketing tool', 'social media scheduler', 'video editing software'
+        ];
+
+        // ========================
+        // INITIALIZATION
+        // ========================
+
+        function init() {
+            loadFromLocalStorage();
             
-            if (u === 'demo' && p === 'test123') {
-                showView('view-config');
-            } else {
-                alert('❌ Invalid credentials. Use demo/test123');
+            // Update API help text on provider change
+            document.getElementById('apiProvider').addEventListener('change', function() {
+                const provider = this.value;
+                const helpText = {
+                    'anthropic': 'Get key: console.anthropic.com/settings/keys',
+                    'openai': 'Get key: platform.openai.com/api-keys',
+                    'gemini': 'Get key: makersuite.google.com/app/apikey'
+                };
+                document.getElementById('providerHelp').textContent = helpText[provider];
+            });
+        }
+
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('prepeakState');
+            if (saved) {
+                const state = JSON.parse(saved);
+                if (state.user) {
+                    APP_STATE.user = state.user;
+                    APP_STATE.apiKey = state.apiKey;
+                    APP_STATE.apiProvider = state.apiProvider || 'anthropic';
+                    
+                    if (APP_STATE.apiKey) {
+                        showScreen('appScreen');
+                        document.getElementById('userEmail').textContent = APP_STATE.user.email;
+                    } else {
+                        showScreen('apiConfigScreen');
+                    }
+                }
             }
         }
 
-        function updateApiConfig() {
-            CONFIG.apiProvider = document.getElementById('api-provider').value;
+        function saveToLocalStorage() {
+            localStorage.setItem('prepeakState', JSON.stringify(APP_STATE));
         }
 
-        function activateSystem() {
-            CONFIG.apiKey = document.getElementById('api-key').value;
-            CONFIG.apiProvider = document.getElementById('api-provider').value;
-            CONFIG.imageProvider = document.getElementById('image-provider').value;
-            CONFIG.imageApiKey = document.getElementById('image-api-key').value;
-            
-            if (!CONFIG.apiKey) {
-                alert('❌ API Key required');
+        // ========================
+        // AUTHENTICATION
+        // ========================
+
+        async function handleAuth() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                showError('loginError', 'Please enter email and password');
                 return;
             }
+
+            if (!validateEmail(email)) {
+                showError('loginError', 'Please enter a valid email address');
+                return;
+            }
+
+            setLoading('login', true);
+
+            try {
+                // Check if user exists in Google Sheets
+                const userData = await authenticateUser(email, password);
+                
+                APP_STATE.user = {
+                    email: email,
+                    authenticated: true
+                };
+                
+                saveToLocalStorage();
+                showScreen('apiConfigScreen');
+                
+            } catch (error) {
+                showError('loginError', error.message);
+            } finally {
+                setLoading('login', false);
+            }
+        }
+
+        async function authenticateUser(email, password) {
+            // In production, this would call your Google Sheets Web App
+            // For MVP, we'll simulate authentication
             
-            CONFIG.isConnected = true;
-            document.getElementById('api-status').classList.remove('disconnected');
-            document.getElementById('api-status').classList.add('connected');
-            document.getElementById('api-label').textContent = CONFIG.apiProvider.toUpperCase() + ' CONNECTED';
-            
-            showView('view-dashboard');
+            try {
+                // Simulated API call
+                // const response = await fetch(GOOGLE_SHEETS_CONFIG.webAppUrl, {
+                //     method: 'POST',
+                //     body: JSON.stringify({ action: 'auth', email, password })
+                // });
+                
+                // For MVP: Auto-signup on first login
+                return { email, authenticated: true };
+                
+            } catch (error) {
+                throw new Error('Authentication failed. Please check your credentials.');
+            }
         }
 
         function logout() {
-            CONFIG.isConnected = false;
-            showView('view-login');
+            localStorage.removeItem('prepeakState');
+            APP_STATE.user = null;
+            APP_STATE.apiKey = null;
+            showScreen('loginScreen');
         }
 
-        function showView(id) {
-            document.querySelectorAll('.view-layer').forEach(v => v.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-        }
+        // ========================
+        // API CONFIGURATION
+        // ========================
 
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.getElementById(`tab-${tab}`).classList.add('active');
-            
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-        }
+        function saveApiConfig() {
+            const apiKey = document.getElementById('apiKeyInput').value.trim();
+            const provider = document.getElementById('apiProvider').value;
 
-        // AI API CALL WITH BETTER ERROR HANDLING
-        async function callAI(prompt) {
-            if (!CONFIG.isConnected || !CONFIG.apiKey) {
-                throw new Error('System not connected. Configure API first.');
+            if (!apiKey) {
+                alert('❌ Please enter your API key');
+                return;
             }
 
+            APP_STATE.apiKey = apiKey;
+            APP_STATE.apiProvider = provider;
+            saveToLocalStorage();
+
+            showScreen('appScreen');
+            document.getElementById('userEmail').textContent = APP_STATE.user.email;
+        }
+
+        // ========================
+        // AUTOCOMPLETE
+        // ========================
+
+        function handleAutocomplete(value) {
+            const list = document.getElementById('autocompleteList');
+            
+            if (!value) {
+                list.classList.remove('show');
+                return;
+            }
+
+            const matches = KEYWORD_SUGGESTIONS.filter(keyword => 
+                keyword.toLowerCase().includes(value.toLowerCase())
+            ).slice(0, 5);
+
+            if (matches.length === 0) {
+                list.classList.remove('show');
+                return;
+            }
+
+            list.innerHTML = matches.map(keyword => 
+                `<div class="autocomplete-item" onclick="selectKeyword('${keyword}')">${keyword}</div>`
+            ).join('');
+            
+            list.classList.add('show');
+        }
+
+        function selectKeyword(keyword) {
+            document.getElementById('predictionKeyword').value = keyword;
+            document.getElementById('autocompleteList').classList.remove('show');
+        }
+
+        // Close autocomplete when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.autocomplete-container')) {
+                document.getElementById('autocompleteList').classList.remove('show');
+            }
+        });
+
+        // ========================
+        // PREDICTION ANALYSIS
+        // ========================
+
+        async function runPredictionAnalysis() {
+            const keyword = document.getElementById('predictionKeyword').value.trim();
+            const category = document.getElementById('productCategory').value;
+
+            if (!keyword) {
+                alert('❌ Please enter a product or keyword');
+                return;
+            }
+
+            setLoading('prediction', true);
+
             try {
-                let response, data;
+                const analysis = await callAI({
+                    action: 'prediction',
+                    keyword,
+                    category: category || 'auto'
+                });
+
+                displayPredictionResults(analysis);
                 
-                if (CONFIG.apiProvider === 'gemini') {
-                    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${CONFIG.apiKey}`;
+            } catch (error) {
+                alert('❌ Analysis failed: ' + error.message);
+                console.error(error);
+            } finally {
+                setLoading('prediction', false);
+            }
+        }
+
+        function displayPredictionResults(data) {
+            const resultsDiv = document.getElementById('predictionResults');
+            
+            const html = `
+                <!-- Status Banner -->
+                <div class="result-card" style="background: ${data.status === 'GREEN_LIGHT' ? 'rgba(0,255,136,0.1)' : 'rgba(255,0,102,0.1)'}; border-color: ${data.status === 'GREEN_LIGHT' ? '#00ff88' : '#ff0066'};">
+                    <div class="result-header">
+                        <h2 class="orbitron" style="font-size: 2rem; color: ${data.status === 'GREEN_LIGHT' ? '#00ff88' : '#ff0066'};">
+                            ${data.status === 'GREEN_LIGHT' ? '🟢 GREEN LIGHT' : '🔴 RED LIGHT'}
+                        </h2>
+                        <span class="badge badge-${data.status === 'GREEN_LIGHT' ? 'green' : 'red'}">
+                            ${data.saturationScore}% Saturated
+                        </span>
+                    </div>
+                    <p style="color: #ccc; font-size: 1.1rem;">${data.keyword}</p>
+                </div>
+
+                <!-- Key Metrics -->
+                <div class="result-card">
+                    <h3 class="orbitron" style="margin-bottom: 1.5rem; color: #00ff88;">KEY METRICS</h3>
+                    <div class="stat-grid">
+                        <div class="stat-item">
+                            <div class="stat-label">Search Volume</div>
+                            <div class="stat-value" style="color: #00ccff;">${data.searchVolume}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Saturation Score</div>
+                            <div class="stat-value" style="color: #ff0066;">${data.saturationScore}%</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Opportunity Score</div>
+                            <div class="stat-value" style="color: #00ff88;">${data.opportunityScore}%</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Active Competitors</div>
+                            <div class="stat-value" style="color: #ffcc00;">${data.activeCompetitors}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Related Searches -->
+                <div class="result-card">
+                    <h3 class="orbitron" style="margin-bottom: 1rem; color: #00ff88;">RELATED SEARCHES</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                        ${data.relatedSearches.map(search => 
+                            `<span style="background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); padding: 0.5rem 1rem; border-radius: 999px; font-size: 0.85rem;">${search}</span>`
+                        ).join('')}
+                    </div>
+                </div>
+
+                <!-- Top Competitors -->
+                <div class="result-card">
+                    <h3 class="orbitron" style="margin-bottom: 1rem; color: #00ff88;">TOP COMPETITORS</h3>
+                    <ul class="competitor-list">
+                        ${data.competitors.map(comp => `
+                            <li class="competitor-item">
+                                <h4>${comp.name}</h4>
+                                <p><strong>Platform:</strong> ${comp.platform}</p>
+                                <p><strong>Estimated Revenue:</strong> ${comp.revenue}</p>
+                                <p><strong>Market Share:</strong> ${comp.marketShare}%</p>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+
+                <!-- Trend Analysis -->
+                <div class="result-card">
+                    <h3 class="orbitron" style="margin-bottom: 1rem; color: #00ff88;">DEMAND TREND (12 Months)</h3>
+                    <p style="color: #888; font-size: 0.85rem; margin-bottom: 1rem;">
+                        Based on Amazon, Shopify, Google Shopping data
+                    </p>
+                    <div class="trend-chart">
+                        ${data.trendData.map(value => 
+                            `<div class="trend-bar" style="height: ${value}%;" title="${value}%"></div>`
+                        ).join('')}
+                    </div>
+                    <p style="text-align: center; margin-top: 1rem; color: #ccc;">
+                        Trend Direction: <strong style="color: ${data.trendDirection === 'UP' ? '#00ff88' : '#ff0066'};">${data.trendDirection}</strong>
+                    </p>
+                </div>
+
+                <!-- Market Analysis -->
+                <div class="result-card">
+                    <h3 class="orbitron" style="margin-bottom: 1rem; color: #00ff88;">MARKET ANALYSIS</h3>
+                    <p style="color: #ccc; line-height: 1.8; font-size: 0.95rem;">
+                        ${data.marketAnalysis}
+                    </p>
+                </div>
+
+                <!-- Recommendation -->
+                <div class="result-card" style="background: ${data.status === 'GREEN_LIGHT' ? 'rgba(0,255,136,0.05)' : 'rgba(255,0,102,0.05)'};">
+                    <h3 class="orbitron" style="margin-bottom: 1rem; color: ${data.status === 'GREEN_LIGHT' ? '#00ff88' : '#ff0066'};">
+                        ${data.status === 'GREEN_LIGHT' ? '✓' : '✗'} RECOMMENDATION
+                    </h3>
+                    <p style="color: #ccc; line-height: 1.8; font-size: 1rem;">
+                        ${data.recommendation}
+                    </p>
+                </div>
+            `;
+
+            resultsDiv.innerHTML = html;
+            resultsDiv.classList.remove('hidden');
+        }
+
+        // ========================
+        // SATURATION ANALYSIS
+        // ========================
+
+        async function runSaturationAnalysis() {
+            const url = document.getElementById('competitorUrl').value.trim();
+            const yourProduct = document.getElementById('yourProduct').value.trim();
+
+            if (!url) {
+                alert('❌ Please enter a competitor URL');
+                return;
+            }
+
+            if (!validateUrl(url)) {
+                alert('❌ Please enter a valid URL');
+                return;
+            }
+
+            setLoading('saturation', true);
+
+            try {
+                const analysis = await callAI({
+                    action: 'saturation',
+                    url,
+                    yourProduct
+                });
+
+                displaySaturationResults(analysis);
+                
+            } catch (error) {
+                alert('❌ Analysis failed: ' + error.message);
+                console.error(error);
+            } finally {
+                setLoading('saturation', false);
+            }
+        }
+
+        function displaySaturationResults(data) {
+            const resultsDiv = document.getElementById('saturationResults');
+            
+            const html = `
+                <!-- Competitor Overview -->
+                <div class="result-card">
+                    <div class="result-header">
+                        <h2 class="orbitron" style="font-size: 2rem;">${data.competitorName}</h2>
+                        <span class="badge badge-${data.marketPosition === 'LEADER' ? 'red' : 'green'}">
+                            ${data.marketPosition}
+                        </span>
+                    </div>
+                    <p style="color: #888;">${data.url}</p>
+                </div>
+
+                <!-- Extracted Data -->
+                <div class="result-card">
+                    <h3 class="orbitron" style="margin-bottom: 1.5rem; color: #00ff88;">COMPETITOR INTELLIGENCE</h3>
+                    <div class="stat-grid">
+                        <div class="stat-item">
+                            <div class="stat-label">Product Category</div>
+                            <div class="stat-value" style="font-size: 1.2rem;">${data.category}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Pricing</div>
+                            <div class="stat-value" style="color: #00ccff;">${data.pricing}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Est. Market Share</div>
+                            <div class="stat-value" style="color: #ffcc00;">${data.marketShare}%</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Traffic Rank</div>
+                            <div class="stat-value" style="font-size: 1.2rem;">#${data.trafficRank}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Value Proposition -->
+                <div class="result-card">
+                    <h3 class="orbitron" style="margin-bottom: 1rem; color: #00ff88;">VALUE PROPOSITION</h3>
+                    <p style="color: #ccc; line-height: 1.8;">${data.valueProposition}</p>
+                </div>
+
+                <!-- Target Audience -->
+                <div class="result-card">
+                    <h3 class="orbitron" style="margin-bottom: 1rem; color: #00ff88;">TARGET AUDIENCE</h3>
+                    <p style="color: #ccc; line-height: 1.8;">${data.targetAudience}</p>
+                </div>
+
+                <!-- Competitive Analysis -->
+                <div class="result-card">
+                    <h3 class="orbitron" style="margin-bottom: 1rem; color: #00ff88;">COMPETITIVE POSITIONING</h3>
+                    <p style="color: #ccc; line-height: 1.8; margin-bottom: 1.5rem;">${data.competitiveAnalysis}</p>
                     
-                    response = await fetch(url, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{ parts: [{ text: prompt }] }]
-                        })
-                    });
+                    <h4 style="color: #00ff88; margin-bottom: 0.5rem;">Strengths:</h4>
+                    <ul style="list-style: none; padding: 0; margin-bottom: 1rem;">
+                        ${data.strengths.map(s => `<li style="color: #ccc; margin-bottom: 0.5rem;">✓ ${s}</li>`).join('')}
+                    </ul>
                     
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.error?.message || `HTTP ${response.status}`);
-                    }
-                    
-                    data = await response.json();
-                    
-                    if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
-                        throw new Error('Invalid response from Gemini API');
-                    }
-                    
-                    return data.candidates[0].content.parts[0].text;
-                    
-                } else if (CONFIG.apiProvider === 'openai') {
-                    response = await fetch('https://api.openai.com/v1/chat/completions', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${CONFIG.apiKey}`
-                        },
-                        body: JSON.stringify({
-                            model: 'gpt-4',
-                            messages: [{ role: 'user', content: prompt }],
-                            temperature: 0.7
-                        })
-                    });
-                    
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.error?.message || `HTTP ${response.status}`);
-                    }
-                    
-                    data = await response.json();
-                    return data.choices[0].message.content;
-                    
-                } else if (CONFIG.apiProvider === 'anthropic') {
-                    // NOTE: Anthropic API has CORS restrictions from browser
-                    // You need a proxy server OR use from backend
-                    // For MVP, we'll attempt direct call but warn user
-                    
+                    <h4 style="color: #ff0066; margin-bottom: 0.5rem;">Weaknesses:</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        ${data.weaknesses.map(w => `<li style="color: #ccc; margin-bottom: 0.5rem;">✗ ${w}</li>`).join('')}
+                    </ul>
+                </div>
+
+                <!-- Your Differentiation Strategy -->
+                ${data.yourProduct ? `
+                <div class="result-card" style="background: rgba(0,255,136,0.05); border-color: #00ff88;">
+                    <h3 class="orbitron" style="margin-bottom: 1rem; color: #00ff88;">
+                        YOUR DIFFERENTIATION STRATEGY
+                    </h3>
+                    <p style="color: #ccc; line-height: 1.8;">${data.differentiationStrategy}</p>
+                </div>
+                ` : ''}
+
+                <!-- Market Opportunity -->
+                <div class="result-card">
+                    <h3 class="orbitron" style="margin-bottom: 1rem; color: #00ff88;">MARKET OPPORTUNITY</h3>
+                    <p style="color: #ccc; line-height: 1.8;">${data.marketOpportunity}</p>
+                </div>
+            `;
+
+            resultsDiv.innerHTML = html;
+            resultsDiv.classList.remove('hidden');
+        }
+
+        // ========================
+        // AI API CALLS
+        // ========================
+
+        async function callAI(params) {
+            const { action, keyword, category, url, yourProduct } = params;
+
+            const prompts = {
+                prediction: `Analyze this product/keyword for market potential: "${keyword}"
+Category: ${category || 'auto-detect'}
+
+Provide COMPREHENSIVE market intelligence in this EXACT JSON format:
+{
+  "keyword": "${keyword}",
+  "status": "GREEN_LIGHT" or "RED_LIGHT",
+  "searchVolume": "50K/month",
+  "saturationScore": 65,
+  "opportunityScore": 35,
+  "activeCompetitors": 12,
+  "relatedSearches": ["search1", "search2", "search3", "search4", "search5"],
+  "competitors": [
+    {
+      "name": "Competitor Name",
+      "platform": "Amazon/Shopify/Own Site",
+      "revenue": "$500K/month",
+      "marketShare": 15
+    }
+  ],
+  "trendData": [45, 52, 58, 63, 67, 72, 75, 78, 80, 83, 85, 88],
+  "trendDirection": "UP" or "DOWN" or "STABLE",
+  "marketAnalysis": "Detailed 3-4 paragraph analysis covering: market size, growth trajectory, customer demographics, pricing landscape, entry barriers, and key success factors. Be specific and data-driven.",
+  "recommendation": "Clear action recommendation based on analysis. If GREEN_LIGHT, explain immediate next steps. If RED_LIGHT, suggest alternatives or niche opportunities."
+}
+
+Use real market research logic:
+- Search volume from Google Trends estimation
+- Saturation based on competitor density
+- Status = GREEN_LIGHT if competitors <8 AND opportunity >60
+- Competitors list should include real/realistic companies
+- Trend data should show realistic 12-month pattern
+- Market analysis must be thorough and actionable
+
+Respond ONLY with valid JSON, no markdown.`,
+
+                saturation: `Analyze this competitor URL and extract detailed intelligence: ${url}
+${yourProduct ? `Compare against: ${yourProduct}` : ''}
+
+Provide COMPREHENSIVE competitor analysis in this EXACT JSON format:
+{
+  "url": "${url}",
+  "competitorName": "Company Name",
+  "category": "E-commerce/SaaS/Service",
+  "pricing": "$X/month or $X",
+  "marketPosition": "LEADER/CHALLENGER/NICHE",
+  "marketShare": 25,
+  "trafficRank": 5000,
+  "valueProposition": "Clear 2-3 sentence description of what makes them unique",
+  "targetAudience": "Detailed description of who they serve and why",
+  "competitiveAnalysis": "2-3 paragraph analysis of their market position, strategy, and competitive moat",
+  "strengths": ["Strength 1", "Strength 2", "Strength 3"],
+  "weaknesses": ["Weakness 1", "Weakness 2", "Weakness 3"],
+  ${yourProduct ? `"yourProduct": "${yourProduct}",` : ''}
+  ${yourProduct ? `"differentiationStrategy": "3-4 paragraph strategy for how ${yourProduct} can differentiate and compete effectively",` : ''}
+  "marketOpportunity": "Analysis of gaps in the market this competitor isn't addressing"
+}
+
+Extract REAL insights:
+- Analyze the URL domain and infer business model
+- Estimate market position based on domain authority
+- Provide realistic competitive intelligence
+- Give actionable differentiation strategies
+- Identify genuine market gaps
+
+Respond ONLY with valid JSON, no markdown.`
+            };
+
+            const prompt = prompts[action];
+
+            try {
+                let response;
+
+                if (APP_STATE.apiProvider === 'anthropic') {
                     response = await fetch('https://api.anthropic.com/v1/messages', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'x-api-key': CONFIG.apiKey,
+                            'x-api-key': APP_STATE.apiKey,
                             'anthropic-version': '2023-06-01'
                         },
                         body: JSON.stringify({
@@ -843,503 +1096,111 @@ https://facebook.com/ads/library/?id=..."
                             messages: [{ role: 'user', content: prompt }]
                         })
                     });
+
+                    const data = await response.json();
                     
                     if (!response.ok) {
-                        // Common CORS error
-                        if (response.status === 0 || response.type === 'opaque') {
-                            throw new Error('CORS Error: Anthropic API requires backend proxy. Use Gemini or OpenAI instead.');
-                        }
-                        const errorData = await response.json();
-                        throw new Error(errorData.error?.message || `HTTP ${response.status}`);
+                        throw new Error(data.error?.message || 'API request failed');
                     }
-                    
-                    data = await response.json();
-                    return data.content[0].text;
-                }
-                
-            } catch (error) {
-                console.error('AI API Error:', error);
-                
-                // User-friendly error messages
-                if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-                    throw new Error('Network error. Check your internet connection or try a different API provider.');
-                } else if (error.message.includes('API key not valid') || error.message.includes('401')) {
-                    throw new Error('Invalid API key. Please check your key in settings.');
-                } else if (error.message.includes('CORS')) {
-                    throw new Error(error.message);
-                } else if (error.message.includes('429')) {
-                    throw new Error('Rate limit exceeded. Please wait a moment and try again.');
-                } else {
-                    throw error;
-                }
-            }
-        }
 
-        // EXTRACT JSON FROM AI RESPONSE
-        function extractJSON(text) {
-            // Remove markdown code blocks
-            text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-            
-            // Find JSON object
-            const startIdx = text.indexOf('{');
-            const endIdx = text.lastIndexOf('}');
-            
-            if (startIdx === -1 || endIdx === -1) {
-                throw new Error('No JSON found in AI response');
-            }
-            
-            const jsonStr = text.substring(startIdx, endIdx + 1);
-            return JSON.parse(jsonStr);
-        }
+                    const text = data.content[0].text;
+                    return parseJSONResponse(text);
 
-        // THE ORACLE
-        async function runOracle() {
-            const keyword = document.getElementById('oracle-keyword').value.trim();
-            const url = document.getElementById('oracle-url').value.trim();
-            const description = document.getElementById('oracle-description').value.trim();
-            
-            if (!keyword) {
-                alert('❌ Primary keyword required');
-                return;
-            }
-            
-            setLoading('oracle', true);
-            
-            const prompt = `You are PrePeak Pro's Oracle - an AI market intelligence system.
-
-Analyze this market opportunity:
-- KEYWORD: "${keyword}"
-${url ? `- LANDING PAGE: ${url}` : ''}
-${description ? `- PRODUCT: ${description}` : ''}
-
-Provide detailed analysis in JSON format:
-{
-  "saturation": 75,
-  "successProbability": 45,
-  "verdict": "PROCEED WITH CAUTION",
-  "analysis": "Multi-paragraph detailed analysis covering: market dynamics, competition landscape, entry barriers, success factors, risks...",
-  "pivotGaps": [
-    {"gap": "Underserved niche segment", "opportunity": "How to exploit this gap", "potential": "HIGH"},
-    {"gap": "Another gap", "opportunity": "Explanation", "potential": "MEDIUM"}
-  ]
-}
-
-Metrics:
-- saturation: 0-100% (how crowded the market is)
-- successProbability: 0-100% (realistic chance of top 10 ranking)
-- verdict: "GO ALL IN" / "PROCEED WITH CAUTION" / "PIVOT REQUIRED" / "ABANDON SHIP"
-- analysis: Comprehensive market intelligence report (200+ words)
-- pivotGaps: 3-5 specific gaps in saturated markets where user can differentiate
-
-If saturation >70%, provide PIVOT GAPS showing how to find opportunities in crowded markets.
-
-Respond ONLY with valid JSON, no markdown.`;
-
-            try {
-                const response = await callAI(prompt);
-                const data = extractJSON(response);
-                
-                // Display results
-                document.getElementById('oracle-saturation').textContent = data.saturation + '%';
-                document.getElementById('oracle-success').textContent = data.successProbability + '%';
-                document.getElementById('oracle-verdict').textContent = data.verdict;
-                document.getElementById('oracle-analysis').textContent = data.analysis;
-                
-                // Show pivot logic if high saturation
-                if (data.saturation >= 70 && data.pivotGaps && data.pivotGaps.length > 0) {
-                    const gapsHtml = data.pivotGaps.map(gap => `
-                        <div class="p-4 bg-black/50 border-l-4 border-[#ffcc00] rounded">
-                            <div class="flex justify-between items-start mb-2">
-                                <div class="font-bold text-[#ffcc00]">${gap.gap}</div>
-                                <span class="badge badge-${gap.potential.toLowerCase()}">${gap.potential}</span>
-                            </div>
-                            <div class="text-sm text-gray-300">${gap.opportunity}</div>
-                        </div>
-                    `).join('');
-                    
-                    document.getElementById('pivot-gaps').innerHTML = gapsHtml;
-                    document.getElementById('pivot-section').classList.remove('hidden');
-                } else {
-                    document.getElementById('pivot-section').classList.add('hidden');
-                }
-                
-                document.getElementById('oracle-results').classList.remove('hidden');
-                
-            } catch (error) {
-                alert('❌ ' + error.message);
-            } finally {
-                setLoading('oracle', false);
-            }
-        }
-
-        // KEYWORD INTELLIGENCE LAB
-        async function analyzeKeywords() {
-            const seed = document.getElementById('keyword-seed').value.trim();
-            
-            if (!seed) {
-                alert('❌ Seed keyword required');
-                return;
-            }
-            
-            setLoading('keyword', true);
-            
-            const prompt = `You are PrePeak Pro's Keyword Intelligence Lab.
-
-Analyze this seed keyword: "${seed}"
-
-Generate 10-15 related keywords with detailed metrics in JSON format:
-{
-  "keywords": [
-    {
-      "keyword": "project management software",
-      "volume": "49K",
-      "kd": 78,
-      "intent": "Commercial",
-      "opportunity": "Medium"
-    }
-  ]
-}
-
-Metrics:
-- keyword: Related keyword phrase
-- volume: Monthly search volume (format: "5K", "10K", "100K", "1M")
-- kd: Keyword Difficulty 0-100
-- intent: "Commercial", "Informational", "Transactional", "Navigational"
-- opportunity: "Low", "Medium", "High", "Very High" (based on volume vs difficulty)
-
-Provide 10-15 diverse keywords covering:
-- Direct variations
-- Long-tail opportunities
-- Question-based keywords
-- Competitor-focused terms
-
-Respond ONLY with valid JSON, no markdown.`;
-
-            try {
-                const response = await callAI(prompt);
-                const data = extractJSON(response);
-                
-                // Display table
-                const tbody = document.getElementById('keyword-tbody');
-                tbody.innerHTML = data.keywords.map(k => {
-                    const kdClass = k.kd < 30 ? 'badge-low' : k.kd < 50 ? 'badge-medium' : k.kd < 70 ? 'badge-high' : 'badge-extreme';
-                    const oppClass = k.opportunity === 'Very High' ? 'badge-low' : k.opportunity === 'High' ? 'badge-medium' : k.opportunity === 'Medium' ? 'badge-high' : 'badge-extreme';
-                    
-                    return `
-                        <tr>
-                            <td class="font-bold">${k.keyword}</td>
-                            <td>${k.volume}</td>
-                            <td><span class="badge ${kdClass}">${k.kd}%</span></td>
-                            <td><span class="text-xs text-gray-400">${k.intent}</span></td>
-                            <td><span class="badge ${oppClass}">${k.opportunity}</span></td>
-                        </tr>
-                    `;
-                }).join('');
-                
-                document.getElementById('keyword-results').classList.remove('hidden');
-                
-            } catch (error) {
-                alert('❌ ' + error.message);
-            } finally {
-                setLoading('keyword', false);
-            }
-        }
-
-        // COMPETITOR SPY
-        async function spyCompetitor() {
-            const url = document.getElementById('spy-url').value.trim();
-            const product = document.getElementById('spy-product').value.trim();
-            
-            if (!url) {
-                alert('❌ Competitor URL required');
-                return;
-            }
-            
-            setLoading('spy', true);
-            
-            const prompt = `You are PrePeak Pro's Competitor Spy - extract GTM (Go-To-Market) strategy.
-
-Analyze this competitor:
-- URL: ${url}
-${product ? `- Compare to: ${product}` : ''}
-
-Extract their GTM strategy in JSON format:
-{
-  "strategy": {
-    "positioning": "How they position themselves",
-    "targetAudience": "Who they target",
-    "valueProposition": "Their unique value",
-    "pricingStrategy": "Their pricing model",
-    "channels": ["Channel 1", "Channel 2"],
-    "messaging": "Key messaging themes"
-  },
-  "insights": "3-5 paragraph analysis with actionable recommendations for ${product || 'your product'} to compete or differentiate"
-}
-
-Provide deep GTM intelligence covering:
-- Market positioning
-- Target customer profile
-- Unique value proposition
-- Pricing strategy
-- Marketing channels
-- Messaging framework
-- Competitive advantages
-- Weaknesses to exploit
-
-Respond ONLY with valid JSON, no markdown.`;
-
-            try {
-                const response = await callAI(prompt);
-                const data = extractJSON(response);
-                
-                // Display strategy
-                const strategyHtml = Object.entries(data.strategy).map(([key, value]) => {
-                    const label = key.replace(/([A-Z])/g, ' $1').toUpperCase();
-                    const displayValue = Array.isArray(value) ? value.join(', ') : value;
-                    
-                    return `
-                        <div class="mb-4">
-                            <div class="text-xs font-bold text-[#00ff88] mb-1">${label}</div>
-                            <div class="text-sm text-gray-300">${displayValue}</div>
-                        </div>
-                    `;
-                }).join('');
-                
-                document.getElementById('spy-strategy').innerHTML = strategyHtml;
-                document.getElementById('spy-insights').textContent = data.insights;
-                document.getElementById('spy-results').classList.remove('hidden');
-                
-            } catch (error) {
-                alert('❌ ' + error.message);
-            } finally {
-                setLoading('spy', false);
-            }
-        }
-
-        // AD FACTORY
-        async function generateAds() {
-            const platform = document.getElementById('ad-platform').value;
-            const format = document.getElementById('ad-format').value;
-            const product = document.getElementById('ad-product').value.trim();
-            const audience = document.getElementById('ad-audience').value.trim();
-            const references = document.getElementById('ad-references').value.trim();
-            const generateImages = document.getElementById('ad-image-gen').checked;
-            
-            if (!product) {
-                alert('❌ Product/service required');
-                return;
-            }
-            
-            setLoading('ad', true);
-            
-            const formatCount = format === 'carousel' ? 10 : format === 'video' ? 1 : 3;
-            const formatDesc = format === 'carousel' ? '10-slide carousel' : format === 'video' ? 'video script' : 'single image ads';
-            
-            let prompt = `You are PrePeak Pro's Multi-Asset Ad Factory.
-
-Create ${formatCount} ${formatDesc} for ${platform} advertising.
-
-PRODUCT: ${product}
-TARGET AUDIENCE: ${audience || 'General audience'}
-${references ? `\n COMPETITOR REFERENCES (match this style):\n${references}\n` : ''}
-
-Generate ${formatCount} ad variations in JSON format:
-{
-  "ads": [
-    {
-      "headline": "...",
-      "body": "...",
-      "cta": "...",
-      ${format === 'video' ? '"script": "Full 30-60s video script with scenes",' : ''}
-      ${generateImages ? '"imagePrompt": "Detailed DALL-E prompt",' : ''}
-      "notes": "Why this works"
-    }
-  ]
-}
-
-Requirements:
-- headline: ${platform === 'google' ? '30' : '40'} chars max
-- body: 125 chars max
-- cta: Action-oriented (${format === 'video' ? '"Watch Now", "Learn More"' : '"Shop Now", "Sign Up", "Get Started"'})
-${format === 'carousel' ? '- Each carousel slide should tell a story (problem → solution → benefit → proof → CTA)' : ''}
-${format === 'video' ? '- Script should be 30-60 seconds, include hooks, key points, and strong CTA' : ''}
-${references ? '- MATCH the style, tone, and structure of competitor reference ads' : ''}
-
-Use proven copywriting frameworks (AIDA, PAS, BAB).
-
-Respond ONLY with valid JSON, no markdown.`;
-
-            try {
-                const response = await callAI(prompt);
-                const data = extractJSON(response);
-                
-                // Generate images if requested
-                if (generateImages && CONFIG.imageProvider) {
-                    for (let ad of data.ads) {
-                        if (ad.imagePrompt) {
-                            try {
-                                ad.imageUrl = await generateImage(ad.imagePrompt);
-                            } catch (e) {
-                                console.error('Image generation failed:', e);
-                            }
-                        }
-                    }
-                }
-                
-                // Display ads
-                const adsHtml = data.ads.map((ad, i) => `
-                    <div class="ad-preview p-6 rounded-lg">
-                        ${ad.imageUrl ? `<img src="${ad.imageUrl}" alt="Ad ${i+1}" class="w-full h-48 object-cover rounded mb-4">` : ''}
-                        <div class="text-xs text-gray-500 mb-3">${format.toUpperCase()} ${i+1}</div>
-                        <div class="mb-3">
-                            <div class="text-xs text-gray-500 mb-1">HEADLINE</div>
-                            <div class="font-bold text-lg text-[#00ff88]">${ad.headline}</div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="text-xs text-gray-500 mb-1">BODY</div>
-                            <div class="text-sm text-gray-300">${ad.body}</div>
-                        </div>
-                        ${ad.script ? `
-                            <div class="mb-3">
-                                <div class="text-xs text-gray-500 mb-1">VIDEO SCRIPT</div>
-                                <div class="text-xs text-gray-400 whitespace-pre-wrap">${ad.script}</div>
-                            </div>
-                        ` : ''}
-                        <div class="flex justify-between items-center">
-                            <span class="inline-block px-4 py-2 bg-[#00ff88] text-black font-bold text-xs rounded">
-                                ${ad.cta}
-                            </span>
-                            ${ad.notes ? `<span class="text-xs text-gray-500 italic">${ad.notes}</span>` : ''}
-                        </div>
-                    </div>
-                `).join('');
-                
-                document.getElementById('ad-container').innerHTML = adsHtml;
-                document.getElementById('ad-results').classList.remove('hidden');
-                
-            } catch (error) {
-                alert('❌ ' + error.message);
-            } finally {
-                setLoading('ad', false);
-            }
-        }
-
-        // IMAGE GENERATION
-        async function generateImage(prompt) {
-            if (!CONFIG.imageProvider || !CONFIG.imageApiKey) {
-                return null;
-            }
-
-            try {
-                if (CONFIG.imageProvider === 'dalle') {
-                    const response = await fetch('https://api.openai.com/v1/images/generations', {
+                } else if (APP_STATE.apiProvider === 'openai') {
+                    response = await fetch('https://api.openai.com/v1/chat/completions', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${CONFIG.imageApiKey}`
+                            'Authorization': `Bearer ${APP_STATE.apiKey}`
                         },
                         body: JSON.stringify({
-                            model: 'dall-e-3',
-                            prompt: prompt,
-                            n: 1,
-                            size: '1024x1024'
+                            model: 'gpt-4',
+                            messages: [{ role: 'user', content: prompt }],
+                            temperature: 0.7
                         })
                     });
-                    
+
                     const data = await response.json();
-                    return data.data[0].url;
-                }
-            } catch (error) {
-                console.error('Image generation error:', error);
-                return null;
-            }
-        }
-
-        // GLOBAL FORECASTER
-        async function generateForecast() {
-            const objective = document.getElementById('forecast-objective').value;
-            const market = document.getElementById('forecast-market').value;
-            const budget = parseInt(document.getElementById('forecast-budget').value);
-            
-            if (!budget || budget <= 0) {
-                alert('❌ Valid budget required');
-                return;
-            }
-            
-            setLoading('forecast', true);
-            
-            const prompt = `You are PrePeak Pro's Global Forecaster.
-
-Generate budget recommendations:
-- OBJECTIVE: ${objective}
-- TARGET MARKET: ${market}
-- MONTHLY BUDGET: $${budget} USD
-
-Provide forecast in JSON format:
-{
-  "allocation": {
-    "meta": 45,
-    "google": 30,
-    "linkedin": 15,
-    "other": 10
-  },
-  "performance": "Multi-paragraph forecast explaining expected results: impressions, clicks, conversions, ROI. Include market-specific insights for ${market}. Provide realistic projections for ${objective} objective with $${budget} budget."
-}
-
-allocation: percentage split across platforms (must total 100)
-performance: Detailed forecast with specific metrics and market insights (200+ words)
-
-Respond ONLY with valid JSON, no markdown.`;
-
-            try {
-                const response = await callAI(prompt);
-                const data = extractJSON(response);
-                
-                // Display allocation
-                const allocationHtml = Object.entries(data.allocation).map(([platform, pct]) => {
-                    const amount = (budget * pct / 100).toFixed(0);
-                    return `
-                        <div class="p-4 bg-black/50 border border-[#00ff8833] rounded">
-                            <div class="text-xs text-gray-500 mb-1">${platform.toUpperCase()}</div>
-                            <div class="text-2xl font-bold text-[#00ff88]">${pct}%</div>
-                            <div class="text-sm text-gray-400 mt-1">$${amount}</div>
-                        </div>
-                    `;
-                }).join('');
-                
-                document.getElementById('forecast-allocation').innerHTML = allocationHtml;
-                
-                // Display currency breakdown
-                const tbody = document.getElementById('currency-tbody');
-                tbody.innerHTML = Object.entries(CURRENCIES).map(([code, info]) => {
-                    const total = (budget * info.rate).toFixed(2);
-                    const daily = (total / 30).toFixed(2);
                     
-                    return `
-                        <tr>
-                            <td class="font-bold">${code}</td>
-                            <td>${info.symbol}</td>
-                            <td>${info.symbol}${parseInt(total).toLocaleString()}</td>
-                            <td>${info.symbol}${parseInt(daily).toLocaleString()}</td>
-                        </tr>
-                    `;
-                }).join('');
-                
-                document.getElementById('forecast-performance').textContent = data.performance;
-                document.getElementById('forecast-results').classList.remove('hidden');
-                
+                    if (!response.ok) {
+                        throw new Error(data.error?.message || 'API request failed');
+                    }
+
+                    return parseJSONResponse(data.choices[0].message.content);
+
+                } else if (APP_STATE.apiProvider === 'gemini') {
+                    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${APP_STATE.apiKey}`;
+                    
+                    response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: prompt }] }]
+                        })
+                    });
+
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.error?.message || 'API request failed');
+                    }
+
+                    if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
+                        throw new Error('Invalid response from API');
+                    }
+
+                    return parseJSONResponse(data.candidates[0].content.parts[0].text);
+                }
+
             } catch (error) {
-                alert('❌ ' + error.message);
-            } finally {
-                setLoading('forecast', false);
+                throw new Error(`AI Analysis failed: ${error.message}`);
             }
         }
 
-        // LOADING STATE
-        function setLoading(module, isLoading) {
-            const btn = document.getElementById(`${module}-btn`);
-            const loader = document.getElementById(`${module}-loader`);
-            const btnText = document.getElementById(`${module}-btn-text`);
+        function parseJSONResponse(text) {
+            // Remove markdown code blocks if present
+            let cleaned = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+            
+            // Find JSON object
+            const startIdx = cleaned.indexOf('{');
+            const endIdx = cleaned.lastIndexOf('}');
+            
+            if (startIdx === -1 || endIdx === -1) {
+                throw new Error('No valid JSON found in AI response');
+            }
+            
+            cleaned = cleaned.substring(startIdx, endIdx + 1);
+            
+            try {
+                return JSON.parse(cleaned);
+            } catch (e) {
+                throw new Error('Failed to parse AI response: ' + e.message);
+            }
+        }
+
+        // ========================
+        // UTILITY FUNCTIONS
+        // ========================
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function switchTab(tabName) {
+            APP_STATE.currentTab = tabName;
+            
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            document.getElementById(tabName + 'Tab').classList.remove('hidden');
+        }
+
+        function setLoading(type, isLoading) {
+            const btn = document.getElementById(`${type}Btn`);
+            const loader = document.getElementById(`${type}Loading`);
+            const btnText = document.getElementById(`${type}BtnText`);
             
             if (isLoading) {
                 btn.disabled = true;
@@ -1352,7 +1213,28 @@ Respond ONLY with valid JSON, no markdown.`;
             }
         }
 
-        console.log('PrePeak Pro initialized - All systems ready');
+        function showError(elementId, message) {
+            const el = document.getElementById(elementId);
+            el.textContent = message;
+            el.classList.remove('hidden');
+            setTimeout(() => el.classList.add('hidden'), 5000);
+        }
+
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function validateUrl(url) {
+            try {
+                new URL(url);
+                return true;
+            } catch {
+                return false;
+            }
+        }
+
+        // Initialize app
+        init();
     </script>
 </body>
 </html>
