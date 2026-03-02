@@ -1,8 +1,0 @@
-streamlit
-streamlit-option-menu
-supabase
-google-generativeai
-pandas
-requests
-beautifulsoup4
-razorpay
