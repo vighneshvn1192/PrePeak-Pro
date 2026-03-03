@@ -465,7 +465,8 @@
 <script>
 // ─── CONFIG ───────────────────────────────────────────────────────────────────
 const CONFIG = {
-    SHEETS_URL: 'https://script.google.com/macros/s/AKfycbyx0OD_Kt7sOe5ExYHXPVeUZop74TTyPGno1n-RvWyIPGH-BHT1gaD3rxQ1DLNjS_Pp/exec'
+    SHEETS_URL: 'https://script.google.com/macros/s/AKfycbyx0OD_Kt7sOe5ExYHXPVeUZop74TTyPGno1n-RvWyIPGH-BHT1gaD3rxQ1DLNjS_Pp/exec',
+    TOKEN: 'pp_58f7928bee49edf89a440ba11e08472e'
 };
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
@@ -558,8 +559,11 @@ async function handleAuth() {
             const otp = generateOTP();
             APP_STATE.otpData = { name, email, password, otp, timestamp: Date.now() };
 
-            const sent = await sendOTPEmail(email, name, otp);
-            if (!sent) { showError('loginError', 'Failed to send OTP. Check email address.'); return; }
+            const result = await sendOTPEmail(email, name, otp);
+            if (!result.success) {
+                showError('loginError', 'OTP failed: ' + (result.error || 'Unknown error'));
+                return;
+            }
 
             document.getElementById('otpEmailDisplay').textContent = email;
             showScreen('otpScreen');
@@ -574,13 +578,14 @@ async function handleAuth() {
 // ─── SEND OTP VIA APPS SCRIPT (Brevo key hidden server-side) ─────────────────
 async function sendOTPEmail(email, name, otp) {
     try {
-        const params = new URLSearchParams({ action: 'sendOtp', email, name, otp });
+        const params = new URLSearchParams({ action: 'sendOtp', email, name, otp, token: CONFIG.TOKEN });
         const res = await fetch(`${CONFIG.SHEETS_URL}?${params.toString()}`);
         const data = await res.json();
-        return data.success;
+        console.log('OTP response:', data);
+        return data; // return full object so caller can read error
     } catch (err) {
         console.error('OTP send error:', err);
-        return false;
+        return { success: false, error: err.message };
     }
 }
 
@@ -648,9 +653,9 @@ async function resendOTP() {
     const newOtp = generateOTP();
     APP_STATE.otpData.otp = newOtp;
     APP_STATE.otpData.timestamp = Date.now();
-    const sent = await sendOTPEmail(APP_STATE.otpData.email, APP_STATE.otpData.name, newOtp);
+    const result = await sendOTPEmail(APP_STATE.otpData.email, APP_STATE.otpData.name, newOtp);
     const el = document.getElementById('otpSuccess');
-    el.textContent = sent ? '✓ New OTP sent! Check your inbox.' : '❌ Failed to resend. Try again.';
+    el.textContent = result.success ? '✓ New OTP sent! Check your inbox.' : '❌ Failed: ' + (result.error || 'Try again.');
     el.classList.remove('hidden');
     setTimeout(() => el.classList.add('hidden'), 4000);
 }
@@ -662,7 +667,8 @@ async function saveUserToSheets(data) {
             action: 'signup',
             name: data.name,
             email: data.email,
-            password: data.password
+            password: data.password,
+            token: CONFIG.TOKEN
         });
         await fetch(`${CONFIG.SHEETS_URL}?${params.toString()}`, { method: 'GET' });
     } catch (err) {
@@ -672,7 +678,7 @@ async function saveUserToSheets(data) {
 
 async function updateLoginCount(email) {
     try {
-        const params = new URLSearchParams({ action: 'login', email });
+        const params = new URLSearchParams({ action: 'login', email, token: CONFIG.TOKEN });
         await fetch(`${CONFIG.SHEETS_URL}?${params.toString()}`, { method: 'GET' });
     } catch (err) {
         console.error('Sheets login update error:', err);
