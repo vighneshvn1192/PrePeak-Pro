@@ -1,288 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PrePeak Pro | Market Intelligence Engine</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root { --neon-green: #00ff88; --neon-pink: #ff0066; --bg-dark: #000; --cyber-overlay: rgba(0, 255, 136, 0.03); }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'IBM Plex Mono', monospace; background: var(--bg-dark); color: var(--neon-green); overflow-x: hidden; }
-        body::before { content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(90deg, var(--cyber-overlay) 1px, transparent 1px), linear-gradient(var(--cyber-overlay) 1px, transparent 1px); background-size: 50px 50px; pointer-events: none; z-index: 0; }
-        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; position: relative; z-index: 1; }
-        .orbitron { font-family: 'Orbitron', sans-serif; }
-        /* UI Components */
-        .screen { display: none; }
-        .screen.active { display: block; animation: fadeIn 0.4s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .cyber-box { background: rgba(0, 20, 10, 0.95); border: 2px solid var(--neon-green); border-radius: 0.5rem; padding: 2rem; position: relative; box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); }
-        .cyber-box::before { content: ''; position: absolute; top: -2px; left: -2px; width: 20px; height: 20px; border-top: 4px solid var(--neon-pink); border-left: 4px solid var(--neon-pink); }
-        .cyber-box::after { content: ''; position: absolute; bottom: -2px; right: -2px; width: 20px; height: 20px; border-bottom: 4px solid var(--neon-pink); border-right: 4px solid var(--neon-pink); }
-        /* Header & Forms */
-        .header { text-align: center; margin-bottom: 3rem; }
-        .header h1 { font-size: clamp(2rem, 8vw, 4rem); font-weight: 900; background: linear-gradient(135deg, var(--neon-green), #00ccff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
-        .form-group { margin-bottom: 1.5rem; }
-        .form-label { display: block; color: #888; text-transform: uppercase; font-size: 0.75rem; font-weight: bold; margin-bottom: 0.5rem; letter-spacing: 2px; }
-        .form-input { width: 100%; padding: 1.2rem; background: rgba(0, 0, 0, 0.8); border: 1px solid rgba(0, 255, 136, 0.4); border-radius: 0.5rem; color: var(--neon-green); font-family: 'IBM Plex Mono', monospace; font-size: 1rem; transition: 0.3s; }
-        .form-input:focus { outline: none; border-color: var(--neon-green); box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
-        /* Interactive Elements */
-        .btn-primary { background: linear-gradient(135deg, var(--neon-green), #00cc6a); color: #000; border: none; padding: 1.2rem 2rem; border-radius: 0.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.3s; width: 100%; }
-        .btn-primary:hover:not(:disabled) { box-shadow: 0 0 30px rgba(0, 255, 136, 0.6); transform: scale(1.02); }
-        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-        .alert-error { background: rgba(255, 0, 102, 0.1); border: 1px solid var(--neon-pink); color: var(--neon-pink); padding: 1rem; margin-bottom: 1.5rem; border-radius: 0.5rem; font-size: 0.9rem; }
-        .hidden { display: none !important; }
-        .logout-btn { position: absolute; top: 2rem; right: 2rem; background: rgba(255, 0, 102, 0.2); border: 1px solid var(--neon-pink); color: var(--neon-pink); padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; font-size: 0.8rem; font-weight: bold; }
-        /* Dashboard Tabs */
-        .tabs { display: flex; gap: 1rem; margin-bottom: 2rem; overflow-x: auto; padding-bottom: 0.5rem; }
-        .tab-btn { background: transparent; border: 2px solid rgba(0, 255, 136, 0.3); color: var(--neon-green); padding: 1rem 2rem; border-radius: 0.5rem; cursor: pointer; font-weight: bold; white-space: nowrap; transition: 0.3s; }
-        .tab-btn.active { background: rgba(0, 255, 136, 0.2); border-color: var(--neon-green); box-shadow: 0 0 15px rgba(0, 255, 136, 0.2); }
-        .result-card { margin-top: 2rem; padding: 2rem; background: rgba(0, 255, 136, 0.05); border: 1px solid var(--neon-green); border-radius: 0.5rem; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Enterprise Secure Web App</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <style>
+    :root { --primary: #2563eb; --bg: #f8fafc; }
+    body { background-color: var(--bg); font-family: 'Inter', system-ui, sans-serif; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    
+    /* Layout Containers */
+    .app-container { width: 100%; max-width: 1000px; padding: 20px; }
+    .auth-card { background: white; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1); overflow: hidden; transition: all 0.5s ease; }
+    
+    /* UI States */
+    .hidden { display: none !important; }
+    .step-header { background: var(--primary); color: white; padding: 30px; text-align: center; }
+    .step-body { padding: 40px; }
+    
+    /* Elements */
+    .custom-input { border-radius: 10px; padding: 12px; border: 2px solid #e2e8f0; transition: 0.3s; margin-bottom: 20px; }
+    .custom-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); outline: none; }
+    .btn-action { background: var(--primary); border: none; padding: 14px; border-radius: 10px; font-weight: 600; color: white; width: 100%; transition: 0.3s; }
+    .btn-action:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3); }
+    
+    /* Dashboard Mockup */
+    .dashboard-grid { display: grid; grid-template-columns: repeat(3, 1/3fr); gap: 20px; margin-top: 20px; }
+    .stat-card { background: #fff; padding: 20px; border-radius: 15px; border-left: 5px solid var(--primary); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    
+    /* Animations */
+    .spinner { width: 24px; height: 24px; border: 3px solid rgba(255,255,255,.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s ease-in-out infinite; display: inline-block; margin-right: 10px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div id="loginScreen" class="screen active">
-            <div class="header">
-                <h1 class="orbitron">PREPEAK PRO</h1>
-                <p style="color: #888; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 3px;">Market Intelligence Engine</p>
-            </div>
-            <div class="cyber-box" style="max-width: 500px; margin: 0 auto;">
-                <h2 class="orbitron" style="text-align: center; margin-bottom: 2rem; font-size: 1.5rem;">ACCESS PROTOCOL</h2>
-                <div id="loginError" class="alert-error hidden"></div>
-                <div class="form-group">
-                    <label class="form-label">Gmail Address *</label>
-                    <input type="email" id="loginEmail" class="form-input" placeholder="admin@gmail.com">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">WhatsApp Number *</label>
-                    <input type="tel" id="loginWhatsApp" class="form-input" placeholder="+91 9876543210">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Security Password *</label>
-                    <input type="password" id="loginPassword" class="form-input" placeholder="Min 6 characters">
-                </div>
-                <button class="btn-primary" id="loginBtn" onclick="handleAuth()">INITIALIZE SIGNUP</button>
-            </div>
+
+  <div class="app-container">
+    <div class="auth-card animate__animated animate__fadeIn">
+      
+      <div id="step-register">
+        <div class="step-header">
+          <h2>Secure Access Portal</h2>
+          <p class="mb-0 text-white-50">Please register to receive your secure access code</p>
         </div>
-
-        <div id="verifyScreen" class="screen">
-            <div class="header"><h1 class="orbitron">VERIFICATION</h1></div>
-            <div class="cyber-box" style="max-width: 500px; margin: 0 auto;">
-                <p style="text-align: center; margin-bottom: 2rem; color: #ccc;">Enter the 6-digit decryption code sent to your contacts.</p>
-                <div class="form-group">
-                    <input type="text" id="otpInput" class="form-input" placeholder="000000" maxlength="6" style="text-align: center; font-size: 2.5rem; letter-spacing: 12px; font-weight: bold;">
-                </div>
-                <button class="btn-primary" onclick="verifyOTP()">UNLOCK SYSTEM</button>
-                <p style="text-align: center; margin-top: 1.5rem; font-size: 0.8rem; color: #666;">(Demo code: 123456)</p>
+        <div class="step-body">
+          <div class="row">
+            <div class="col-md-6 d-none d-md-block text-center border-end">
+              <img src="https://cdn-icons-png.flaticon.com/512/2092/2092663.png" style="width: 200px; margin-top: 20px;" alt="Secure">
             </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Full Name</label>
+              <input type="text" id="reg-name" class="form-control custom-input" placeholder="e.g. John Wick">
+              
+              <label class="form-label fw-bold">Email Address</label>
+              <input type="email" id="reg-email" class="form-control custom-input" placeholder="name@company.com">
+              
+              <label class="form-label fw-bold">WhatsApp Number</label>
+              <input type="tel" id="reg-phone" class="form-control custom-input" placeholder="+91 00000 00000">
+              
+              <button onclick="handleRegistration()" id="btn-reg" class="btn-action">
+                Generate Access Code
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <div id="apiConfigScreen" class="screen">
-            <button class="logout-btn" onclick="logout()">LOGOUT</button>
-            <div class="header"><h1 class="orbitron">AI CONFIG</h1></div>
-            <div class="cyber-box" style="max-width: 700px; margin: 0 auto;">
-                <div class="form-group">
-                    <label class="form-label">Neural Provider</label>
-                    <select id="apiProvider" class="form-input">
-                        <option value="gemini">Google Gemini 1.5</option>
-                        <option value="anthropic">Anthropic Claude 3.5</option>
-                        <option value="openai">OpenAI GPT-4o</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">API Key</label>
-                    <input type="password" id="apiKeyInput" class="form-input" placeholder="sk-...">
-                </div>
-                <button class="btn-primary" onclick="saveApiConfig()">SAVE & ENGAGE</button>
-            </div>
+      <div id="step-verify" class="hidden animate__animated animate__fadeIn">
+        <div class="step-header" style="background: #1e293b;">
+          <h2>Two-Factor Authentication</h2>
+          <p class="mb-0 text-white-50">Enter the 6-digit code sent to your email</p>
         </div>
-
-        <div id="appScreen" class="screen">
-            <button class="logout-btn" onclick="logout()">LOGOUT</button>
-            <div class="header">
-                <h1 class="orbitron">PREPEAK PRO</h1>
-                <p id="userEmailDisplay" style="color: #888; font-size: 0.8rem; letter-spacing: 1px;"></p>
-            </div>
-            <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab('prediction')">🎯 MARKET PREDICTION</button>
-                <button class="tab-btn" onclick="switchTab('saturation')">📊 SATURATION INDEX</button>
-            </div>
-
-            <div id="predictionTab" class="tab-content">
-                <div class="cyber-box">
-                    <div class="form-group">
-                        <label class="form-label">Target Market / Product Keyword</label>
-                        <input type="text" id="predictionKeyword" class="form-input" placeholder="e.g., portable electric blender">
-                    </div>
-                    <button class="btn-primary" id="predictionBtn" onclick="runPredictionAnalysis()">SCAN MARKET</button>
-                </div>
-                <div id="predictionResults" class="hidden"></div>
-            </div>
-
-            <div id="saturationTab" class="tab-content hidden">
-                <div class="cyber-box">
-                    <div class="form-group">
-                        <label class="form-label">Competitor Domain/URL</label>
-                        <input type="url" id="competitorUrl" class="form-input" placeholder="https://competitor.com">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Your Product (For Differentiation Analysis)</label>
-                        <input type="text" id="yourProductName" class="form-input" placeholder="Your Brand Name">
-                    </div>
-                    <button class="btn-primary" id="saturationBtn" onclick="runSaturationAnalysis()">DECONSTRUCT COMPETITOR</button>
-                </div>
-                <div id="saturationResults" class="hidden"></div>
-            </div>
+        <div class="step-body text-center">
+          <div style="max-width: 300px; margin: 0 auto;">
+            <input type="text" id="verify-code" class="form-control custom-input text-center fs-2 fw-bold" maxlength="6" placeholder="000000">
+            <button onclick="handleVerification()" id="btn-verify" class="btn-action">Verify & Secure Login</button>
+            <p class="mt-4 text-muted small">Didn't get a code? <a href="#" onclick="location.reload()">Try again</a></p>
+          </div>
         </div>
+      </div>
+
+      <div id="step-app" class="hidden animate__animated animate__zoomIn">
+        <nav class="navbar navbar-dark bg-dark px-4 py-3">
+          <span class="navbar-brand mb-0 h1">Enterprise Console</span>
+          <span class="text-light" id="user-pill"></span>
+        </nav>
+        <div class="step-body" style="background: #f1f5f9; height: 500px; overflow-y: auto;">
+          <h4 class="mb-4">System Overview</h4>
+          <div class="row mb-4">
+            <div class="col-md-4">
+              <div class="stat-card">
+                <h6>Total Users</h6>
+                <h2 id="stat-users">...</h2>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="stat-card" style="border-left-color: #10b981;">
+                <h6>Active Nodes</h6>
+                <h2 id="stat-active">...</h2>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="stat-card" style="border-left-color: #f59e0b;">
+                <h6>Security Status</h6>
+                <h2 id="stat-status">Secure</h2>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card p-3 border-0 shadow-sm">
+            <h5>Recent System Logs</h5>
+            <ul id="activity-log" class="list-group list-group-flush">
+              </ul>
+          </div>
+        </div>
+      </div>
+
     </div>
+    <div id="toast" class="mt-3 text-center fw-bold animate__animated"></div>
+  </div>
 
-    <script>
-        const APP_STATE = { user: null, apiKey: null, apiProvider: 'gemini' };
-        // YOUR SPECIFIC GOOGLE APPS SCRIPT URL
-        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxolERzrkzf_Y0aiigQvxjgljhcnitXtHJ7YsxAICSBeBlBzo5Hzu7EEI6la6Vtzhx__Q/exec';
+  <script>
+    // --- State Controllers ---
+    function showToast(msg, isError = false) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.className = `mt-3 text-center fw-bold animate__animated animate__shakeX ${isError ? 'text-danger' : 'text-success'}`;
+      setTimeout(() => toast.innerText = "", 5000);
+    }
 
-        function init() {
-            const saved = localStorage.getItem('prepeakState');
-            if (saved) {
-                const state = JSON.parse(saved);
-                if (state.user && state.user.verified) {
-                    APP_STATE.user = state.user; 
-                    APP_STATE.apiKey = state.apiKey;
-                    if (APP_STATE.apiKey) { 
-                        showScreen('appScreen'); 
-                        document.getElementById('userEmailDisplay').textContent = "IDENTIFIED: " + APP_STATE.user.email; 
-                    } else { 
-                        showScreen('apiConfigScreen'); 
-                    }
-                }
-            }
-        }
+    function toggleLoader(btnId, show) {
+      const btn = document.getElementById(btnId);
+      if(show) {
+        btn.disabled = true;
+        btn.innerHTML = `<span class="spinner"></span> Processing...`;
+      } else {
+        btn.disabled = false;
+        btn.innerHTML = btnId === 'btn-reg' ? 'Generate Access Code' : 'Verify & Secure Login';
+      }
+    }
 
-        async function handleAuth() {
-            const email = document.getElementById('loginEmail').value.trim();
-            const whatsapp = document.getElementById('loginWhatsApp').value.trim();
-            const password = document.getElementById('loginPassword').value;
+    // --- Action Handlers ---
+    function handleRegistration() {
+      const data = {
+        name: document.getElementById('reg-name').value,
+        email: document.getElementById('reg-email').value,
+        whatsapp: document.getElementById('reg-phone').value
+      };
 
-            if (!email || !whatsapp || password.length < 6) { 
-                showError('loginError', 'Invalid inputs. Password must be 6+ characters.'); 
-                return; 
-            }
+      if(!data.name || !data.email || !data.whatsapp) {
+        return showToast("Please fill all fields properly!", true);
+      }
 
-            setLoading('login', true);
+      toggleLoader('btn-reg', true);
+      google.script.run
+        .withSuccessHandler(res => {
+          if(res.success) {
+            document.getElementById('step-register').classList.add('hidden');
+            document.getElementById('step-verify').classList.remove('hidden');
+            showToast("Code Sent! Check your Inbox.");
+          } else {
+            showToast(res.message, true);
+            toggleLoader('btn-reg', false);
+          }
+        })
+        .withFailureHandler(err => {
+          showToast(err, true);
+          toggleLoader('btn-reg', false);
+        })
+        .processAccessRequest(data);
+    }
 
-            try {
-                // SAVING TO YOUR GOOGLE SHEET
-                await fetch(GOOGLE_SHEETS_URL, { 
-                    method: 'POST', 
-                    mode: 'no-cors', 
-                    body: JSON.stringify({ action: 'auth', email, whatsapp, password, status: 'PENDING' }) 
-                });
+    function handleVerification() {
+      const email = document.getElementById('reg-email').value;
+      const code = document.getElementById('verify-code').value;
 
-                APP_STATE.user = { email, whatsapp, verified: false };
-                localStorage.setItem('prepeakState', JSON.stringify(APP_STATE));
-                showScreen('verifyScreen'); 
-            } catch (e) {
-                showError('loginError', 'Transmission failed. Check network.');
-            } finally {
-                setLoading('login', false);
-            }
-        }
+      if(code.length < 6) return showToast("Enter full 6-digit code", true);
 
-        function verifyOTP() {
-            const otp = document.getElementById('otpInput').value;
-            if (otp === "123456") { // Replace with dynamic check if you build the random OTP logic
-                APP_STATE.user.verified = true;
-                localStorage.setItem('prepeakState', JSON.stringify(APP_STATE));
-                showScreen('apiConfigScreen');
-            } else {
-                alert("ACCESS DENIED: Invalid Verification Code.");
-            }
-        }
+      toggleLoader('btn-verify', true);
+      google.script.run
+        .withSuccessHandler(res => {
+          if(res.authenticated) {
+            loadDashboard(res.user);
+          }
+        })
+        .withFailureHandler(err => {
+          showToast(err.message, true);
+          toggleLoader('btn-verify', false);
+        })
+        .validateAccessCode(email, code);
+    }
 
-        function saveApiConfig() {
-            const key = document.getElementById('apiKeyInput').value.trim();
-            if (!key) return alert('Neural Key Required.');
-            APP_STATE.apiKey = key; 
-            APP_STATE.apiProvider = document.getElementById('apiProvider').value;
-            localStorage.setItem('prepeakState', JSON.stringify(APP_STATE));
-            showScreen('appScreen');
-            document.getElementById('userEmailDisplay').textContent = "IDENTIFIED: " + APP_STATE.user.email;
-        }
-
-        async function runPredictionAnalysis() {
-            const keyword = document.getElementById('predictionKeyword').value.trim();
-            if (!keyword) return alert('Enter Keyword.');
-            setLoading('prediction', true);
-            try {
-                const prompt = `Perform market intelligence for "${keyword}". Return valid JSON: {"status": "GREEN_LIGHT/RED_LIGHT", "saturation": "0-100%", "logic": "2-sentence breakdown"}`;
-                const result = await callAI(prompt);
-                const div = document.getElementById('predictionResults');
-                div.innerHTML = `<div class="result-card"><h2 class="orbitron" style="color:${result.status==='GREEN_LIGHT'?'#00ff88':'#ff0066'}">${result.status}</h2><p>Saturation: ${result.saturation}</p><p>${result.logic}</p></div>`;
-                div.classList.remove('hidden');
-            } catch (e) { alert('AI Scan Failure.'); }
-            finally { setLoading('prediction', false); }
-        }
-
-        async function runSaturationAnalysis() {
-            const url = document.getElementById('competitorUrl').value;
-            const myProd = document.getElementById('yourProductName').value;
-            if (!url) return alert('URL required.');
-            setLoading('saturation', true);
-            try {
-                const prompt = `Analyze competitor ${url} against ${myProd}. Return JSON: {"name": "Competitor", "moat": "Their strength", "weakness": "Their gap", "strategy": "How to beat them"}`;
-                const result = await callAI(prompt);
-                const div = document.getElementById('saturationResults');
-                div.innerHTML = `<div class="result-card"><h2 class="orbitron">${result.name}</h2><p><b>GAP:</b> ${result.weakness}</p><p><b>MOAT KILLER:</b> ${result.strategy}</p></div>`;
-                div.classList.remove('hidden');
-            } catch (e) { alert('Competitor scan failed.'); }
-            finally { setLoading('saturation', false); }
-        }
-
-        async function callAI(prompt) {
-            const key = APP_STATE.apiKey;
-            const provider = APP_STATE.apiProvider;
-            let url, body;
-
-            if (provider === 'gemini') {
-                url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
-                body = JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] });
-            } else if (provider === 'openai') {
-                url = 'https://api.openai.com/v1/chat/completions';
-                body = JSON.stringify({ model: 'gpt-4o', messages: [{role: 'user', content: prompt}] });
-            }
-
-            const res = await fetch(url, { 
-                method: 'POST', 
-                headers: provider === 'openai' ? { 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' },
-                body 
-            });
-            const data = await res.json();
-            const text = provider === 'gemini' ? data.candidates[0].content.parts[0].text : data.choices[0].message.content;
-            return JSON.parse(text.replace(/```json|```/g, '').trim());
-        }
-
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-            document.getElementById(tab + 'Tab').classList.remove('hidden');
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-        }
-
-        function showScreen(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-        }
-
-        function setLoading(id, is) {
-            const btn = document.getElementById(id + 'Btn');
-            btn.disabled = is;
-            btn.textContent = is ? 'PROCESSING...' : (id === 'login' ? 'INITIALIZE SIGNUP' : 'RUN ANALYSIS');
-        }
-
-        function showError(id, msg) { const el = document.getElementById(id); el.textContent = msg; el.classList.remove('hidden'); }
-        function logout() { localStorage.clear(); location.reload(); }
-        init();
-    </script>
+    function loadDashboard(user) {
+      document.getElementById('step-verify').classList.add('hidden');
+      document.getElementById('step-app').classList.remove('hidden');
+      document.getElementById('user-pill').innerText = `👤 ${user.name}`;
+      
+      // Fetch data for the dashboard mockup
+      google.script.run.withSuccessHandler(data => {
+        document.getElementById('stat-users').innerText = data.stats.users;
+        document.getElementById('stat-active').innerText = data.stats.active;
+        
+        const log = document.getElementById('activity-log');
+        data.recentActivity.forEach(msg => {
+          const li = document.createElement('li');
+          li.className = "list-group-item small text-muted";
+          li.innerText = `[${new Date().toLocaleTimeString()}] ${msg}`;
+          log.appendChild(li);
+        });
+      }).getAppDashboardData();
+    }
+  </script>
 </body>
 </html>
