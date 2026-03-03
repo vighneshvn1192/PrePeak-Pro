@@ -379,37 +379,43 @@
 <body>
     <div class="container">
         <!-- LOGIN SCREEN -->
-        <div id="loginScreen" class="screen active">
-            <div class="header">
-                <h1 class="orbitron">PREPEAK PRO</h1>
-                <p style="color: #888; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 3px;">Market Intelligence Engine</p>
-            </div>
+<div id="loginScreen" class="screen active">
+    <div class="header">
+        <h1 class="orbitron">PREPEAK PRO</h1>
+        <p style="color: #888; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 3px;">Market Intelligence Engine</p>
+    </div>
 
-            <div class="cyber-box" style="max-width: 500px; margin: 0 auto;">
-                <h2 class="orbitron" style="text-align: center; margin-bottom: 2rem; font-size: 1.5rem;">SYSTEM ACCESS</h2>
-                
-                <div id="loginError" class="alert alert-error hidden"></div>
-                
-                <div class="form-group">
-                    <label class="form-label">Email Address</label>
-                    <input type="email" id="loginEmail" class="form-input" placeholder="your@email.com" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" id="loginPassword" class="form-input" placeholder="Enter password" required>
-                </div>
-
-                <button class="btn-primary" id="loginBtn" onclick="handleAuth()">
-                    <span class="loading hidden" id="loginLoading">AUTHENTICATING</span>
-                    <span id="loginBtnText">LOGIN</span>
-                </button>
-
-                <p style="text-align: center; margin-top: 1.5rem; color: #888; font-size: 0.85rem;">
-                    New user? Auto-signup on first login
-                </p>
-            </div>
+    <div class="cyber-box" style="max-width: 500px; margin: 0 auto;">
+        <h2 class="orbitron" style="text-align: center; margin-bottom: 2rem; font-size: 1.5rem;">SYSTEM ACCESS</h2>
+        
+        <div id="loginError" class="alert alert-error hidden"></div>
+        
+        <div class="form-group">
+            <label class="form-label">Gmail Address *</label>
+            <input type="email" id="loginEmail" class="form-input" placeholder="your@gmail.com" required>
         </div>
+
+        <div class="form-group">
+            <label class="form-label">WhatsApp Number *</label>
+            <input type="tel" id="loginWhatsApp" class="form-input" placeholder="+91 9876543210" required>
+            <p style="font-size: 0.7rem; color: #666; margin-top: 0.5rem;">Include country code (e.g., +91 for India)</p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Password *</label>
+            <input type="password" id="loginPassword" class="form-input" placeholder="Enter password" required>
+        </div>
+
+        <button class="btn-primary" id="loginBtn" onclick="handleAuth()">
+            <span class="loading hidden" id="loginLoading">AUTHENTICATING</span>
+            <span id="loginBtnText">LOGIN / SIGNUP</span>
+        </button>
+
+        <p style="text-align: center; margin-top: 1.5rem; color: #888; font-size: 0.85rem;">
+            New user? Auto-signup with Gmail + WhatsApp
+        </p>
+    </div>
+</div>
 
         <!-- API CONFIGURATION SCREEN -->
         <div id="apiConfigScreen" class="screen">
@@ -560,7 +566,7 @@
         // Google Sheets Configuration
         const GOOGLE_SHEETS_CONFIG = {
             // REPLACE WITH YOUR GOOGLE SHEETS WEB APP URL
-            webAppUrl: 'YOUR_GOOGLE_SHEETS_WEB_APP_URL_HERE'
+            webAppUrl: 'https://script.google.com/macros/s/AKfycbwJD8IrvzYZqWRG23pHgqC9NsNgBZoB0_xZTBunrlz0ob3CsKfRxGgZivi0Gy0C97e3pw/exec'
         };
 
         // Keyword suggestions for autocomplete
@@ -619,21 +625,29 @@
         // AUTHENTICATION
         // ========================
 
-        async function handleAuth() {
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value;
+       async function handleAuth() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const whatsapp = document.getElementById('loginWhatsApp').value.trim();
+    const password = document.getElementById('loginPassword').value;
 
-            if (!email || !password) {
-                showError('loginError', 'Please enter email and password');
-                return;
-            }
+    if (!email || !whatsapp || !password) {
+        showError('loginError', 'Please fill all required fields');
+        return;
+    }
 
-            if (!validateEmail(email)) {
-                showError('loginError', 'Please enter a valid email address');
-                return;
-            }
+    if (!validateWhatsApp(whatsapp)) {
+        showError('loginError', 'WhatsApp must include country code (e.g., +91 9876543210)');
+        return;
+    }
 
-            setLoading('login', true);
+    setLoading('login', true);
+    
+    const userData = await authenticateUser(email, whatsapp, password);
+    APP_STATE.user = { email, whatsapp, authenticated: true };
+    saveToLocalStorage();
+    showScreen('apiConfigScreen');
+    setLoading('login', false);
+}
 
             try {
                 // Check if user exists in Google Sheets
@@ -654,19 +668,16 @@
             }
         }
 
-        async function authenticateUser(email, password) {
-            // In production, this would call your Google Sheets Web App
-            // For MVP, we'll simulate authentication
-            
-            try {
-                // Simulated API call
-                // const response = await fetch(GOOGLE_SHEETS_CONFIG.webAppUrl, {
-                //     method: 'POST',
-                //     body: JSON.stringify({ action: 'auth', email, password })
-                // });
-                
-                // For MVP: Auto-signup on first login
-                return { email, authenticated: true };
+        async function authenticateUser(email, whatsapp, password) {
+    if (GOOGLE_SHEETS_CONFIG.webAppUrl !== 'YOUR_GOOGLE_SHEETS_WEB_APP_URL_HERE') {
+        await fetch(GOOGLE_SHEETS_CONFIG.webAppUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify({ action: 'auth', email, whatsapp, password })
+        });
+    }
+    return { email, whatsapp, authenticated: true };
+}
                 
             } catch (error) {
                 throw new Error('Authentication failed. Please check your credentials.');
@@ -1223,7 +1234,11 @@ Respond ONLY with valid JSON, no markdown.`
         function validateEmail(email) {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
-
+        
+        function validateWhatsApp(number) {
+            return /^\+[1-9]\d{9,14}$/.test(number.replace(/\s/g, ''));
+        }
+        
         function validateUrl(url) {
             try {
                 new URL(url);
