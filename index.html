@@ -4,175 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PrePeak Pro | Market Intelligence Engine</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-    
     <style>
+        :root { --neon-green: #00ff88; --neon-pink: #ff0066; --bg-dark: #000; --cyber-overlay: rgba(0, 255, 136, 0.03); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'IBM Plex Mono', monospace;
-            background: #000;
-            color: #00ff88;
-            overflow-x: hidden;
-        }
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: 
-                linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px),
-                linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
-            z-index: 0;
-        }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
-        }
+        body { font-family: 'IBM Plex Mono', monospace; background: var(--bg-dark); color: var(--neon-green); overflow-x: hidden; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(90deg, var(--cyber-overlay) 1px, transparent 1px), linear-gradient(var(--cyber-overlay) 1px, transparent 1px); background-size: 50px 50px; pointer-events: none; z-index: 0; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; position: relative; z-index: 1; }
         .orbitron { font-family: 'Orbitron', sans-serif; }
-        
-        /* Screens */
+        /* UI Components */
         .screen { display: none; }
-        .screen.active { display: block; animation: fadeIn 0.3s; }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        /* Cyber Box */
-        .cyber-box {
-            background: rgba(0, 20, 10, 0.95);
-            border: 2px solid #00ff88;
-            border-radius: 0.5rem;
-            padding: 2rem;
-            position: relative;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
-        }
-        .cyber-box::before {
-            content: '';
-            position: absolute;
-            top: -2px; left: -2px;
-            width: 20px; height: 20px;
-            border-top: 4px solid #ff0066;
-            border-left: 4px solid #ff0066;
-        }
-        .cyber-box::after {
-            content: '';
-            position: absolute;
-            bottom: -2px; right: -2px;
-            width: 20px; height: 20px;
-            border-bottom: 4px solid #ff0066;
-            border-right: 4px solid #ff0066;
-        }
-        
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        .header h1 {
-            font-size: 4rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #00ff88, #00ccff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
-        }
-        
-        /* Forms */
+        .screen.active { display: block; animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .cyber-box { background: rgba(0, 20, 10, 0.95); border: 2px solid var(--neon-green); border-radius: 0.5rem; padding: 2rem; position: relative; box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); }
+        .cyber-box::before { content: ''; position: absolute; top: -2px; left: -2px; width: 20px; height: 20px; border-top: 4px solid var(--neon-pink); border-left: 4px solid var(--neon-pink); }
+        .cyber-box::after { content: ''; position: absolute; bottom: -2px; right: -2px; width: 20px; height: 20px; border-bottom: 4px solid var(--neon-pink); border-right: 4px solid var(--neon-pink); }
+        /* Header & Forms */
+        .header { text-align: center; margin-bottom: 3rem; }
+        .header h1 { font-size: clamp(2rem, 8vw, 4rem); font-weight: 900; background: linear-gradient(135deg, var(--neon-green), #00ccff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
         .form-group { margin-bottom: 1.5rem; }
-        .form-label {
-            display: block;
-            color: #888;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            letter-spacing: 2px;
-        }
-        .form-input {
-            width: 100%;
-            padding: 1rem;
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(0, 255, 136, 0.4);
-            border-radius: 0.5rem;
-            color: #00ff88;
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 1rem;
-        }
-        .form-input:focus {
-            outline: none;
-            border-color: #00ff88;
-            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
-        }
-        
-        /* Buttons */
-        .btn-primary {
-            background: linear-gradient(135deg, #00ff88, #00cc6a);
-            color: #000;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 0.5rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
-        }
-        .btn-primary:hover:not(:disabled) {
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
-            transform: translateY(-2px);
-        }
+        .form-label { display: block; color: #888; text-transform: uppercase; font-size: 0.75rem; font-weight: bold; margin-bottom: 0.5rem; letter-spacing: 2px; }
+        .form-input { width: 100%; padding: 1.2rem; background: rgba(0, 0, 0, 0.8); border: 1px solid rgba(0, 255, 136, 0.4); border-radius: 0.5rem; color: var(--neon-green); font-family: 'IBM Plex Mono', monospace; font-size: 1rem; transition: 0.3s; }
+        .form-input:focus { outline: none; border-color: var(--neon-green); box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
+        /* Interactive Elements */
+        .btn-primary { background: linear-gradient(135deg, var(--neon-green), #00cc6a); color: #000; border: none; padding: 1.2rem 2rem; border-radius: 0.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.3s; width: 100%; }
+        .btn-primary:hover:not(:disabled) { box-shadow: 0 0 30px rgba(0, 255, 136, 0.6); transform: scale(1.02); }
         .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-        
-        /* Results */
-        .result-card {
-            background: rgba(0, 20, 10, 0.9);
-            border: 2px solid rgba(0, 255, 136, 0.4);
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-        .stat-value { font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900; }
-        
-        .alert { padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; }
-        .alert-error { background: rgba(255, 0, 102, 0.1); border: 1px solid #ff0066; color: #ff0066; }
-        .alert-info { background: rgba(0, 204, 255, 0.1); border: 1px solid #00ccff; color: #00ccff; }
-        
+        .alert-error { background: rgba(255, 0, 102, 0.1); border: 1px solid var(--neon-pink); color: var(--neon-pink); padding: 1rem; margin-bottom: 1.5rem; border-radius: 0.5rem; font-size: 0.9rem; }
         .hidden { display: none !important; }
-        .logout-btn {
-            position: absolute;
-            top: 2rem; right: 2rem;
-            background: rgba(255, 0, 102, 0.2);
-            border: 1px solid #ff0066;
-            color: #ff0066;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-        }
-        .tabs { display: flex; gap: 1rem; margin-bottom: 2rem; }
-        .tab-btn {
-            background: transparent;
-            border: 2px solid rgba(0, 255, 136, 0.3);
-            color: #00ff88;
-            padding: 1rem 2rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-        }
-        .tab-btn.active { background: rgba(0, 255, 136, 0.2); border-color: #00ff88; }
+        .logout-btn { position: absolute; top: 2rem; right: 2rem; background: rgba(255, 0, 102, 0.2); border: 1px solid var(--neon-pink); color: var(--neon-pink); padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; font-size: 0.8rem; font-weight: bold; }
+        /* Dashboard Tabs */
+        .tabs { display: flex; gap: 1rem; margin-bottom: 2rem; overflow-x: auto; padding-bottom: 0.5rem; }
+        .tab-btn { background: transparent; border: 2px solid rgba(0, 255, 136, 0.3); color: var(--neon-green); padding: 1rem 2rem; border-radius: 0.5rem; cursor: pointer; font-weight: bold; white-space: nowrap; transition: 0.3s; }
+        .tab-btn.active { background: rgba(0, 255, 136, 0.2); border-color: var(--neon-green); box-shadow: 0 0 15px rgba(0, 255, 136, 0.2); }
+        .result-card { margin-top: 2rem; padding: 2rem; background: rgba(0, 255, 136, 0.05); border: 1px solid var(--neon-green); border-radius: 0.5rem; }
     </style>
 </head>
 <body>
@@ -183,44 +48,53 @@
                 <p style="color: #888; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 3px;">Market Intelligence Engine</p>
             </div>
             <div class="cyber-box" style="max-width: 500px; margin: 0 auto;">
-                <h2 class="orbitron" style="text-align: center; margin-bottom: 2rem; font-size: 1.5rem;">SYSTEM ACCESS</h2>
-                <div id="loginError" class="alert alert-error hidden"></div>
-                
+                <h2 class="orbitron" style="text-align: center; margin-bottom: 2rem; font-size: 1.5rem;">ACCESS PROTOCOL</h2>
+                <div id="loginError" class="alert-error hidden"></div>
                 <div class="form-group">
                     <label class="form-label">Gmail Address *</label>
-                    <input type="email" id="loginEmail" class="form-input" placeholder="your@gmail.com">
+                    <input type="email" id="loginEmail" class="form-input" placeholder="admin@gmail.com">
                 </div>
                 <div class="form-group">
                     <label class="form-label">WhatsApp Number *</label>
                     <input type="tel" id="loginWhatsApp" class="form-input" placeholder="+91 9876543210">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Password *</label>
-                    <input type="password" id="loginPassword" class="form-input" placeholder="Enter password">
+                    <label class="form-label">Security Password *</label>
+                    <input type="password" id="loginPassword" class="form-input" placeholder="Min 6 characters">
                 </div>
-                <button class="btn-primary" id="loginBtn" onclick="handleAuth()">LOGIN / SIGNUP</button>
+                <button class="btn-primary" id="loginBtn" onclick="handleAuth()">INITIALIZE SIGNUP</button>
+            </div>
+        </div>
+
+        <div id="verifyScreen" class="screen">
+            <div class="header"><h1 class="orbitron">VERIFICATION</h1></div>
+            <div class="cyber-box" style="max-width: 500px; margin: 0 auto;">
+                <p style="text-align: center; margin-bottom: 2rem; color: #ccc;">Enter the 6-digit decryption code sent to your contacts.</p>
+                <div class="form-group">
+                    <input type="text" id="otpInput" class="form-input" placeholder="000000" maxlength="6" style="text-align: center; font-size: 2.5rem; letter-spacing: 12px; font-weight: bold;">
+                </div>
+                <button class="btn-primary" onclick="verifyOTP()">UNLOCK SYSTEM</button>
+                <p style="text-align: center; margin-top: 1.5rem; font-size: 0.8rem; color: #666;">(Demo code: 123456)</p>
             </div>
         </div>
 
         <div id="apiConfigScreen" class="screen">
             <button class="logout-btn" onclick="logout()">LOGOUT</button>
-            <div class="header">
-                <h1 class="orbitron">API CONFIGURATION</h1>
-            </div>
+            <div class="header"><h1 class="orbitron">AI CONFIG</h1></div>
             <div class="cyber-box" style="max-width: 700px; margin: 0 auto;">
                 <div class="form-group">
-                    <label class="form-label">AI Provider</label>
+                    <label class="form-label">Neural Provider</label>
                     <select id="apiProvider" class="form-input">
-                        <option value="anthropic">Anthropic Claude</option>
-                        <option value="openai">OpenAI GPT-4</option>
-                        <option value="gemini">Google Gemini</option>
+                        <option value="gemini">Google Gemini 1.5</option>
+                        <option value="anthropic">Anthropic Claude 3.5</option>
+                        <option value="openai">OpenAI GPT-4o</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-label">API Key</label>
                     <input type="password" id="apiKeyInput" class="form-input" placeholder="sk-...">
                 </div>
-                <button class="btn-primary" onclick="saveApiConfig()">SAVE & CONTINUE</button>
+                <button class="btn-primary" onclick="saveApiConfig()">SAVE & ENGAGE</button>
             </div>
         </div>
 
@@ -228,60 +102,58 @@
             <button class="logout-btn" onclick="logout()">LOGOUT</button>
             <div class="header">
                 <h1 class="orbitron">PREPEAK PRO</h1>
-                <p id="userEmailDisplay" style="color: #888;"></p>
+                <p id="userEmailDisplay" style="color: #888; font-size: 0.8rem; letter-spacing: 1px;"></p>
             </div>
             <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab('prediction')">🎯 PREDICTION</button>
-                <button class="tab-btn" onclick="switchTab('saturation')">📊 SATURATION</button>
+                <button class="tab-btn active" onclick="switchTab('prediction')">🎯 MARKET PREDICTION</button>
+                <button class="tab-btn" onclick="switchTab('saturation')">📊 SATURATION INDEX</button>
             </div>
 
             <div id="predictionTab" class="tab-content">
                 <div class="cyber-box">
                     <div class="form-group">
-                        <label class="form-label">Product / Keyword</label>
-                        <input type="text" id="predictionKeyword" class="form-input" placeholder="e.g., wireless earbuds">
+                        <label class="form-label">Target Market / Product Keyword</label>
+                        <input type="text" id="predictionKeyword" class="form-input" placeholder="e.g., portable electric blender">
                     </div>
-                    <button class="btn-primary" id="predictionBtn" onclick="runPredictionAnalysis()">RUN ANALYSIS</button>
+                    <button class="btn-primary" id="predictionBtn" onclick="runPredictionAnalysis()">SCAN MARKET</button>
                 </div>
-                <div id="predictionResults" class="hidden" style="margin-top: 2rem;"></div>
+                <div id="predictionResults" class="hidden"></div>
             </div>
 
             <div id="saturationTab" class="tab-content hidden">
                 <div class="cyber-box">
                     <div class="form-group">
-                        <label class="form-label">Competitor URL</label>
+                        <label class="form-label">Competitor Domain/URL</label>
                         <input type="url" id="competitorUrl" class="form-input" placeholder="https://competitor.com">
                     </div>
-                    <button class="btn-primary" id="saturationBtn" onclick="runSaturationAnalysis()">ANALYZE COMPETITOR</button>
+                    <div class="form-group">
+                        <label class="form-label">Your Product (For Differentiation Analysis)</label>
+                        <input type="text" id="yourProductName" class="form-input" placeholder="Your Brand Name">
+                    </div>
+                    <button class="btn-primary" id="saturationBtn" onclick="runSaturationAnalysis()">DECONSTRUCT COMPETITOR</button>
                 </div>
-                <div id="saturationResults" class="hidden" style="margin-top: 2rem;"></div>
+                <div id="saturationResults" class="hidden"></div>
             </div>
         </div>
     </div>
 
     <script>
-        const APP_STATE = {
-            user: null,
-            apiKey: null,
-            apiProvider: 'anthropic',
-            currentTab: 'prediction'
-        };
-
-        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwJD8IrvzYZqWRG23pHgqC9NsNgBZoB0_xZTBunrlz0ob3CsKfRxGgZivi0Gy0C97e3pw/exec';
+        const APP_STATE = { user: null, apiKey: null, apiProvider: 'gemini' };
+        // YOUR SPECIFIC GOOGLE APPS SCRIPT URL
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxolERzrkzf_Y0aiigQvxjgljhcnitXtHJ7YsxAICSBeBlBzo5Hzu7EEI6la6Vtzhx__Q/exec';
 
         function init() {
             const saved = localStorage.getItem('prepeakState');
             if (saved) {
                 const state = JSON.parse(saved);
-                if (state.user) {
-                    APP_STATE.user = state.user;
+                if (state.user && state.user.verified) {
+                    APP_STATE.user = state.user; 
                     APP_STATE.apiKey = state.apiKey;
-                    APP_STATE.apiProvider = state.apiProvider;
-                    if (APP_STATE.apiKey) {
-                        showScreen('appScreen');
-                        document.getElementById('userEmailDisplay').textContent = APP_STATE.user.email;
-                    } else {
-                        showScreen('apiConfigScreen');
+                    if (APP_STATE.apiKey) { 
+                        showScreen('appScreen'); 
+                        document.getElementById('userEmailDisplay').textContent = "IDENTIFIED: " + APP_STATE.user.email; 
+                    } else { 
+                        showScreen('apiConfigScreen'); 
                     }
                 }
             }
@@ -292,103 +164,102 @@
             const whatsapp = document.getElementById('loginWhatsApp').value.trim();
             const password = document.getElementById('loginPassword').value;
 
-            if (!email || !whatsapp || !password) {
-                showError('loginError', 'All fields required');
-                return;
+            if (!email || !whatsapp || password.length < 6) { 
+                showError('loginError', 'Invalid inputs. Password must be 6+ characters.'); 
+                return; 
             }
 
             setLoading('login', true);
+
             try {
-                // Send to Google Sheets
-                await fetch(GOOGLE_SHEETS_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify({ action: 'auth', email, whatsapp, password })
+                // SAVING TO YOUR GOOGLE SHEET
+                await fetch(GOOGLE_SHEETS_URL, { 
+                    method: 'POST', 
+                    mode: 'no-cors', 
+                    body: JSON.stringify({ action: 'auth', email, whatsapp, password, status: 'PENDING' }) 
                 });
 
-                APP_STATE.user = { email, whatsapp };
+                APP_STATE.user = { email, whatsapp, verified: false };
                 localStorage.setItem('prepeakState', JSON.stringify(APP_STATE));
-                showScreen('apiConfigScreen');
+                showScreen('verifyScreen'); 
             } catch (e) {
-                showError('loginError', 'Auth failed. Check connection.');
+                showError('loginError', 'Transmission failed. Check network.');
             } finally {
                 setLoading('login', false);
             }
         }
 
+        function verifyOTP() {
+            const otp = document.getElementById('otpInput').value;
+            if (otp === "123456") { // Replace with dynamic check if you build the random OTP logic
+                APP_STATE.user.verified = true;
+                localStorage.setItem('prepeakState', JSON.stringify(APP_STATE));
+                showScreen('apiConfigScreen');
+            } else {
+                alert("ACCESS DENIED: Invalid Verification Code.");
+            }
+        }
+
         function saveApiConfig() {
             const key = document.getElementById('apiKeyInput').value.trim();
-            if (!key) return alert('Enter API Key');
-            APP_STATE.apiKey = key;
+            if (!key) return alert('Neural Key Required.');
+            APP_STATE.apiKey = key; 
             APP_STATE.apiProvider = document.getElementById('apiProvider').value;
             localStorage.setItem('prepeakState', JSON.stringify(APP_STATE));
             showScreen('appScreen');
-            document.getElementById('userEmailDisplay').textContent = APP_STATE.user.email;
+            document.getElementById('userEmailDisplay').textContent = "IDENTIFIED: " + APP_STATE.user.email;
         }
 
         async function runPredictionAnalysis() {
             const keyword = document.getElementById('predictionKeyword').value.trim();
-            if (!keyword) return alert('Enter keyword');
-            
+            if (!keyword) return alert('Enter Keyword.');
             setLoading('prediction', true);
             try {
-                const prompt = `Analyze market for "${keyword}". Return ONLY valid JSON with fields: status (GREEN_LIGHT/RED_LIGHT), searchVolume, saturationScore (0-100), opportunityScore, competitors (array of objects with name, revenue), and recommendation.`;
+                const prompt = `Perform market intelligence for "${keyword}". Return valid JSON: {"status": "GREEN_LIGHT/RED_LIGHT", "saturation": "0-100%", "logic": "2-sentence breakdown"}`;
                 const result = await callAI(prompt);
-                displayPredictionResults(result);
-            } catch (e) {
-                alert('Analysis failed: ' + e.message);
-            } finally {
-                setLoading('prediction', false);
-            }
+                const div = document.getElementById('predictionResults');
+                div.innerHTML = `<div class="result-card"><h2 class="orbitron" style="color:${result.status==='GREEN_LIGHT'?'#00ff88':'#ff0066'}">${result.status}</h2><p>Saturation: ${result.saturation}</p><p>${result.logic}</p></div>`;
+                div.classList.remove('hidden');
+            } catch (e) { alert('AI Scan Failure.'); }
+            finally { setLoading('prediction', false); }
+        }
+
+        async function runSaturationAnalysis() {
+            const url = document.getElementById('competitorUrl').value;
+            const myProd = document.getElementById('yourProductName').value;
+            if (!url) return alert('URL required.');
+            setLoading('saturation', true);
+            try {
+                const prompt = `Analyze competitor ${url} against ${myProd}. Return JSON: {"name": "Competitor", "moat": "Their strength", "weakness": "Their gap", "strategy": "How to beat them"}`;
+                const result = await callAI(prompt);
+                const div = document.getElementById('saturationResults');
+                div.innerHTML = `<div class="result-card"><h2 class="orbitron">${result.name}</h2><p><b>GAP:</b> ${result.weakness}</p><p><b>MOAT KILLER:</b> ${result.strategy}</p></div>`;
+                div.classList.remove('hidden');
+            } catch (e) { alert('Competitor scan failed.'); }
+            finally { setLoading('saturation', false); }
         }
 
         async function callAI(prompt) {
-            const provider = APP_STATE.apiProvider;
             const key = APP_STATE.apiKey;
-            let response, data, text;
+            const provider = APP_STATE.apiProvider;
+            let url, body;
 
-            if (provider === 'anthropic') {
-                response = await fetch('https://api.anthropic.com/v1/messages', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
-                    body: JSON.stringify({ model: 'claude-3-5-sonnet-20241022', max_tokens: 2000, messages: [{role: 'user', content: prompt}] })
-                });
-                data = await response.json();
-                text = data.content[0].text;
+            if (provider === 'gemini') {
+                url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
+                body = JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] });
             } else if (provider === 'openai') {
-                response = await fetch('https://api.openai.com/v1/chat/completions', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
-                    body: JSON.stringify({ model: 'gpt-4', messages: [{role: 'user', content: prompt}] })
-                });
-                data = await response.json();
-                text = data.choices[0].message.content;
-            } else {
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
-                response = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                });
-                data = await response.json();
-                text = data.candidates[0].content.parts[0].text;
+                url = 'https://api.openai.com/v1/chat/completions';
+                body = JSON.stringify({ model: 'gpt-4o', messages: [{role: 'user', content: prompt}] });
             }
-            return JSON.parse(text.replace(/```json|```/g, '').trim());
-        }
 
-        function displayPredictionResults(data) {
-            const div = document.getElementById('predictionResults');
-            div.innerHTML = `
-                <div class="result-card" style="border-color: ${data.status === 'GREEN_LIGHT' ? '#00ff88' : '#ff0066'}">
-                    <h2 class="orbitron">${data.status}</h2>
-                    <div class="stat-grid">
-                        <div class="stat-item"><p>Volume</p><div class="stat-value">${data.searchVolume}</div></div>
-                        <div class="stat-item"><p>Saturation</p><div class="stat-value">${data.saturationScore}%</div></div>
-                    </div>
-                    <p style="margin-top:1rem;">${data.recommendation}</p>
-                </div>
-            `;
-            div.classList.remove('hidden');
+            const res = await fetch(url, { 
+                method: 'POST', 
+                headers: provider === 'openai' ? { 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' },
+                body 
+            });
+            const data = await res.json();
+            const text = provider === 'gemini' ? data.candidates[0].content.parts[0].text : data.choices[0].message.content;
+            return JSON.parse(text.replace(/```json|```/g, '').trim());
         }
 
         function switchTab(tab) {
@@ -406,20 +277,11 @@
         function setLoading(id, is) {
             const btn = document.getElementById(id + 'Btn');
             btn.disabled = is;
-            btn.textContent = is ? 'PROCESSING...' : (id === 'login' ? 'LOGIN / SIGNUP' : 'RUN ANALYSIS');
+            btn.textContent = is ? 'PROCESSING...' : (id === 'login' ? 'INITIALIZE SIGNUP' : 'RUN ANALYSIS');
         }
 
-        function showError(id, msg) {
-            const el = document.getElementById(id);
-            el.textContent = msg;
-            el.classList.remove('hidden');
-        }
-
-        function logout() {
-            localStorage.clear();
-            location.reload();
-        }
-
+        function showError(id, msg) { const el = document.getElementById(id); el.textContent = msg; el.classList.remove('hidden'); }
+        function logout() { localStorage.clear(); location.reload(); }
         init();
     </script>
 </body>
