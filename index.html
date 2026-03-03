@@ -465,9 +465,6 @@
 <script>
 // ─── CONFIG ───────────────────────────────────────────────────────────────────
 const CONFIG = {
-    BREVO_API_KEY: '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',
-    BREVO_SENDER_EMAIL: 'vighnesh.vn.1192@gmail.com',
-    BREVO_SENDER_NAME: 'PrePeak Pro',
     SHEETS_URL: 'https://script.google.com/macros/s/AKfycbyx0OD_Kt7sOe5ExYHXPVeUZop74TTyPGno1n-RvWyIPGH-BHT1gaD3rxQ1DLNjS_Pp/exec'
 };
 
@@ -574,38 +571,15 @@ async function handleAuth() {
     }
 }
 
-// ─── BREVO EMAIL ──────────────────────────────────────────────────────────────
+// ─── SEND OTP VIA APPS SCRIPT (Brevo key hidden server-side) ─────────────────
 async function sendOTPEmail(email, name, otp) {
     try {
-        const res = await fetch('https://api.brevo.com/v3/smtp/email', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'api-key': CONFIG.BREVO_API_KEY
-            },
-            body: JSON.stringify({
-                sender: {
-                    name: CONFIG.BREVO_SENDER_NAME,
-                    email: CONFIG.BREVO_SENDER_EMAIL
-                },
-                to: [{ email, name }],
-                subject: 'PrePeak Pro — Your Verification Code',
-                htmlContent: `
-                    <div style="font-family:monospace;background:#000;color:#00ff88;padding:40px;border-radius:12px;max-width:480px;margin:0 auto;border:2px solid #00ff88;">
-                        <h1 style="font-size:2rem;margin-bottom:0.5rem;color:#00ff88;">PREPEAK PRO</h1>
-                        <p style="color:#888;margin-bottom:2rem;letter-spacing:2px;font-size:0.8rem;">MARKET INTELLIGENCE ENGINE</p>
-                        <p style="color:#ccc;margin-bottom:1.5rem;">Hi <strong style="color:#00ff88;">${name}</strong>, here is your verification code:</p>
-                        <div style="background:#001a0d;border:2px solid #00ff88;border-radius:8px;padding:24px;text-align:center;margin-bottom:1.5rem;">
-                            <span style="font-size:3rem;font-weight:900;letter-spacing:12px;color:#00ff88;">${otp}</span>
-                        </div>
-                        <p style="color:#888;font-size:0.85rem;">This code expires in <strong style="color:#ffcc00;">10 minutes</strong>.</p>
-                        <p style="color:#666;font-size:0.75rem;margin-top:1rem;">If you didn't request this, ignore this email.</p>
-                    </div>`
-            })
-        });
-        return res.ok || res.status === 201;
+        const params = new URLSearchParams({ action: 'sendOtp', email, name, otp });
+        const res = await fetch(`${CONFIG.SHEETS_URL}?${params.toString()}`);
+        const data = await res.json();
+        return data.success;
     } catch (err) {
-        console.error('Brevo error:', err);
+        console.error('OTP send error:', err);
         return false;
     }
 }
