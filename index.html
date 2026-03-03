@@ -551,83 +551,60 @@
         </div>
     </div>
 
-    <script>
-        // ========================
-        // STATE MANAGEMENT
-        // ========================
-        
-        const APP_STATE = {
-            user: null,
-            apiKey: null,
-            apiProvider: 'anthropic',
-            currentTab: 'prediction'
-        };
+<script>
 
-        // Google Sheets Configuration
-        const GOOGLE_SHEETS_CONFIG = {
-            // REPLACE WITH YOUR GOOGLE SHEETS WEB APP URL
-            webAppUrl: 'https://script.google.com/macros/s/AKfycbwJD8IrvzYZqWRG23pHgqC9NsNgBZoB0_xZTBunrlz0ob3CsKfRxGgZivi0Gy0C97e3pw/exec'
-        };
+// ========================
+// STATE MANAGEMENT
+// ========================
 
-        // Keyword suggestions for autocomplete
-        const KEYWORD_SUGGESTIONS = [
-            'wireless earbuds', 'smart watch', 'fitness tracker', 'portable charger',
-            'bluetooth speaker', 'laptop stand', 'desk organizer', 'phone case',
-            'water bottle', 'yoga mat', 'resistance bands', 'protein powder',
-            'coffee maker', 'air fryer', 'vacuum cleaner', 'led lights',
-            'project management software', 'crm software', 'accounting software',
-            'email marketing tool', 'social media scheduler', 'video editing software'
-        ];
+const APP_STATE = {
+    user: null,
+    apiKey: null,
+    apiProvider: 'anthropic',
+    currentTab: 'prediction'
+};
 
-        // ========================
-        // INITIALIZATION
-        // ========================
+const GOOGLE_SHEETS_CONFIG = {
+    webAppUrl: 'PASTE_YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE'
+};
 
-        function init() {
-            loadFromLocalStorage();
-            
-            // Update API help text on provider change
-            document.getElementById('apiProvider').addEventListener('change', function() {
-                const provider = this.value;
-                const helpText = {
-                    'anthropic': 'Get key: console.anthropic.com/settings/keys',
-                    'openai': 'Get key: platform.openai.com/api-keys',
-                    'gemini': 'Get key: makersuite.google.com/app/apikey'
-                };
-                document.getElementById('providerHelp').textContent = helpText[provider];
-            });
+// ========================
+// INIT
+// ========================
+
+function init() {
+    loadFromLocalStorage();
+}
+
+function loadFromLocalStorage() {
+    const saved = localStorage.getItem('prepeakState');
+    if (saved) {
+        const state = JSON.parse(saved);
+        APP_STATE.user = state.user;
+        APP_STATE.apiKey = state.apiKey;
+        APP_STATE.apiProvider = state.apiProvider || 'anthropic';
+
+        if (APP_STATE.user && APP_STATE.apiKey) {
+            showScreen('appScreen');
+            document.getElementById('userEmail').textContent = APP_STATE.user.email;
+        } else if (APP_STATE.user) {
+            showScreen('apiConfigScreen');
         }
+    }
+}
 
-        function loadFromLocalStorage() {
-            const saved = localStorage.getItem('prepeakState');
-            if (saved) {
-                const state = JSON.parse(saved);
-                if (state.user) {
-                    APP_STATE.user = state.user;
-                    APP_STATE.apiKey = state.apiKey;
-                    APP_STATE.apiProvider = state.apiProvider || 'anthropic';
-                    
-                    if (APP_STATE.apiKey) {
-                        showScreen('appScreen');
-                        document.getElementById('userEmail').textContent = APP_STATE.user.email;
-                    } else {
-                        showScreen('apiConfigScreen');
-                    }
-                }
-            }
-        }
+function saveToLocalStorage() {
+    localStorage.setItem('prepeakState', JSON.stringify(APP_STATE));
+}
 
-        function saveToLocalStorage() {
-            localStorage.setItem('prepeakState', JSON.stringify(APP_STATE));
-        }
+// ========================
+// AUTHENTICATION
+// ========================
 
-        // ========================
-        // AUTHENTICATION
-        // ========================
+async function handleAuth() {
 
-       async function handleAuth() {
     const email = document.getElementById('loginEmail').value.trim();
-    const whatsapp = document.getElementById('loginWhatsApp').value.trim();
+    const whatsapp = document.getElementById('loginWhatsApp').value.trim().replace(/\s/g, '');
     const password = document.getElementById('loginPassword').value;
 
     if (!email || !whatsapp || !password) {
@@ -635,621 +612,119 @@
         return;
     }
 
+    if (!validateEmail(email)) {
+        showError('loginError', 'Invalid email format');
+        return;
+    }
+
     if (!validateWhatsApp(whatsapp)) {
-        showError('loginError', 'WhatsApp must include country code (e.g., +91 9876543210)');
+        showError('loginError', 'WhatsApp must include country code (e.g., +919876543210)');
         return;
     }
 
     setLoading('login', true);
-    
-    const userData = await authenticateUser(email, whatsapp, password);
-    APP_STATE.user = { email, whatsapp, authenticated: true };
-    saveToLocalStorage();
-    showScreen('apiConfigScreen');
+
+    try {
+
+        const response = await fetch(GOOGLE_SHEETS_CONFIG.webAppUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: 'auth',
+                email,
+                whatsapp,
+                password
+            })
+        });
+
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error(data.message || 'Authentication failed');
+        }
+
+        APP_STATE.user = { email, whatsapp };
+        saveToLocalStorage();
+
+        showScreen('apiConfigScreen');
+
+    } catch (error) {
+        showError('loginError', error.message);
+    }
+
     setLoading('login', false);
 }
 
-            try {
-                // Check if user exists in Google Sheets
-                const userData = await authenticateUser(email, password);
-                
-                APP_STATE.user = {
-                    email: email,
-                    authenticated: true
-                };
-                
-                saveToLocalStorage();
-                showScreen('apiConfigScreen');
-                
-            } catch (error) {
-                showError('loginError', error.message);
-            } finally {
-                setLoading('login', false);
-            }
-        }
+function logout() {
+    localStorage.removeItem('prepeakState');
+    APP_STATE.user = null;
+    APP_STATE.apiKey = null;
+    showScreen('loginScreen');
+}
 
-        async function authenticateUser(email, whatsapp, password) {
-    if (GOOGLE_SHEETS_CONFIG.webAppUrl !== 'YOUR_GOOGLE_SHEETS_WEB_APP_URL_HERE') {
-        await fetch(GOOGLE_SHEETS_CONFIG.webAppUrl, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: JSON.stringify({ action: 'auth', email, whatsapp, password })
-        });
+// ========================
+// API CONFIG
+// ========================
+
+function saveApiConfig() {
+    const apiKey = document.getElementById('apiKeyInput').value.trim();
+    const provider = document.getElementById('apiProvider').value;
+
+    if (!apiKey) {
+        alert('Please enter API key');
+        return;
     }
-    return { email, whatsapp, authenticated: true };
+
+    APP_STATE.apiKey = apiKey;
+    APP_STATE.apiProvider = provider;
+    saveToLocalStorage();
+
+    showScreen('appScreen');
+    document.getElementById('userEmail').textContent = APP_STATE.user.email;
 }
-                
-            } catch (error) {
-                throw new Error('Authentication failed. Please check your credentials.');
-            }
-        }
 
-        function logout() {
-            localStorage.removeItem('prepeakState');
-            APP_STATE.user = null;
-            APP_STATE.apiKey = null;
-            showScreen('loginScreen');
-        }
+// ========================
+// UTILITIES
+// ========================
 
-        // ========================
-        // API CONFIGURATION
-        // ========================
+function showScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(screenId).classList.add('active');
+}
 
-        function saveApiConfig() {
-            const apiKey = document.getElementById('apiKeyInput').value.trim();
-            const provider = document.getElementById('apiProvider').value;
+function setLoading(type, isLoading) {
+    const btn = document.getElementById(`${type}Btn`);
+    const loader = document.getElementById(`${type}Loading`);
+    const btnText = document.getElementById(`${type}BtnText`);
 
-            if (!apiKey) {
-                alert('❌ Please enter your API key');
-                return;
-            }
-
-            APP_STATE.apiKey = apiKey;
-            APP_STATE.apiProvider = provider;
-            saveToLocalStorage();
-
-            showScreen('appScreen');
-            document.getElementById('userEmail').textContent = APP_STATE.user.email;
-        }
-
-        // ========================
-        // AUTOCOMPLETE
-        // ========================
-
-        function handleAutocomplete(value) {
-            const list = document.getElementById('autocompleteList');
-            
-            if (!value) {
-                list.classList.remove('show');
-                return;
-            }
-
-            const matches = KEYWORD_SUGGESTIONS.filter(keyword => 
-                keyword.toLowerCase().includes(value.toLowerCase())
-            ).slice(0, 5);
-
-            if (matches.length === 0) {
-                list.classList.remove('show');
-                return;
-            }
-
-            list.innerHTML = matches.map(keyword => 
-                `<div class="autocomplete-item" onclick="selectKeyword('${keyword}')">${keyword}</div>`
-            ).join('');
-            
-            list.classList.add('show');
-        }
-
-        function selectKeyword(keyword) {
-            document.getElementById('predictionKeyword').value = keyword;
-            document.getElementById('autocompleteList').classList.remove('show');
-        }
-
-        // Close autocomplete when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.autocomplete-container')) {
-                document.getElementById('autocompleteList').classList.remove('show');
-            }
-        });
-
-        // ========================
-        // PREDICTION ANALYSIS
-        // ========================
-
-        async function runPredictionAnalysis() {
-            const keyword = document.getElementById('predictionKeyword').value.trim();
-            const category = document.getElementById('productCategory').value;
-
-            if (!keyword) {
-                alert('❌ Please enter a product or keyword');
-                return;
-            }
-
-            setLoading('prediction', true);
-
-            try {
-                const analysis = await callAI({
-                    action: 'prediction',
-                    keyword,
-                    category: category || 'auto'
-                });
-
-                displayPredictionResults(analysis);
-                
-            } catch (error) {
-                alert('❌ Analysis failed: ' + error.message);
-                console.error(error);
-            } finally {
-                setLoading('prediction', false);
-            }
-        }
-
-        function displayPredictionResults(data) {
-            const resultsDiv = document.getElementById('predictionResults');
-            
-            const html = `
-                <!-- Status Banner -->
-                <div class="result-card" style="background: ${data.status === 'GREEN_LIGHT' ? 'rgba(0,255,136,0.1)' : 'rgba(255,0,102,0.1)'}; border-color: ${data.status === 'GREEN_LIGHT' ? '#00ff88' : '#ff0066'};">
-                    <div class="result-header">
-                        <h2 class="orbitron" style="font-size: 2rem; color: ${data.status === 'GREEN_LIGHT' ? '#00ff88' : '#ff0066'};">
-                            ${data.status === 'GREEN_LIGHT' ? '🟢 GREEN LIGHT' : '🔴 RED LIGHT'}
-                        </h2>
-                        <span class="badge badge-${data.status === 'GREEN_LIGHT' ? 'green' : 'red'}">
-                            ${data.saturationScore}% Saturated
-                        </span>
-                    </div>
-                    <p style="color: #ccc; font-size: 1.1rem;">${data.keyword}</p>
-                </div>
-
-                <!-- Key Metrics -->
-                <div class="result-card">
-                    <h3 class="orbitron" style="margin-bottom: 1.5rem; color: #00ff88;">KEY METRICS</h3>
-                    <div class="stat-grid">
-                        <div class="stat-item">
-                            <div class="stat-label">Search Volume</div>
-                            <div class="stat-value" style="color: #00ccff;">${data.searchVolume}</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">Saturation Score</div>
-                            <div class="stat-value" style="color: #ff0066;">${data.saturationScore}%</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">Opportunity Score</div>
-                            <div class="stat-value" style="color: #00ff88;">${data.opportunityScore}%</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">Active Competitors</div>
-                            <div class="stat-value" style="color: #ffcc00;">${data.activeCompetitors}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Related Searches -->
-                <div class="result-card">
-                    <h3 class="orbitron" style="margin-bottom: 1rem; color: #00ff88;">RELATED SEARCHES</h3>
-                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                        ${data.relatedSearches.map(search => 
-                            `<span style="background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); padding: 0.5rem 1rem; border-radius: 999px; font-size: 0.85rem;">${search}</span>`
-                        ).join('')}
-                    </div>
-                </div>
-
-                <!-- Top Competitors -->
-                <div class="result-card">
-                    <h3 class="orbitron" style="margin-bottom: 1rem; color: #00ff88;">TOP COMPETITORS</h3>
-                    <ul class="competitor-list">
-                        ${data.competitors.map(comp => `
-                            <li class="competitor-item">
-                                <h4>${comp.name}</h4>
-                                <p><strong>Platform:</strong> ${comp.platform}</p>
-                                <p><strong>Estimated Revenue:</strong> ${comp.revenue}</p>
-                                <p><strong>Market Share:</strong> ${comp.marketShare}%</p>
-                            </li>
-                        `).join('')}
-                    </ul>
-                </div>
-
-                <!-- Trend Analysis -->
-                <div class="result-card">
-                    <h3 class="orbitron" style="margin-bottom: 1rem; color: #00ff88;">DEMAND TREND (12 Months)</h3>
-                    <p style="color: #888; font-size: 0.85rem; margin-bottom: 1rem;">
-                        Based on Amazon, Shopify, Google Shopping data
-                    </p>
-                    <div class="trend-chart">
-                        ${data.trendData.map(value => 
-                            `<div class="trend-bar" style="height: ${value}%;" title="${value}%"></div>`
-                        ).join('')}
-                    </div>
-                    <p style="text-align: center; margin-top: 1rem; color: #ccc;">
-                        Trend Direction: <strong style="color: ${data.trendDirection === 'UP' ? '#00ff88' : '#ff0066'};">${data.trendDirection}</strong>
-                    </p>
-                </div>
-
-                <!-- Market Analysis -->
-                <div class="result-card">
-                    <h3 class="orbitron" style="margin-bottom: 1rem; color: #00ff88;">MARKET ANALYSIS</h3>
-                    <p style="color: #ccc; line-height: 1.8; font-size: 0.95rem;">
-                        ${data.marketAnalysis}
-                    </p>
-                </div>
-
-                <!-- Recommendation -->
-                <div class="result-card" style="background: ${data.status === 'GREEN_LIGHT' ? 'rgba(0,255,136,0.05)' : 'rgba(255,0,102,0.05)'};">
-                    <h3 class="orbitron" style="margin-bottom: 1rem; color: ${data.status === 'GREEN_LIGHT' ? '#00ff88' : '#ff0066'};">
-                        ${data.status === 'GREEN_LIGHT' ? '✓' : '✗'} RECOMMENDATION
-                    </h3>
-                    <p style="color: #ccc; line-height: 1.8; font-size: 1rem;">
-                        ${data.recommendation}
-                    </p>
-                </div>
-            `;
-
-            resultsDiv.innerHTML = html;
-            resultsDiv.classList.remove('hidden');
-        }
-
-        // ========================
-        // SATURATION ANALYSIS
-        // ========================
-
-        async function runSaturationAnalysis() {
-            const url = document.getElementById('competitorUrl').value.trim();
-            const yourProduct = document.getElementById('yourProduct').value.trim();
-
-            if (!url) {
-                alert('❌ Please enter a competitor URL');
-                return;
-            }
-
-            if (!validateUrl(url)) {
-                alert('❌ Please enter a valid URL');
-                return;
-            }
-
-            setLoading('saturation', true);
-
-            try {
-                const analysis = await callAI({
-                    action: 'saturation',
-                    url,
-                    yourProduct
-                });
-
-                displaySaturationResults(analysis);
-                
-            } catch (error) {
-                alert('❌ Analysis failed: ' + error.message);
-                console.error(error);
-            } finally {
-                setLoading('saturation', false);
-            }
-        }
-
-        function displaySaturationResults(data) {
-            const resultsDiv = document.getElementById('saturationResults');
-            
-            const html = `
-                <!-- Competitor Overview -->
-                <div class="result-card">
-                    <div class="result-header">
-                        <h2 class="orbitron" style="font-size: 2rem;">${data.competitorName}</h2>
-                        <span class="badge badge-${data.marketPosition === 'LEADER' ? 'red' : 'green'}">
-                            ${data.marketPosition}
-                        </span>
-                    </div>
-                    <p style="color: #888;">${data.url}</p>
-                </div>
-
-                <!-- Extracted Data -->
-                <div class="result-card">
-                    <h3 class="orbitron" style="margin-bottom: 1.5rem; color: #00ff88;">COMPETITOR INTELLIGENCE</h3>
-                    <div class="stat-grid">
-                        <div class="stat-item">
-                            <div class="stat-label">Product Category</div>
-                            <div class="stat-value" style="font-size: 1.2rem;">${data.category}</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">Pricing</div>
-                            <div class="stat-value" style="color: #00ccff;">${data.pricing}</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">Est. Market Share</div>
-                            <div class="stat-value" style="color: #ffcc00;">${data.marketShare}%</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">Traffic Rank</div>
-                            <div class="stat-value" style="font-size: 1.2rem;">#${data.trafficRank}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Value Proposition -->
-                <div class="result-card">
-                    <h3 class="orbitron" style="margin-bottom: 1rem; color: #00ff88;">VALUE PROPOSITION</h3>
-                    <p style="color: #ccc; line-height: 1.8;">${data.valueProposition}</p>
-                </div>
-
-                <!-- Target Audience -->
-                <div class="result-card">
-                    <h3 class="orbitron" style="margin-bottom: 1rem; color: #00ff88;">TARGET AUDIENCE</h3>
-                    <p style="color: #ccc; line-height: 1.8;">${data.targetAudience}</p>
-                </div>
-
-                <!-- Competitive Analysis -->
-                <div class="result-card">
-                    <h3 class="orbitron" style="margin-bottom: 1rem; color: #00ff88;">COMPETITIVE POSITIONING</h3>
-                    <p style="color: #ccc; line-height: 1.8; margin-bottom: 1.5rem;">${data.competitiveAnalysis}</p>
-                    
-                    <h4 style="color: #00ff88; margin-bottom: 0.5rem;">Strengths:</h4>
-                    <ul style="list-style: none; padding: 0; margin-bottom: 1rem;">
-                        ${data.strengths.map(s => `<li style="color: #ccc; margin-bottom: 0.5rem;">✓ ${s}</li>`).join('')}
-                    </ul>
-                    
-                    <h4 style="color: #ff0066; margin-bottom: 0.5rem;">Weaknesses:</h4>
-                    <ul style="list-style: none; padding: 0;">
-                        ${data.weaknesses.map(w => `<li style="color: #ccc; margin-bottom: 0.5rem;">✗ ${w}</li>`).join('')}
-                    </ul>
-                </div>
-
-                <!-- Your Differentiation Strategy -->
-                ${data.yourProduct ? `
-                <div class="result-card" style="background: rgba(0,255,136,0.05); border-color: #00ff88;">
-                    <h3 class="orbitron" style="margin-bottom: 1rem; color: #00ff88;">
-                        YOUR DIFFERENTIATION STRATEGY
-                    </h3>
-                    <p style="color: #ccc; line-height: 1.8;">${data.differentiationStrategy}</p>
-                </div>
-                ` : ''}
-
-                <!-- Market Opportunity -->
-                <div class="result-card">
-                    <h3 class="orbitron" style="margin-bottom: 1rem; color: #00ff88;">MARKET OPPORTUNITY</h3>
-                    <p style="color: #ccc; line-height: 1.8;">${data.marketOpportunity}</p>
-                </div>
-            `;
-
-            resultsDiv.innerHTML = html;
-            resultsDiv.classList.remove('hidden');
-        }
-
-        // ========================
-        // AI API CALLS
-        // ========================
-
-        async function callAI(params) {
-            const { action, keyword, category, url, yourProduct } = params;
-
-            const prompts = {
-                prediction: `Analyze this product/keyword for market potential: "${keyword}"
-Category: ${category || 'auto-detect'}
-
-Provide COMPREHENSIVE market intelligence in this EXACT JSON format:
-{
-  "keyword": "${keyword}",
-  "status": "GREEN_LIGHT" or "RED_LIGHT",
-  "searchVolume": "50K/month",
-  "saturationScore": 65,
-  "opportunityScore": 35,
-  "activeCompetitors": 12,
-  "relatedSearches": ["search1", "search2", "search3", "search4", "search5"],
-  "competitors": [
-    {
-      "name": "Competitor Name",
-      "platform": "Amazon/Shopify/Own Site",
-      "revenue": "$500K/month",
-      "marketShare": 15
+    if (isLoading) {
+        btn.disabled = true;
+        loader.classList.remove('hidden');
+        btnText.classList.add('hidden');
+    } else {
+        btn.disabled = false;
+        loader.classList.add('hidden');
+        btnText.classList.remove('hidden');
     }
-  ],
-  "trendData": [45, 52, 58, 63, 67, 72, 75, 78, 80, 83, 85, 88],
-  "trendDirection": "UP" or "DOWN" or "STABLE",
-  "marketAnalysis": "Detailed 3-4 paragraph analysis covering: market size, growth trajectory, customer demographics, pricing landscape, entry barriers, and key success factors. Be specific and data-driven.",
-  "recommendation": "Clear action recommendation based on analysis. If GREEN_LIGHT, explain immediate next steps. If RED_LIGHT, suggest alternatives or niche opportunities."
 }
 
-Use real market research logic:
-- Search volume from Google Trends estimation
-- Saturation based on competitor density
-- Status = GREEN_LIGHT if competitors <8 AND opportunity >60
-- Competitors list should include real/realistic companies
-- Trend data should show realistic 12-month pattern
-- Market analysis must be thorough and actionable
-
-Respond ONLY with valid JSON, no markdown.`,
-
-                saturation: `Analyze this competitor URL and extract detailed intelligence: ${url}
-${yourProduct ? `Compare against: ${yourProduct}` : ''}
-
-Provide COMPREHENSIVE competitor analysis in this EXACT JSON format:
-{
-  "url": "${url}",
-  "competitorName": "Company Name",
-  "category": "E-commerce/SaaS/Service",
-  "pricing": "$X/month or $X",
-  "marketPosition": "LEADER/CHALLENGER/NICHE",
-  "marketShare": 25,
-  "trafficRank": 5000,
-  "valueProposition": "Clear 2-3 sentence description of what makes them unique",
-  "targetAudience": "Detailed description of who they serve and why",
-  "competitiveAnalysis": "2-3 paragraph analysis of their market position, strategy, and competitive moat",
-  "strengths": ["Strength 1", "Strength 2", "Strength 3"],
-  "weaknesses": ["Weakness 1", "Weakness 2", "Weakness 3"],
-  ${yourProduct ? `"yourProduct": "${yourProduct}",` : ''}
-  ${yourProduct ? `"differentiationStrategy": "3-4 paragraph strategy for how ${yourProduct} can differentiate and compete effectively",` : ''}
-  "marketOpportunity": "Analysis of gaps in the market this competitor isn't addressing"
+function showError(elementId, message) {
+    const el = document.getElementById(elementId);
+    el.textContent = message;
+    el.classList.remove('hidden');
+    setTimeout(() => el.classList.add('hidden'), 4000);
 }
 
-Extract REAL insights:
-- Analyze the URL domain and infer business model
-- Estimate market position based on domain authority
-- Provide realistic competitive intelligence
-- Give actionable differentiation strategies
-- Identify genuine market gaps
+function validateEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
 
-Respond ONLY with valid JSON, no markdown.`
-            };
+function validateWhatsApp(number) {
+    return /^\+[1-9]\d{9,14}$/.test(number);
+}
 
-            const prompt = prompts[action];
+init();
 
-            try {
-                let response;
-
-                if (APP_STATE.apiProvider === 'anthropic') {
-                    response = await fetch('https://api.anthropic.com/v1/messages', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'x-api-key': APP_STATE.apiKey,
-                            'anthropic-version': '2023-06-01'
-                        },
-                        body: JSON.stringify({
-                            model: 'claude-3-5-sonnet-20241022',
-                            max_tokens: 4096,
-                            messages: [{ role: 'user', content: prompt }]
-                        })
-                    });
-
-                    const data = await response.json();
-                    
-                    if (!response.ok) {
-                        throw new Error(data.error?.message || 'API request failed');
-                    }
-
-                    const text = data.content[0].text;
-                    return parseJSONResponse(text);
-
-                } else if (APP_STATE.apiProvider === 'openai') {
-                    response = await fetch('https://api.openai.com/v1/chat/completions', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${APP_STATE.apiKey}`
-                        },
-                        body: JSON.stringify({
-                            model: 'gpt-4',
-                            messages: [{ role: 'user', content: prompt }],
-                            temperature: 0.7
-                        })
-                    });
-
-                    const data = await response.json();
-                    
-                    if (!response.ok) {
-                        throw new Error(data.error?.message || 'API request failed');
-                    }
-
-                    return parseJSONResponse(data.choices[0].message.content);
-
-                } else if (APP_STATE.apiProvider === 'gemini') {
-                    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${APP_STATE.apiKey}`;
-                    
-                    response = await fetch(url, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{ parts: [{ text: prompt }] }]
-                        })
-                    });
-
-                    const data = await response.json();
-                    
-                    if (!response.ok) {
-                        throw new Error(data.error?.message || 'API request failed');
-                    }
-
-                    if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
-                        throw new Error('Invalid response from API');
-                    }
-
-                    return parseJSONResponse(data.candidates[0].content.parts[0].text);
-                }
-
-            } catch (error) {
-                throw new Error(`AI Analysis failed: ${error.message}`);
-            }
-        }
-
-        function parseJSONResponse(text) {
-            // Remove markdown code blocks if present
-            let cleaned = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-            
-            // Find JSON object
-            const startIdx = cleaned.indexOf('{');
-            const endIdx = cleaned.lastIndexOf('}');
-            
-            if (startIdx === -1 || endIdx === -1) {
-                throw new Error('No valid JSON found in AI response');
-            }
-            
-            cleaned = cleaned.substring(startIdx, endIdx + 1);
-            
-            try {
-                return JSON.parse(cleaned);
-            } catch (e) {
-                throw new Error('Failed to parse AI response: ' + e.message);
-            }
-        }
-
-        // ========================
-        // UTILITY FUNCTIONS
-        // ========================
-
-        function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
-        }
-
-        function switchTab(tabName) {
-            APP_STATE.currentTab = tabName;
-            
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-            
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-            document.getElementById(tabName + 'Tab').classList.remove('hidden');
-        }
-
-        function setLoading(type, isLoading) {
-            const btn = document.getElementById(`${type}Btn`);
-            const loader = document.getElementById(`${type}Loading`);
-            const btnText = document.getElementById(`${type}BtnText`);
-            
-            if (isLoading) {
-                btn.disabled = true;
-                loader.classList.remove('hidden');
-                btnText.classList.add('hidden');
-            } else {
-                btn.disabled = false;
-                loader.classList.add('hidden');
-                btnText.classList.remove('hidden');
-            }
-        }
-
-        function showError(elementId, message) {
-            const el = document.getElementById(elementId);
-            el.textContent = message;
-            el.classList.remove('hidden');
-            setTimeout(() => el.classList.add('hidden'), 5000);
-        }
-
-        function validateEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        }
-        
-        function validateWhatsApp(number) {
-            return /^\+[1-9]\d{9,14}$/.test(number.replace(/\s/g, ''));
-        }
-        
-        function validateUrl(url) {
-            try {
-                new URL(url);
-                return true;
-            } catch {
-                return false;
-            }
-        }
-
-        // Initialize app
-        init();
-    </script>
+</script>
 </body>
 </html>
