@@ -16,7 +16,6 @@
             color: #00ff88;
             overflow-x: hidden;
         }
-
         body::before {
             content: '';
             position: fixed;
@@ -28,7 +27,6 @@
             pointer-events: none;
             z-index: 0;
         }
-
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -36,18 +34,17 @@
             position: relative;
             z-index: 1;
         }
-
         .orbitron { font-family: 'Orbitron', sans-serif; }
-
+        
         /* Screens */
         .screen { display: none; }
         .screen.active { display: block; animation: fadeIn 0.3s; }
-
+        
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-
+        
         /* Cyber Box */
         .cyber-box {
             background: rgba(0, 20, 10, 0.95);
@@ -57,7 +54,6 @@
             position: relative;
             box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
         }
-
         .cyber-box::before {
             content: '';
             position: absolute;
@@ -66,7 +62,6 @@
             border-top: 4px solid #ff0066;
             border-left: 4px solid #ff0066;
         }
-
         .cyber-box::after {
             content: '';
             position: absolute;
@@ -75,13 +70,12 @@
             border-bottom: 4px solid #ff0066;
             border-right: 4px solid #ff0066;
         }
-
+        
         /* Header */
         .header {
             text-align: center;
             margin-bottom: 3rem;
         }
-
         .header h1 {
             font-size: 4rem;
             font-weight: 900;
@@ -90,12 +84,9 @@
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
         }
-
+        
         /* Forms */
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
+        .form-group { margin-bottom: 1.5rem; }
         .form-label {
             display: block;
             color: #888;
@@ -105,7 +96,6 @@
             margin-bottom: 0.5rem;
             letter-spacing: 2px;
         }
-
         .form-input {
             width: 100%;
             padding: 1rem;
@@ -116,47 +106,12 @@
             font-family: 'IBM Plex Mono', monospace;
             font-size: 1rem;
         }
-
         .form-input:focus {
             outline: none;
             border-color: #00ff88;
             box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
         }
-
-        /* Autocomplete */
-        .autocomplete-container {
-            position: relative;
-        }
-
-        .autocomplete-list {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: rgba(0, 20, 10, 0.98);
-            border: 1px solid #00ff88;
-            border-radius: 0.5rem;
-            margin-top: 0.5rem;
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 1000;
-            display: none;
-        }
-
-        .autocomplete-list.show {
-            display: block;
-        }
-
-        .autocomplete-item {
-            padding: 0.75rem 1rem;
-            cursor: pointer;
-            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
-        }
-
-        .autocomplete-item:hover {
-            background: rgba(0, 255, 136, 0.1);
-        }
-
+        
         /* Buttons */
         .btn-primary {
             background: linear-gradient(135deg, #00ff88, #00cc6a);
@@ -171,26 +126,12 @@
             transition: all 0.3s;
             width: 100%;
         }
-
         .btn-primary:hover:not(:disabled) {
             box-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
             transform: translateY(-2px);
         }
-
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .btn-link {
-            background: none;
-            border: none;
-            color: #00ccff;
-            text-decoration: underline;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        
         /* Results */
         .result-card {
             background: rgba(0, 20, 10, 0.9);
@@ -199,159 +140,30 @@
             padding: 1.5rem;
             margin-bottom: 1.5rem;
         }
-
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: 999px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .badge-green {
-            background: rgba(0, 255, 136, 0.2);
-            color: #00ff88;
-            border: 1px solid #00ff88;
-        }
-
-        .badge-red {
-            background: rgba(255, 0, 102, 0.2);
-            color: #ff0066;
-            border: 1px solid #ff0066;
-        }
-
         .stat-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
             margin: 1.5rem 0;
         }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-label {
-            color: #888;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-value {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            font-weight: 900;
-        }
-
-        .competitor-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .competitor-item {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .competitor-item h4 {
-            color: #00ff88;
-            margin-bottom: 0.5rem;
-        }
-
-        .competitor-item p {
-            color: #ccc;
-            font-size: 0.85rem;
-        }
-
-        .trend-chart {
-            height: 100px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            display: flex;
-            align-items: flex-end;
-            gap: 0.5rem;
-        }
-
-        .trend-bar {
-            flex: 1;
-            background: linear-gradient(to top, #00ff88, #00cc6a);
-            border-radius: 0.25rem;
-            min-height: 10px;
-        }
-
-        .alert {
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .alert-error {
-            background: rgba(255, 0, 102, 0.1);
-            border: 1px solid #ff0066;
-            color: #ff0066;
-        }
-
-        .alert-info {
-            background: rgba(0, 204, 255, 0.1);
-            border: 1px solid #00ccff;
-            color: #00ccff;
-        }
-
-        .loading {
-            display: inline-block;
-        }
-
-        .loading::after {
-            content: '...';
-            animation: dots 1.5s steps(4, end) infinite;
-        }
-
-        @keyframes dots {
-            0%, 20% { content: ''; }
-            40% { content: '.'; }
-            60% { content: '..'; }
-            80%, 100% { content: '...'; }
-        }
-
+        .stat-value { font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900; }
+        
+        .alert { padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; }
+        .alert-error { background: rgba(255, 0, 102, 0.1); border: 1px solid #ff0066; color: #ff0066; }
+        .alert-info { background: rgba(0, 204, 255, 0.1); border: 1px solid #00ccff; color: #00ccff; }
+        
         .hidden { display: none !important; }
-
         .logout-btn {
             position: absolute;
-            top: 2rem;
-            right: 2rem;
+            top: 2rem; right: 2rem;
             background: rgba(255, 0, 102, 0.2);
             border: 1px solid #ff0066;
             color: #ff0066;
             padding: 0.75rem 1.5rem;
             border-radius: 0.5rem;
             cursor: pointer;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 0.8rem;
         }
-
-        .tabs {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
+        .tabs { display: flex; gap: 1rem; margin-bottom: 2rem; }
         .tab-btn {
             background: transparent;
             border: 2px solid rgba(0, 255, 136, 0.3);
@@ -359,372 +171,256 @@
             padding: 1rem 2rem;
             border-radius: 0.5rem;
             cursor: pointer;
-            font-weight: bold;
-            text-transform: uppercase;
-            transition: all 0.3s;
         }
-
-        .tab-btn.active {
-            background: rgba(0, 255, 136, 0.2);
-            border-color: #00ff88;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 { font-size: 2.5rem; }
-            .logout-btn { position: static; margin-bottom: 1rem; }
-            .tabs { flex-direction: column; }
-        }
+        .tab-btn.active { background: rgba(0, 255, 136, 0.2); border-color: #00ff88; }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- LOGIN SCREEN -->
-<div id="loginScreen" class="screen active">
-    <div class="header">
-        <h1 class="orbitron">PREPEAK PRO</h1>
-        <p style="color: #888; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 3px;">Market Intelligence Engine</p>
-    </div>
-
-    <div class="cyber-box" style="max-width: 500px; margin: 0 auto;">
-        <h2 class="orbitron" style="text-align: center; margin-bottom: 2rem; font-size: 1.5rem;">SYSTEM ACCESS</h2>
-        
-        <div id="loginError" class="alert alert-error hidden"></div>
-        
-        <div class="form-group">
-            <label class="form-label">Gmail Address *</label>
-            <input type="email" id="loginEmail" class="form-input" placeholder="your@gmail.com" required>
+        <div id="loginScreen" class="screen active">
+            <div class="header">
+                <h1 class="orbitron">PREPEAK PRO</h1>
+                <p style="color: #888; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 3px;">Market Intelligence Engine</p>
+            </div>
+            <div class="cyber-box" style="max-width: 500px; margin: 0 auto;">
+                <h2 class="orbitron" style="text-align: center; margin-bottom: 2rem; font-size: 1.5rem;">SYSTEM ACCESS</h2>
+                <div id="loginError" class="alert alert-error hidden"></div>
+                
+                <div class="form-group">
+                    <label class="form-label">Gmail Address *</label>
+                    <input type="email" id="loginEmail" class="form-input" placeholder="your@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">WhatsApp Number *</label>
+                    <input type="tel" id="loginWhatsApp" class="form-input" placeholder="+91 9876543210">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password *</label>
+                    <input type="password" id="loginPassword" class="form-input" placeholder="Enter password">
+                </div>
+                <button class="btn-primary" id="loginBtn" onclick="handleAuth()">LOGIN / SIGNUP</button>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label class="form-label">WhatsApp Number *</label>
-            <input type="tel" id="loginWhatsApp" class="form-input" placeholder="+91 9876543210" required>
-            <p style="font-size: 0.7rem; color: #666; margin-top: 0.5rem;">Include country code (e.g., +91 for India)</p>
-        </div>
-
-        <div class="form-group">
-            <label class="form-label">Password *</label>
-            <input type="password" id="loginPassword" class="form-input" placeholder="Enter password" required>
-        </div>
-
-        <button class="btn-primary" id="loginBtn" onclick="handleAuth()">
-            <span class="loading hidden" id="loginLoading">AUTHENTICATING</span>
-            <span id="loginBtnText">LOGIN / SIGNUP</span>
-        </button>
-
-        <p style="text-align: center; margin-top: 1.5rem; color: #888; font-size: 0.85rem;">
-            New user? Auto-signup with Gmail + WhatsApp
-        </p>
-    </div>
-</div>
-
-        <!-- API CONFIGURATION SCREEN -->
         <div id="apiConfigScreen" class="screen">
             <button class="logout-btn" onclick="logout()">LOGOUT</button>
-
             <div class="header">
                 <h1 class="orbitron">API CONFIGURATION</h1>
-                <p style="color: #888; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 3px;">Configure AI Engine</p>
             </div>
-
             <div class="cyber-box" style="max-width: 700px; margin: 0 auto;">
-                <div class="alert alert-info">
-                    <strong>🔑 API Key Required</strong><br>
-                    PrePeak uses AI to analyze markets. You need an API key to proceed.
-                </div>
-
                 <div class="form-group">
                     <label class="form-label">AI Provider</label>
                     <select id="apiProvider" class="form-input">
-                        <option value="anthropic">Anthropic Claude (Recommended)</option>
+                        <option value="anthropic">Anthropic Claude</option>
                         <option value="openai">OpenAI GPT-4</option>
                         <option value="gemini">Google Gemini</option>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label class="form-label">API Key</label>
-                    <input type="password" id="apiKeyInput" class="form-input" placeholder="sk-ant-...">
-                    <p style="font-size: 0.75rem; color: #666; margin-top: 0.5rem;">
-                        <strong id="providerHelp">Get key: console.anthropic.com/settings/keys</strong>
-                    </p>
+                    <input type="password" id="apiKeyInput" class="form-input" placeholder="sk-...">
                 </div>
-
-                <div style="background: rgba(0, 255, 136, 0.05); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 0.5rem; padding: 1rem; margin-bottom: 1.5rem;">
-                    <p style="font-size: 0.85rem; color: #ccc; line-height: 1.6;">
-                        <strong style="color: #00ff88;">How to get API keys:</strong><br>
-                        • <strong>Claude:</strong> console.anthropic.com → API Keys → Create Key<br>
-                        • <strong>OpenAI:</strong> platform.openai.com/api-keys → Create new secret key<br>
-                        • <strong>Gemini:</strong> makersuite.google.com/app/apikey → Get API key
-                    </p>
-                </div>
-
-                <button class="btn-primary" onclick="saveApiConfig()">
-                    SAVE & CONTINUE
-                </button>
+                <button class="btn-primary" onclick="saveApiConfig()">SAVE & CONTINUE</button>
             </div>
         </div>
 
-        <!-- MAIN APP SCREEN -->
         <div id="appScreen" class="screen">
             <button class="logout-btn" onclick="logout()">LOGOUT</button>
-
             <div class="header">
                 <h1 class="orbitron">PREPEAK PRO</h1>
-                <p style="color: #888; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 3px;">
-                    Logged in as <span id="userEmail"></span>
-                </p>
+                <p id="userEmailDisplay" style="color: #888;"></p>
             </div>
-
-            <!-- Tabs -->
             <div class="tabs">
-                <button class="tab-btn active orbitron" onclick="switchTab('prediction')">
-                    🎯 PREDICTION MODEL
-                </button>
-                <button class="tab-btn orbitron" onclick="switchTab('saturation')">
-                    📊 SATURATION INDEX
-                </button>
+                <button class="tab-btn active" onclick="switchTab('prediction')">🎯 PREDICTION</button>
+                <button class="tab-btn" onclick="switchTab('saturation')">📊 SATURATION</button>
             </div>
 
-            <!-- PREDICTION MODEL TAB -->
             <div id="predictionTab" class="tab-content">
                 <div class="cyber-box">
-                    <h2 class="orbitron" style="margin-bottom: 2rem; font-size: 1.5rem;">MARKET PREDICTION ANALYSIS</h2>
-                    
-                    <div class="form-group autocomplete-container">
-                        <label class="form-label">Product / Keyword</label>
-                        <input type="text" id="predictionKeyword" class="form-input" 
-                            placeholder="e.g., wireless earbuds" 
-                            autocomplete="off"
-                            oninput="handleAutocomplete(this.value)">
-                        <div id="autocompleteList" class="autocomplete-list"></div>
-                    </div>
-
                     <div class="form-group">
-                        <label class="form-label">Product Category (Optional)</label>
-                        <select id="productCategory" class="form-input">
-                            <option value="">Auto-detect</option>
-                            <option value="ecommerce">E-commerce Product</option>
-                            <option value="saas">SaaS / Software</option>
-                            <option value="service">Service</option>
-                        </select>
+                        <label class="form-label">Product / Keyword</label>
+                        <input type="text" id="predictionKeyword" class="form-input" placeholder="e.g., wireless earbuds">
                     </div>
-
-                    <button class="btn-primary" id="predictionBtn" onclick="runPredictionAnalysis()">
-                        <span class="loading hidden" id="predictionLoading">ANALYZING</span>
-                        <span id="predictionBtnText">RUN PREDICTION ANALYSIS</span>
-                    </button>
+                    <button class="btn-primary" id="predictionBtn" onclick="runPredictionAnalysis()">RUN ANALYSIS</button>
                 </div>
-
-                <!-- Prediction Results -->
                 <div id="predictionResults" class="hidden" style="margin-top: 2rem;"></div>
             </div>
 
-            <!-- SATURATION INDEX TAB -->
             <div id="saturationTab" class="tab-content hidden">
                 <div class="cyber-box">
-                    <h2 class="orbitron" style="margin-bottom: 2rem; font-size: 1.5rem;">COMPETITOR URL ANALYSIS</h2>
-                    
                     <div class="form-group">
                         <label class="form-label">Competitor URL</label>
-                        <input type="url" id="competitorUrl" class="form-input" 
-                            placeholder="https://competitor.com/product">
-                        <p style="font-size: 0.75rem; color: #666; margin-top: 0.5rem;">
-                            Enter competitor product page, landing page, or website
-                        </p>
+                        <input type="url" id="competitorUrl" class="form-input" placeholder="https://competitor.com">
                     </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Your Product (For Comparison)</label>
-                        <input type="text" id="yourProduct" class="form-input" 
-                            placeholder="Your product name">
-                    </div>
-
-                    <button class="btn-primary" id="saturationBtn" onclick="runSaturationAnalysis()">
-                        <span class="loading hidden" id="saturationLoading">ANALYZING</span>
-                        <span id="saturationBtnText">ANALYZE COMPETITOR</span>
-                    </button>
+                    <button class="btn-primary" id="saturationBtn" onclick="runSaturationAnalysis()">ANALYZE COMPETITOR</button>
                 </div>
-
-                <!-- Saturation Results -->
                 <div id="saturationResults" class="hidden" style="margin-top: 2rem;"></div>
             </div>
         </div>
     </div>
 
-<script>
+    <script>
+        const APP_STATE = {
+            user: null,
+            apiKey: null,
+            apiProvider: 'anthropic',
+            currentTab: 'prediction'
+        };
 
-// ========================
-// STATE MANAGEMENT
-// ========================
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwJD8IrvzYZqWRG23pHgqC9NsNgBZoB0_xZTBunrlz0ob3CsKfRxGgZivi0Gy0C97e3pw/exec';
 
-const APP_STATE = {
-    user: null,
-    apiKey: null,
-    apiProvider: 'anthropic',
-    currentTab: 'prediction'
-};
+        function init() {
+            const saved = localStorage.getItem('prepeakState');
+            if (saved) {
+                const state = JSON.parse(saved);
+                if (state.user) {
+                    APP_STATE.user = state.user;
+                    APP_STATE.apiKey = state.apiKey;
+                    APP_STATE.apiProvider = state.apiProvider;
+                    if (APP_STATE.apiKey) {
+                        showScreen('appScreen');
+                        document.getElementById('userEmailDisplay').textContent = APP_STATE.user.email;
+                    } else {
+                        showScreen('apiConfigScreen');
+                    }
+                }
+            }
+        }
 
-const GOOGLE_SHEETS_CONFIG = {
-    webAppUrl: 'PASTE_YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE'
-};
+        async function handleAuth() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const whatsapp = document.getElementById('loginWhatsApp').value.trim();
+            const password = document.getElementById('loginPassword').value;
 
-// ========================
-// INIT
-// ========================
+            if (!email || !whatsapp || !password) {
+                showError('loginError', 'All fields required');
+                return;
+            }
 
-function init() {
-    loadFromLocalStorage();
-}
+            setLoading('login', true);
+            try {
+                // Send to Google Sheets
+                await fetch(GOOGLE_SHEETS_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: JSON.stringify({ action: 'auth', email, whatsapp, password })
+                });
 
-function loadFromLocalStorage() {
-    const saved = localStorage.getItem('prepeakState');
-    if (saved) {
-        const state = JSON.parse(saved);
-        APP_STATE.user = state.user;
-        APP_STATE.apiKey = state.apiKey;
-        APP_STATE.apiProvider = state.apiProvider || 'anthropic';
+                APP_STATE.user = { email, whatsapp };
+                localStorage.setItem('prepeakState', JSON.stringify(APP_STATE));
+                showScreen('apiConfigScreen');
+            } catch (e) {
+                showError('loginError', 'Auth failed. Check connection.');
+            } finally {
+                setLoading('login', false);
+            }
+        }
 
-        if (APP_STATE.user && APP_STATE.apiKey) {
+        function saveApiConfig() {
+            const key = document.getElementById('apiKeyInput').value.trim();
+            if (!key) return alert('Enter API Key');
+            APP_STATE.apiKey = key;
+            APP_STATE.apiProvider = document.getElementById('apiProvider').value;
+            localStorage.setItem('prepeakState', JSON.stringify(APP_STATE));
             showScreen('appScreen');
-            document.getElementById('userEmail').textContent = APP_STATE.user.email;
-        } else if (APP_STATE.user) {
-            showScreen('apiConfigScreen');
-        }
-    }
-}
-
-function saveToLocalStorage() {
-    localStorage.setItem('prepeakState', JSON.stringify(APP_STATE));
-}
-
-// ========================
-// AUTHENTICATION
-// ========================
-
-async function handleAuth() {
-
-    const email = document.getElementById('loginEmail').value.trim();
-    const whatsapp = document.getElementById('loginWhatsApp').value.trim().replace(/\s/g, '');
-    const password = document.getElementById('loginPassword').value;
-
-    if (!email || !whatsapp || !password) {
-        showError('loginError', 'Please fill all required fields');
-        return;
-    }
-
-    if (!validateEmail(email)) {
-        showError('loginError', 'Invalid email format');
-        return;
-    }
-
-    if (!validateWhatsApp(whatsapp)) {
-        showError('loginError', 'WhatsApp must include country code (e.g., +919876543210)');
-        return;
-    }
-
-    setLoading('login', true);
-
-    try {
-
-        const response = await fetch(GOOGLE_SHEETS_CONFIG.webAppUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                action: 'auth',
-                email,
-                whatsapp,
-                password
-            })
-        });
-
-        const data = await response.json();
-
-        if (!data.success) {
-            throw new Error(data.message || 'Authentication failed');
+            document.getElementById('userEmailDisplay').textContent = APP_STATE.user.email;
         }
 
-        APP_STATE.user = { email, whatsapp };
-        saveToLocalStorage();
+        async function runPredictionAnalysis() {
+            const keyword = document.getElementById('predictionKeyword').value.trim();
+            if (!keyword) return alert('Enter keyword');
+            
+            setLoading('prediction', true);
+            try {
+                const prompt = `Analyze market for "${keyword}". Return ONLY valid JSON with fields: status (GREEN_LIGHT/RED_LIGHT), searchVolume, saturationScore (0-100), opportunityScore, competitors (array of objects with name, revenue), and recommendation.`;
+                const result = await callAI(prompt);
+                displayPredictionResults(result);
+            } catch (e) {
+                alert('Analysis failed: ' + e.message);
+            } finally {
+                setLoading('prediction', false);
+            }
+        }
 
-        showScreen('apiConfigScreen');
+        async function callAI(prompt) {
+            const provider = APP_STATE.apiProvider;
+            const key = APP_STATE.apiKey;
+            let response, data, text;
 
-    } catch (error) {
-        showError('loginError', error.message);
-    }
+            if (provider === 'anthropic') {
+                response = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
+                    body: JSON.stringify({ model: 'claude-3-5-sonnet-20241022', max_tokens: 2000, messages: [{role: 'user', content: prompt}] })
+                });
+                data = await response.json();
+                text = data.content[0].text;
+            } else if (provider === 'openai') {
+                response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+                    body: JSON.stringify({ model: 'gpt-4', messages: [{role: 'user', content: prompt}] })
+                });
+                data = await response.json();
+                text = data.choices[0].message.content;
+            } else {
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
+                response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+                data = await response.json();
+                text = data.candidates[0].content.parts[0].text;
+            }
+            return JSON.parse(text.replace(/```json|```/g, '').trim());
+        }
 
-    setLoading('login', false);
-}
+        function displayPredictionResults(data) {
+            const div = document.getElementById('predictionResults');
+            div.innerHTML = `
+                <div class="result-card" style="border-color: ${data.status === 'GREEN_LIGHT' ? '#00ff88' : '#ff0066'}">
+                    <h2 class="orbitron">${data.status}</h2>
+                    <div class="stat-grid">
+                        <div class="stat-item"><p>Volume</p><div class="stat-value">${data.searchVolume}</div></div>
+                        <div class="stat-item"><p>Saturation</p><div class="stat-value">${data.saturationScore}%</div></div>
+                    </div>
+                    <p style="margin-top:1rem;">${data.recommendation}</p>
+                </div>
+            `;
+            div.classList.remove('hidden');
+        }
 
-function logout() {
-    localStorage.removeItem('prepeakState');
-    APP_STATE.user = null;
-    APP_STATE.apiKey = null;
-    showScreen('loginScreen');
-}
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById(tab + 'Tab').classList.remove('hidden');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
 
-// ========================
-// API CONFIG
-// ========================
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
 
-function saveApiConfig() {
-    const apiKey = document.getElementById('apiKeyInput').value.trim();
-    const provider = document.getElementById('apiProvider').value;
+        function setLoading(id, is) {
+            const btn = document.getElementById(id + 'Btn');
+            btn.disabled = is;
+            btn.textContent = is ? 'PROCESSING...' : (id === 'login' ? 'LOGIN / SIGNUP' : 'RUN ANALYSIS');
+        }
 
-    if (!apiKey) {
-        alert('Please enter API key');
-        return;
-    }
+        function showError(id, msg) {
+            const el = document.getElementById(id);
+            el.textContent = msg;
+            el.classList.remove('hidden');
+        }
 
-    APP_STATE.apiKey = apiKey;
-    APP_STATE.apiProvider = provider;
-    saveToLocalStorage();
+        function logout() {
+            localStorage.clear();
+            location.reload();
+        }
 
-    showScreen('appScreen');
-    document.getElementById('userEmail').textContent = APP_STATE.user.email;
-}
-
-// ========================
-// UTILITIES
-// ========================
-
-function showScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(screenId).classList.add('active');
-}
-
-function setLoading(type, isLoading) {
-    const btn = document.getElementById(`${type}Btn`);
-    const loader = document.getElementById(`${type}Loading`);
-    const btnText = document.getElementById(`${type}BtnText`);
-
-    if (isLoading) {
-        btn.disabled = true;
-        loader.classList.remove('hidden');
-        btnText.classList.add('hidden');
-    } else {
-        btn.disabled = false;
-        loader.classList.add('hidden');
-        btnText.classList.remove('hidden');
-    }
-}
-
-function showError(elementId, message) {
-    const el = document.getElementById(elementId);
-    el.textContent = message;
-    el.classList.remove('hidden');
-    setTimeout(() => el.classList.add('hidden'), 4000);
-}
-
-function validateEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function validateWhatsApp(number) {
-    return /^\+[1-9]\d{9,14}$/.test(number);
-}
-
-init();
-
-</script>
+        init();
+    </script>
 </body>
 </html>
