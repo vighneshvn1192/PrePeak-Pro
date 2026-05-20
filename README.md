@@ -6,6 +6,12 @@
 
 <img width="957" height="568" alt="image" src="https://github.com/user-attachments/assets/997ac4c1-79e9-46e9-a9f5-3bfa0c1f0b82" />
 
+<img width="971" height="577" alt="image" src="https://github.com/user-attachments/assets/b1b20108-167a-4898-b04a-571cde0cd35a" />
+
+<img width="965" height="549" alt="image" src="https://github.com/user-attachments/assets/eb27c11c-50ff-45ba-ac04-7454129a685f" />
+
+<img width="974" height="474" alt="image" src="https://github.com/user-attachments/assets/618b9791-c414-479c-b3fe-4190528aa26e" />
+
 
 AI-powered market intelligence — find opportunities before they saturate. See the **[demo](#)**.
 
